@@ -4,7 +4,7 @@
  * Date: 2022/01/03 07:50:03
  */
 
-package app
+package app_gin
 
 import (
 	"errors"

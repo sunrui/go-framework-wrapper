@@ -7,16 +7,16 @@
 package api_user
 
 import (
-	"medium-server-go/framework/app"
+	"medium-server-go/framework/app-gin"
 	"net/http"
 )
 
 // 获取路由对象
-func GetRouter() app.Router {
-	return app.Router{
+func GetRouter() app_gin.Router {
+	return app_gin.Router{
 		GroupName: "/user",
-		RoleType:  app.RoleAuth,
-		RouterPaths: []app.RouterPath{
+		RoleType:  app_gin.RoleAuth,
+		RouterPaths: []app_gin.RouterPath{
 			{
 				HttpMethod:   http.MethodPost,
 				RelativePath: "/:id",

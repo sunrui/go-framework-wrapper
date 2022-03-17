@@ -8,7 +8,7 @@ package api_open
 
 import (
 	"github.com/gin-gonic/gin"
-	"medium-server-go/framework/app"
+	"medium-server-go/framework/app-gin"
 	"medium-server-go/framework/result"
 	"medium-server-go/service/biz/open"
 	"medium-server-go/service/provider"
@@ -22,7 +22,7 @@ func getOpen(ctx *gin.Context) {
 	// 获取当前用户下的入驻
 	opens := open.GetOpens(userId)
 
-	app.Response(ctx, result.Ok.WithData(opens))
+	app_gin.Response(ctx, result.Ok.WithData(opens))
 }
 
 // 提交入驻
@@ -30,9 +30,9 @@ func postOpen(ctx *gin.Context) {
 	var req postOpenReq
 
 	// 较验参数
-	errData, err := app.ValidateParameter(ctx, &req)
+	errData, err := app_gin.ValidateParameter(ctx, &req)
 	if err != nil {
-		app.Response(ctx, result.ParameterError.WithData(errData))
+		app_gin.Response(ctx, result.ParameterError.WithData(errData))
 		return
 	}
 }

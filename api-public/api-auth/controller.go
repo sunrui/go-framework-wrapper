@@ -7,7 +7,7 @@ package api_auth
 
 import (
 	"github.com/gin-gonic/gin"
-	"medium-server-go/framework/app"
+	"medium-server-go/framework/app-gin"
 	"medium-server-go/framework/config"
 	"medium-server-go/framework/result"
 	"medium-server-go/service/biz/sms"
@@ -21,9 +21,9 @@ func postLoginByPhone(ctx *gin.Context) {
 	var req postLoginByPhoneReq
 
 	// 较验参数
-	errData, err := app.ValidateParameter(ctx, &req)
+	errData, err := app_gin.ValidateParameter(ctx, &req)
 	if err != nil {
-		app.Response(ctx, result.ParameterError.WithData(errData))
+		app_gin.Response(ctx, result.ParameterError.WithData(errData))
 		return
 	}
 
@@ -38,13 +38,13 @@ func postLoginByPhone(ctx *gin.Context) {
 
 		// 获取缓存数据
 		if !smsCache.Exists() {
-			app.Response(ctx, result.NotFound)
+			app_gin.Response(ctx, result.NotFound)
 			return
 		}
 
 		// 较验验证码
 		if !smsCache.Verify(req.Code) {
-			app.Response(ctx, result.NotMatch)
+			app_gin.Response(ctx, result.NotMatch)
 			return
 		}
 
@@ -78,9 +78,9 @@ func postLoginByWechat(ctx *gin.Context) {
 	var req postLoginByPhoneReq
 
 	// 较验参数
-	errData, err := app.ValidateParameter(ctx, &req)
+	errData, err := app_gin.ValidateParameter(ctx, &req)
 	if err != nil {
-		app.Response(ctx, result.ParameterError.WithData(errData))
+		app_gin.Response(ctx, result.ParameterError.WithData(errData))
 		return
 	}
 }
@@ -90,22 +90,22 @@ func getToken(ctx *gin.Context) {
 	// 获取用户令牌
 	tokenEntity, err := provider.Token.GetTokenEntity(ctx)
 	if err != nil {
-		app.Response(ctx, result.NotFound)
+		app_gin.Response(ctx, result.NotFound)
 		return
 	}
 
-	app.Response(ctx, result.Ok.WithData(tokenEntity))
+	app_gin.Response(ctx, result.Ok.WithData(tokenEntity))
 }
 
 // 登出
 func postLogout(ctx *gin.Context) {
 	_, err := ctx.Cookie("token")
 	if err != nil {
-		app.Response(ctx, result.NotFound)
+		app_gin.Response(ctx, result.NotFound)
 		return
 	}
 
 	// 移除令牌
 	provider.Token.RemoveToken(ctx)
-	app.Response(ctx, result.Ok)
+	app_gin.Response(ctx, result.Ok)
 }

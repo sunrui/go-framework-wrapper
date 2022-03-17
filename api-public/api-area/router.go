@@ -7,16 +7,16 @@
 package api_area
 
 import (
-	"medium-server-go/framework/app"
+	"medium-server-go/framework/app-gin"
 	"net/http"
 )
 
 // 获取路由对象
-func GetRouter() app.Router {
-	return app.Router{
+func GetRouter() app_gin.Router {
+	return app_gin.Router{
 		GroupName: "/area",
-		RoleType:  app.RolePublic,
-		RouterPaths: []app.RouterPath{
+		RoleType:  app_gin.RolePublic,
+		RouterPaths: []app_gin.RouterPath{
 			{
 				HttpMethod:   http.MethodGet,
 				RelativePath: "",

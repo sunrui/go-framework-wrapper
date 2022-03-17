@@ -3,7 +3,7 @@
  * Author: sunrui
  * Date: 2022/01/01
  */
-package app
+package app_gin
 
 import (
 	"github.com/gin-gonic/gin"

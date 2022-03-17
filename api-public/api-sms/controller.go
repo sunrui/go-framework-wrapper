@@ -9,7 +9,7 @@ package api_sms
 import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
-	"medium-server-go/framework/app"
+	"medium-server-go/framework/app-gin"
 	"medium-server-go/framework/result"
 	"medium-server-go/service/biz/sms"
 	"medium-server-go/service/provider"
@@ -20,16 +20,16 @@ func postCode(ctx *gin.Context) {
 	var req postCodeReq
 
 	// 较验参数
-	errData, err := app.ValidateParameter(ctx, &req)
+	errData, err := app_gin.ValidateParameter(ctx, &req)
 	if err != nil {
-		app.Response(ctx, result.ParameterError.WithData(errData))
+		app_gin.Response(ctx, result.ParameterError.WithData(errData))
 		return
 	}
 
 	// 获取当天发送条数，判断是否超出最大条数限制
 	count := sms.CountByPhoneAndDate(req.Phone, sms.GetNowDate())
 	if count >= 5 {
-		app.Response(ctx, result.RateLimit)
+		app_gin.Response(ctx, result.RateLimit)
 		return
 	}
 
@@ -68,7 +68,7 @@ func postCode(ctx *gin.Context) {
 
 	// 发送验证码失败
 	if err != nil {
-		app.Response(ctx, result.InternalError.WithData(err))
+		app_gin.Response(ctx, result.InternalError.WithData(err))
 		return
 	}
 
@@ -83,7 +83,7 @@ func postCode(ctx *gin.Context) {
 	})
 
 	// 发送成功
-	app.Response(ctx, result.Ok)
+	app_gin.Response(ctx, result.Ok)
 }
 
 // 较验验证码
@@ -91,9 +91,9 @@ func postVerify(ctx *gin.Context) {
 	var req postVerifyReq
 
 	// 较验参数
-	errData, err := app.ValidateParameter(ctx, &req)
+	errData, err := app_gin.ValidateParameter(ctx, &req)
 	if err != nil {
-		app.Response(ctx, result.ParameterError.WithData(errData))
+		app_gin.Response(ctx, result.ParameterError.WithData(errData))
 		return
 	}
 
@@ -105,16 +105,16 @@ func postVerify(ctx *gin.Context) {
 
 	// 获取缓存数据
 	if !cache.Exists() {
-		app.Response(ctx, result.NotFound)
+		app_gin.Response(ctx, result.NotFound)
 		return
 	}
 
 	// 较验验证码
 	if !cache.Verify(req.Code) {
-		app.Response(ctx, result.NotMatch)
+		app_gin.Response(ctx, result.NotMatch)
 		return
 	}
 
 	// 较验成功
-	app.Response(ctx, result.Ok)
+	app_gin.Response(ctx, result.Ok)
 }

@@ -8,7 +8,7 @@ package config
 
 import (
 	"encoding/json"
-	"io/ioutil"
+	"medium-server-go/framework/util"
 	"os"
 	"strings"
 )
@@ -56,43 +56,33 @@ type jsonConfig struct {
 }
 
 // 当前配置
-var current *jsonConfig
+var config *jsonConfig
 
 // 是否在调试环境
 func IsDebugMode() bool {
-	return strings.ToLower(current.Environment) == "debug"
+	return strings.ToLower(config.Environment) == "debug"
 }
 
 // 获取当前配置
 func Get() *Config {
 	if IsDebugMode() {
-		return &current.Debug
+		return &config.Debug
 	} else {
-		return &current.Release
+		return &config.Release
 	}
 }
 
 // 加载当前配置
 func init() {
-	// 加载配置文件流
-	readStream := func() ([]byte, error) {
-		// 获取当前项目根目录
-		pwd, _ := os.Getwd()
-		f, err := os.Open(pwd + "/config.json")
-		if err != nil {
-			return nil, err
-		}
-
-		return ioutil.ReadAll(f)
-	}
-
-	stream, err := readStream()
+	// 获取当前项目根目录 config.json
+	pwd, _ := os.Getwd()
+	stream, err := util.ReadStream(pwd + "/config.json")
 	if err != nil {
 		panic(err.Error())
 	}
 
 	// 反射配置文件
-	err = json.Unmarshal(stream, &current)
+	err = json.Unmarshal(stream, &config)
 	if err != nil {
 		panic(err.Error())
 	}

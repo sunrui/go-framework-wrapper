@@ -9,12 +9,12 @@ import (
 	api_admin "medium-server-go/api-admin"
 	api_public "medium-server-go/api-public"
 	api_user "medium-server-go/api-user"
-	"medium-server-go/framework/app"
+	"medium-server-go/framework/app-gin"
 )
 
 func main() {
 	// 创建服务
-	server := app.New()
+	server := app_gin.New()
 
 	// 注册路由
 	api_public.Register(server)

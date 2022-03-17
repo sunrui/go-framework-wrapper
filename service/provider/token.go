@@ -9,7 +9,7 @@ package provider
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
-	"medium-server-go/framework/app"
+	"medium-server-go/framework/app-gin"
 	"medium-server-go/framework/config"
 	"medium-server-go/framework/result"
 	"strings"
@@ -80,7 +80,7 @@ func (*tokenDef) WriteToken(ctx *gin.Context, userId string, maxAge int) {
 func (tokenDef *tokenDef) GetUserId(ctx *gin.Context) string {
 	tokenEntity, err := tokenDef.GetTokenEntity(ctx)
 	if err != nil {
-		app.Response(ctx, result.NoAuth)
+		app_gin.Response(ctx, result.NoAuth)
 		return ""
 	}
 

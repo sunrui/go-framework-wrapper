@@ -8,7 +8,7 @@ package provider
 
 import (
 	"github.com/gin-gonic/gin"
-	"medium-server-go/framework/app"
+	"medium-server-go/framework/app-gin"
 	"medium-server-go/framework/result"
 )
 
@@ -16,7 +16,7 @@ import (
 func authMiddleware(ctx *gin.Context) {
 	_, err := Token.GetTokenEntity(ctx)
 	if err != nil {
-		app.Response(ctx, result.NoAuth)
+		app_gin.Response(ctx, result.NoAuth)
 	}
 }
 
@@ -24,12 +24,12 @@ func authMiddleware(ctx *gin.Context) {
 func adminMiddleware(ctx *gin.Context) {
 	_, err := Token.GetTokenEntity(ctx)
 	if err != nil {
-		app.Response(ctx, result.NoAuth)
+		app_gin.Response(ctx, result.NoAuth)
 	}
 }
 
 // 初始化
 func init() {
-	app.AuthMiddleware = authMiddleware
-	app.AdminMiddleware = adminMiddleware
+	app_gin.AuthMiddleware = authMiddleware
+	app_gin.AdminMiddleware = adminMiddleware
 }

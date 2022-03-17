@@ -4,7 +4,7 @@
  * Date: 2022/01/07 01:55:07
  */
 
-package app
+package app_gin
 
 import (
 	"github.com/gin-gonic/gin"
