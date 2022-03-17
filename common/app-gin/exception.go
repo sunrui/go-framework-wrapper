@@ -8,9 +8,9 @@ package app_gin
 
 import (
 	"github.com/gin-gonic/gin"
-	"medium-server-go/framework/config"
-	"medium-server-go/framework/result"
-	"medium-server-go/framework/util"
+	"medium-server-go/common/config"
+	"medium-server-go/common/result"
+	"medium-server-go/common/util"
 )
 
 // 异常捕获对象

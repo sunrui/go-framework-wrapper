@@ -9,7 +9,7 @@ package user
 import (
 	"errors"
 	"gorm.io/gorm"
-	"medium-server-go/framework/db"
+	"medium-server-go/common/db"
 )
 
 // 初始化

@@ -7,7 +7,7 @@
 package sms
 
 import (
-	"medium-server-go/framework/db"
+	"medium-server-go/common/db"
 )
 
 // 验证码对象

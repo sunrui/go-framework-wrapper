@@ -6,7 +6,7 @@
 
 package user
 
-import "medium-server-go/framework/db"
+import "medium-server-go/common/db"
 
 type User struct {
 	db.Model         // 通用参数

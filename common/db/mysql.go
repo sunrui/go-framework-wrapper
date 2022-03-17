@@ -12,7 +12,7 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
-	"medium-server-go/framework/config"
+	"medium-server-go/common/config"
 	"strings"
 	"time"
 )
@@ -32,6 +32,7 @@ func init() {
 		mysqlConf.Host,
 		mysqlConf.Port,
 		mysqlConf.Database)
+
 	Mysql, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
 		NamingStrategy: schema.NamingStrategy{
 			TablePrefix:   "t_", // 表名前缀

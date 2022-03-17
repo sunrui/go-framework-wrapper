@@ -8,7 +8,7 @@ package config
 
 import (
 	"encoding/json"
-	"medium-server-go/framework/util"
+	"medium-server-go/common/util"
 	"os"
 	"strings"
 )

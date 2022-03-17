@@ -7,7 +7,7 @@
 package api_open
 
 import (
-	"medium-server-go/framework/app-gin"
+	"medium-server-go/common/app-gin"
 	"net/http"
 )
 

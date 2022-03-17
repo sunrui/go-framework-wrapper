@@ -9,7 +9,7 @@ import (
 	api_admin "medium-server-go/api-admin"
 	api_public "medium-server-go/api-public"
 	api_user "medium-server-go/api-user"
-	"medium-server-go/framework/app-gin"
+	"medium-server-go/common/app-gin"
 )
 
 func main() {

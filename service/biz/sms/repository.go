@@ -9,7 +9,7 @@ package sms
 import (
 	"fmt"
 	"math/rand"
-	"medium-server-go/framework/db"
+	"medium-server-go/common/db"
 	"time"
 )
 

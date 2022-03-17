@@ -9,8 +9,8 @@ package api_sms
 import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
-	"medium-server-go/framework/app-gin"
-	"medium-server-go/framework/result"
+	"medium-server-go/common/app-gin"
+	"medium-server-go/common/result"
 	"medium-server-go/service/biz/sms"
 	"medium-server-go/service/provider"
 )

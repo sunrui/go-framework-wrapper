@@ -8,7 +8,7 @@ package api_admin
 
 import (
 	"medium-server-go/api-admin/api-user"
-	"medium-server-go/framework/app-gin"
+	"medium-server-go/common/app-gin"
 )
 
 // 注册路由

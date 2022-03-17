@@ -10,7 +10,7 @@ import (
 	"medium-server-go/api-public/api-area"
 	"medium-server-go/api-public/api-auth"
 	"medium-server-go/api-public/api-sms"
-	"medium-server-go/framework/app-gin"
+	"medium-server-go/common/app-gin"
 )
 
 // 注册路由

@@ -8,7 +8,7 @@ package sms
 
 import (
 	"fmt"
-	"medium-server-go/framework/db"
+	"medium-server-go/common/db"
 )
 
 // 缓存数据

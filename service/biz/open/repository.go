@@ -6,7 +6,7 @@
 
 package open
 
-import "medium-server-go/framework/db"
+import "medium-server-go/common/db"
 
 // 初始化
 func init() {

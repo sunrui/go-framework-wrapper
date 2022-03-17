@@ -9,7 +9,7 @@ package app_gin
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/juju/ratelimit"
-	"medium-server-go/framework/result"
+	"medium-server-go/common/result"
 	"net/http"
 	"time"
 )

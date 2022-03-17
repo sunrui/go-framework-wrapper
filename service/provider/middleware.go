@@ -8,8 +8,8 @@ package provider
 
 import (
 	"github.com/gin-gonic/gin"
-	"medium-server-go/framework/app-gin"
-	"medium-server-go/framework/result"
+	"medium-server-go/common/app-gin"
+	"medium-server-go/common/result"
 )
 
 // 授权中间件

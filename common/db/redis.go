@@ -11,7 +11,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/garyburd/redigo/redis"
-	"medium-server-go/framework/config"
+	"medium-server-go/common/config"
 	"reflect"
 	"time"
 )

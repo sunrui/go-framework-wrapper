@@ -9,7 +9,7 @@ package api_user
 import (
 	"medium-server-go/api-user/api-open"
 	"medium-server-go/api-user/api-user"
-	"medium-server-go/framework/app-gin"
+	"medium-server-go/common/app-gin"
 )
 
 // 注册路由

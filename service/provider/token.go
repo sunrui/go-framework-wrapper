@@ -9,9 +9,9 @@ package provider
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
-	"medium-server-go/framework/app-gin"
-	"medium-server-go/framework/config"
-	"medium-server-go/framework/result"
+	"medium-server-go/common/app-gin"
+	"medium-server-go/common/config"
+	"medium-server-go/common/result"
 	"strings"
 )
 

@@ -6,7 +6,7 @@
 package api_auth
 
 import (
-	"medium-server-go/framework/app-gin"
+	"medium-server-go/common/app-gin"
 	"net/http"
 )
 
