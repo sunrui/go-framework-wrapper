@@ -7,13 +7,10 @@
 package app_gin
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"medium-server-go/framework/config"
 	"medium-server-go/framework/result"
-	"os"
-	"runtime"
-	"strings"
+	"medium-server-go/framework/util"
 )
 
 // 异常捕获对象
@@ -36,43 +33,7 @@ func exceptionHandler(handlerFunc gin.HandlerFunc) gin.HandlerFunc {
 
 					mapData := make(map[string]interface{})
 					mapData["description"] = err
-
-					// 栈堆对象
-					type Stack struct {
-						Function string // 函数
-						File     string // 行数
-					}
-
-					var stacks []Stack
-
-					// 最大函数位深 5 层
-					maxDeep := 6
-					pc := make([]uintptr, maxDeep)
-					runtime.Callers(4, pc)
-					frames := runtime.CallersFrames(pc)
-
-					// 当前项目目录
-					pwd, _ := os.Getwd()
-					pwd = strings.Replace(pwd, "\\", "/", -1)
-
-					// 当前 go 目录
-					goPath := os.Getenv("GOPATH")
-					goPath = strings.Replace(goPath, "\\", "/", -1)
-
-					for frame, ok := frames.Next(); ok; frame, ok = frames.Next() {
-						// 去掉项目目录
-						file := strings.Replace(frame.File, pwd, "", -1)
-						file = strings.Replace(file, goPath, "", -1)
-						file = fmt.Sprintf("%s:%d", file, frame.Line)
-						function := frame.Function[strings.Index(frame.Function, "/"):]
-
-						stacks = append(stacks, Stack{
-							Function: function,
-							File:     file,
-						})
-					}
-
-					dataMap["stacks"] = stacks
+					dataMap["stacks"] = util.GetStack(5)
 
 					Response(ctx, result.InternalError.WithData(dataMap))
 				}
