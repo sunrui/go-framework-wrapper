@@ -30,7 +30,7 @@ func postLoginByPhone(ctx *gin.Context) {
 
 		// 获取缓存数据
 		if !smsCache.Exists() {
-			app.Response(ctx, result.NotFound)
+			app.Response(ctx, result.NotFound.WithKeyPair("code", req.Code))
 			return
 		}
 
