@@ -8,7 +8,8 @@ package area
 
 import (
 	"encoding/json"
-	"medium-server-go/framework/util"
+	"io/ioutil"
+	"os"
 	"path/filepath"
 	"runtime"
 )
@@ -82,9 +83,13 @@ func init() {
 	// 获取当前项目根目录 area.json
 	_, file, _, _ := runtime.Caller(0)
 	path := filepath.Dir(file)
-	path += "/area.json"
 
-	stream, err := util.ReadStream(path)
+	f, err := os.Open(path + "/area.json")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	stream, err := ioutil.ReadAll(f)
 	if err != nil {
 		panic(err.Error())
 	}

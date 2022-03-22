@@ -17,11 +17,7 @@ func postLoginByPhone(ctx *gin.Context) {
 	var req postLoginByPhoneReq
 
 	// 较验参数
-	errData, err := app.ValidateParameter(ctx, &req)
-	if err != nil {
-		app.Response(ctx, result.ParameterError.WithData(errData))
-		return
-	}
+	app.ValidateParameter(ctx, &req)
 
 	// 如果非魔术验证码
 	smsMagicCode := config.Get().Sms.MagicCode
@@ -74,11 +70,7 @@ func postLoginByWechat(ctx *gin.Context) {
 	var req postLoginByPhoneReq
 
 	// 较验参数
-	errData, err := app.ValidateParameter(ctx, &req)
-	if err != nil {
-		app.Response(ctx, result.ParameterError.WithData(errData))
-		return
-	}
+	app.ValidateParameter(ctx, &req)
 }
 
 // 获取令牌

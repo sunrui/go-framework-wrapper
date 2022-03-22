@@ -19,11 +19,7 @@ func postCode(ctx *gin.Context) {
 	var req postCodeReq
 
 	// 较验参数
-	errData, err := app.ValidateParameter(ctx, &req)
-	if err != nil {
-		app.Response(ctx, result.ParameterError.WithData(errData))
-		return
-	}
+	app.ValidateParameter(ctx, &req)
 
 	// 获取当天发送条数，判断是否超出最大条数限制
 	count := sms.CountByPhoneAndDate(req.Phone, sms.GetNowDate())
@@ -91,11 +87,7 @@ func postVerify(ctx *gin.Context) {
 	var req postVerifyReq
 
 	// 较验参数
-	errData, err := app.ValidateParameter(ctx, &req)
-	if err != nil {
-		app.Response(ctx, result.ParameterError.WithData(errData))
-		return
-	}
+	app.ValidateParameter(ctx, &req)
 
 	// 缓存对象
 	cache := sms.Cache{

@@ -12,12 +12,14 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/validator/v10"
+	"medium-server-go/framework/result"
 	"strings"
 )
 
 // ValidateParameter 请求参数过滤
-func ValidateParameter(ctx *gin.Context, req interface{}) (errData map[string]interface{}, err error) {
+func ValidateParameter(ctx *gin.Context, req interface{}) {
 	var validationErrors validator.ValidationErrors
+	var err error
 
 	// 默认以 json 方式解析
 	if err = ctx.MustBindWith(&req, binding.JSON); err != nil {
@@ -29,7 +31,7 @@ func ValidateParameter(ctx *gin.Context, req interface{}) (errData map[string]in
 		goto ERROR
 	}
 
-	return nil, err
+	return
 
 ERROR:
 	// 参数错误对象
@@ -38,31 +40,29 @@ ERROR:
 		Validate string `json:"validate"` // 较验值
 	}
 
-	var paramErrors []ParamError
+	errData := make(map[string]interface{})
 
 	// 解析内容出错
-	if !errors.As(err, &validationErrors) {
-		errData = make(map[string]interface{})
-		errData["error"] = fmt.Sprintf("%s", err)
+	if errors.As(err, &validationErrors) {
+		var paramErrors []ParamError
 
-		return errData, err
-	}
+		// 遍历解析参数
+		for _, e := range validationErrors {
+			validate := e.Tag()
+			if len(e.Param()) != 0 {
+				validate += "=" + e.Param()
+			}
 
-	// 遍历解析参数
-	for _, e := range validationErrors {
-		validate := e.Tag()
-		if len(e.Param()) != 0 {
-			validate += "=" + e.Param()
+			paramErrors = append(paramErrors, ParamError{
+				Field:    strings.ToLower(e.Field()),
+				Validate: validate,
+			})
 		}
 
-		paramErrors = append(paramErrors, ParamError{
-			Field:    strings.ToLower(e.Field()),
-			Validate: validate,
-		})
+		errData["errors"] = paramErrors
+	} else {
+		errData["error"] = fmt.Sprintf("%s", err)
 	}
 
-	errData = make(map[string]interface{})
-	errData["errors"] = paramErrors
-
-	return errData, err
+	panic(result.ParameterError.WithData(errData))
 }

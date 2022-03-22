@@ -30,9 +30,5 @@ func postOpen(ctx *gin.Context) {
 	var req postOpenReq
 
 	// 较验参数
-	errData, err := app.ValidateParameter(ctx, &req)
-	if err != nil {
-		app.Response(ctx, result.ParameterError.WithData(errData))
-		return
-	}
+	app.ValidateParameter(ctx, &req)
 }

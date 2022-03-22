@@ -8,7 +8,7 @@ package config
 
 import (
 	"encoding/json"
-	"medium-server-go/framework/util"
+	"io/ioutil"
 	"os"
 	"strings"
 )
@@ -62,7 +62,12 @@ var config *jsonConfig
 func init() {
 	// 获取当前项目根目录 config.json
 	pwd, _ := os.Getwd()
-	stream, err := util.ReadStream(pwd + "/config.json")
+	f, err := os.Open(pwd + "/config.json")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	stream, err := ioutil.ReadAll(f)
 	if err != nil {
 		panic(err.Error())
 	}
