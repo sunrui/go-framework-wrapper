@@ -52,7 +52,7 @@ type Config struct {
 type jsonConfig struct {
 	Environment string `json:"environment"` // 当前环境
 	Debug       Config `json:"debug"`       // 开发环境
-	Release     Config `json:"release"`     //  正式环境
+	Release     Config `json:"release"`     // 正式环境
 }
 
 // 当前配置

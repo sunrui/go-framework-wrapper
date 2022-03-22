@@ -9,7 +9,6 @@ import (
 	"medium-server-go/framework/token"
 	"medium-server-go/service/sms"
 	"medium-server-go/service/user"
-	"net/http"
 )
 
 // 手机号码登录
@@ -59,10 +58,9 @@ func postLoginByPhone(ctx *gin.Context) {
 
 	token.Write(ctx, userOne.Id, 30*24*60*60)
 
-	ctx.JSON(http.StatusOK,
-		result.Ok.WithData(postLoginByPhoneRes{
-			UserId: userOne.Id,
-		}))
+	app.Response(ctx, result.Ok.WithData(postLoginByPhoneRes{
+		UserId: userOne.Id,
+	}))
 }
 
 // 微信登录
