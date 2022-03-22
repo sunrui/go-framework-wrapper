@@ -6,20 +6,20 @@
 package main
 
 import (
-	api_admin "medium-server-go/api-admin"
-	api_public "medium-server-go/api-public"
-	api_user "medium-server-go/api-user"
-	"medium-server-go/common/app-gin"
+	"medium-server-go/api/admin"
+	"medium-server-go/api/public"
+	"medium-server-go/api/user"
+	"medium-server-go/framework/app"
 )
 
 func main() {
 	// 创建服务
-	server := app_gin.New()
+	server := app.New()
 
 	// 注册路由
-	api_public.Register(server)
-	api_user.Register(server)
-	api_admin.Register(server)
+	server.RouterGroup("public", public.GetRouters())
+	server.RouterGroup("admin", admin.GetRouters())
+	server.RouterGroup("user", user.GetRouters())
 
 	// 启动服务
 	server.Run(8080)
