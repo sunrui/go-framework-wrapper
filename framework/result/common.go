@@ -19,7 +19,7 @@ var (
 	ParameterError   = createResult("ParameterError", "参数错误")
 	MethodNotAllowed = createResult("MethodNotAllowed", "请求方式不允许")
 	InternalError    = createResult("InternalError", "内部错误")
-	ThirdPartError   = createResult("ThirdPartError", "第三方错误")
+	ThirdPartyError  = createResult("ThirdPartyError", "第三方错误")
 )
 
 // 创建结果对象

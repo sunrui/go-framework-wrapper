@@ -27,7 +27,7 @@ type redis struct {
 	Host     string `json:"host"`     // 主机
 	Port     int    `json:"port"`     // 端口
 	Password string `json:"password"` // 密码
-	Database int    `json:"database"` // 数据库s
+	Database int    `json:"database"` // 数据库
 }
 
 // jwt 配置对象

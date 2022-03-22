@@ -13,9 +13,9 @@ import (
 
 // Open 入驻
 type Open struct {
-	db.Model                           // 通用参数
-	UserId         string              `json:"userId"`         // 用户 id
-	ApprovalStatus enum.ApprovalStatus `json:"approvalStatus"` // 审核状态
+	db.Model                               // 通用参数
+	UserId         string                  `json:"userId"`         // 用户 id
+	ApprovalStatus enum.OpenApprovalStatus `json:"approvalStatus"` // 审核状态
 }
 
 // 初始化

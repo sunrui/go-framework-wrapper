@@ -18,7 +18,7 @@ import (
 
 // Server 服务对象
 type Server struct {
-	engine *gin.Engine //  gin 对象
+	engine *gin.Engine // gin 对象
 }
 
 // 初始化
@@ -47,8 +47,8 @@ func New() *Server {
 	// 输出 json 声明中间件
 	engine.Use(jsonResponseMiddleware)
 
-	// 限流每 1 秒限制 1000 个
-	engine.Use(rateLimitMiddleware(time.Second, 1000, 1))
+	// 限流每 1 秒限制 200 个
+	engine.Use(rateLimitMiddleware(time.Second, 200, 1))
 
 	return &Server{
 		engine: engine,

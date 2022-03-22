@@ -6,11 +6,11 @@
 
 package enum
 
-// ApprovalStatus 审核状态
-type ApprovalStatus int
+// OpenApprovalStatus 审核状态
+type OpenApprovalStatus int
 
 const (
-	ApprovalWaiting = iota // 待审核
-	ApprovalRefuse         // 审核拒绝
-	ApprovalSuccess        // 审核成功
+	OpenApprovalWaiting = iota // 待审核
+	OpenApprovalRefuse         // 审核拒绝
+	OpenApprovalSuccess        // 审核成功
 )
