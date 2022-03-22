@@ -8,14 +8,15 @@ package user
 
 import (
 	"medium-server-go/framework/app"
+	"medium-server-go/middleware"
 	"net/http"
 )
 
 // 获取路由对象
 func GetRouter() app.Router {
 	return app.Router{
-		GroupName: "/user",
-		RoleType:  app.RoleAuth,
+		GroupName:  "/user",
+		Middleware: middleware.AuthMiddleware,
 		RouterPaths: []app.RouterPath{
 			{
 				HttpMethod:   http.MethodPost,

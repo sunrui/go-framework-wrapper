@@ -16,7 +16,7 @@ import (
 
 // 服务对象
 type Server struct {
-	engine *gin.Engine
+	engine *gin.Engine //  gin 对象
 }
 
 // 初始化
@@ -37,12 +37,10 @@ func New() *Server {
 	})
 
 	// 注册 405 回调
-	{
-		engine.HandleMethodNotAllowed = true
-		engine.NoMethod(func(ctx *gin.Context) {
-			ctx.JSON(http.StatusBadRequest, result.MethodNotAllowed.WithKeyPair("uri", ctx.Request.URL.RequestURI()))
-		})
-	}
+	engine.HandleMethodNotAllowed = true
+	engine.NoMethod(func(ctx *gin.Context) {
+		ctx.JSON(http.StatusBadRequest, result.MethodNotAllowed.WithKeyPair("uri", ctx.Request.URL.RequestURI()))
+	})
 
 	// 输出 json 声明中间件
 	engine.Use(jsonResponseMiddleware)
@@ -56,21 +54,12 @@ func New() *Server {
 }
 
 // 路由对象
-func (server *Server) router(router Router) {
+func (server *Server) Router(router Router) {
 	groupRouter := server.engine.Group(router.GroupName)
 
-	if AuthMiddleware == nil || AdminMiddleware == nil {
-		panic("middleware not implement")
-		return
-	}
-
-	// 权限类型
-	switch router.RoleType {
-	case RolePublic:
-	case RoleAuth:
-		groupRouter.Use(AuthMiddleware) // 授权中间件
-	case RoleAdmin:
-		groupRouter.Use(AdminMiddleware) // 管理中间件
+	// 启用中间件
+	if router.Middleware != nil {
+		groupRouter.Use(router.Middleware)
 	}
 
 	// 注册路由回调
@@ -94,7 +83,7 @@ func (server *Server) router(router Router) {
 func (server *Server) RouterGroup(groupName string, routers []Router) {
 	for _, router := range routers {
 		router.GroupName = groupName + router.GroupName
-		server.router(router)
+		server.Router(router)
 	}
 }
 

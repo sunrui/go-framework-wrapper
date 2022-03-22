@@ -1,9 +1,3 @@
-/*
- * Copyright (c) 2022 honeysense All rights reserved.
- * Author: sunrui
- * Date: 2022/01/26 13:40:26
- */
-
 package middleware
 
 import (
@@ -14,14 +8,9 @@ import (
 )
 
 // 授权中间件
-func authMiddleware(ctx *gin.Context) {
+func AuthMiddleware(ctx *gin.Context) {
 	_, err := token.GetTokenEntity(ctx)
 	if err != nil {
 		app.Response(ctx, result.NoAuth)
 	}
-}
-
-// 初始化
-func init() {
-	app.AuthMiddleware = authMiddleware
 }

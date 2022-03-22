@@ -14,12 +14,6 @@ import (
 	"time"
 )
 
-// 授权中间件
-var AuthMiddleware gin.HandlerFunc
-
-// 管理中间件
-var AdminMiddleware gin.HandlerFunc
-
 // 输出 json 声明中间件
 func jsonResponseMiddleware(ctx *gin.Context) {
 	ctx.Writer.Header().Set("Content-Type", "application/json; charset=utf-8")

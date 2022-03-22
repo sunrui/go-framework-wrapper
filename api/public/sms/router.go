@@ -14,8 +14,8 @@ import (
 // 获取路由对象
 func GetRouter() app.Router {
 	return app.Router{
-		GroupName: "/sms",
-		RoleType:  app.RolePublic,
+		GroupName:  "/sms",
+		Middleware: nil,
 		RouterPaths: []app.RouterPath{
 			{
 				HttpMethod:   http.MethodPost,

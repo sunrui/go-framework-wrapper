@@ -14,8 +14,8 @@ import (
 // 获取路由对象
 func GetRouter() app.Router {
 	return app.Router{
-		GroupName: "/area",
-		RoleType:  app.RolePublic,
+		GroupName:  "/area",
+		Middleware: nil,
 		RouterPaths: []app.RouterPath{
 			{
 				HttpMethod:   http.MethodGet,

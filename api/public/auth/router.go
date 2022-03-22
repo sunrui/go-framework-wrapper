@@ -13,8 +13,8 @@ import (
 // 获取路由对象
 func GetRouter() app.Router {
 	return app.Router{
-		GroupName: "/auth",
-		RoleType:  app.RolePublic,
+		GroupName:  "/auth",
+		Middleware: nil,
 		RouterPaths: []app.RouterPath{
 			{
 				HttpMethod:   http.MethodPost,

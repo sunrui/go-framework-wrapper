@@ -14,14 +14,9 @@ import (
 )
 
 // 管理中间件
-func adminMiddleware(ctx *gin.Context) {
+func AdminMiddleware(ctx *gin.Context) {
 	_, err := token.GetTokenEntity(ctx)
 	if err != nil {
 		app.Response(ctx, result.NoAuth)
 	}
-}
-
-// 初始化
-func init() {
-	app.AdminMiddleware = adminMiddleware
 }
