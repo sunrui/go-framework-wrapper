@@ -20,7 +20,7 @@ func getOpen(ctx *gin.Context) {
 	userId := token.GetUserId(ctx)
 
 	// 获取当前用户下的入驻
-	opens := open.GetOpens(userId)
+	opens := open.GetOpen(userId)
 
 	app.Response(ctx, result.Ok.WithData(opens))
 }

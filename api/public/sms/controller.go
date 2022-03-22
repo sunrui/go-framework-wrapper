@@ -11,8 +11,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"medium-server-go/framework/app"
 	"medium-server-go/framework/result"
-	"medium-server-go/provider"
-	sms2 "medium-server-go/service/sms"
+	"medium-server-go/service/sms"
 )
 
 // 发送验证码
@@ -27,17 +26,17 @@ func postCode(ctx *gin.Context) {
 	}
 
 	// 获取当天发送条数，判断是否超出最大条数限制
-	count := sms2.CountByPhoneAndDate(req.Phone, sms2.GetNowDate())
+	count := sms.CountByPhoneAndDate(req.Phone, sms.GetNowDate())
 	if count >= 5 {
 		app.Response(ctx, result.RateLimit)
 		return
 	}
 
 	// 创建 6 位验证码
-	sixNumber := sms2.RandomCode()
+	sixNumber := sms.RandomCode()
 
 	// 调用服务发送验证码
-	channel, reqId, err := provider.Sms.Send(req.Phone, req.CodeType, sixNumber)
+	channel, reqId, err := sms.Send(req.Phone, req.CodeType, sixNumber)
 	var comment string
 	if err != nil {
 		comment = err.Error()
@@ -56,7 +55,7 @@ func postCode(ctx *gin.Context) {
 	}
 
 	// 存储发送记录
-	sms2.SaveCode(&sms2.Code{
+	code := sms.Code{
 		Phone:     req.Phone,
 		CodeType:  req.CodeType,
 		Code:      sixNumber,
@@ -64,7 +63,8 @@ func postCode(ctx *gin.Context) {
 		UserAgent: ctx.Request.UserAgent(),
 		Success:   err == nil,
 		Comment:   comment,
-	})
+	}
+	code.Save()
 
 	// 发送验证码失败
 	if err != nil {
@@ -73,11 +73,11 @@ func postCode(ctx *gin.Context) {
 	}
 
 	// 将验证码缓存到 redis 中
-	cache := sms2.Cache{
+	cache := sms.Cache{
 		Phone:    req.Phone,
 		CodeType: req.CodeType,
 	}
-	cache.Save(sms2.CodeCache{
+	cache.Save(sms.CodeCache{
 		Code:      sixNumber,
 		ErrVerify: 0,
 	})
@@ -98,7 +98,7 @@ func postVerify(ctx *gin.Context) {
 	}
 
 	// 缓存对象
-	cache := sms2.Cache{
+	cache := sms.Cache{
 		Phone:    req.Phone,
 		CodeType: req.CodeType,
 	}

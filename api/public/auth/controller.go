@@ -11,8 +11,8 @@ import (
 	"medium-server-go/framework/config"
 	"medium-server-go/framework/result"
 	"medium-server-go/framework/token"
-	sms2 "medium-server-go/service/sms"
-	user2 "medium-server-go/service/user"
+	"medium-server-go/service/sms"
+	"medium-server-go/service/user"
 	"net/http"
 )
 
@@ -31,9 +31,9 @@ func postLoginByPhone(ctx *gin.Context) {
 	smsMagicCode := config.Get().Sms.MagicCode
 	if smsMagicCode != "" && req.Code != smsMagicCode {
 		// 短信缓存对象
-		smsCache := sms2.Cache{
+		smsCache := sms.Cache{
 			Phone:    req.Phone,
-			CodeType: sms2.CodeLogin,
+			CodeType: sms.CodeLogin,
 		}
 
 		// 获取缓存数据
@@ -53,16 +53,16 @@ func postLoginByPhone(ctx *gin.Context) {
 	}
 
 	// 查找当前用户是否存在
-	userOne := user2.FindByPhone(req.Phone)
+	userOne := user.FindByPhone(req.Phone)
 	if userOne == nil {
-		userOne = &user2.User{
+		userOne = &user.User{
 			Phone:     req.Phone,
 			Ip:        ctx.ClientIP(),
 			UserAgent: ctx.Request.UserAgent(),
 		}
 
 		// 创建新的用户
-		user2.SaveUser(userOne)
+		userOne.Save()
 	}
 
 	token.WriteToken(ctx, userOne.Id, 30*24*60*60)

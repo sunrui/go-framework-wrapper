@@ -13,15 +13,6 @@ import (
 	"time"
 )
 
-// 初始化
-func init() {
-	// 创建表
-	err := db.Mysql.AutoMigrate(&Code{})
-	if err != nil {
-		panic(err.Error())
-	}
-}
-
 // 获取当天日期，如 2022-01-01
 func GetNowDate() string {
 	now := time.Now()
@@ -33,11 +24,6 @@ func GetNowDate() string {
 // 创建 6 位数字
 func RandomCode() string {
 	return fmt.Sprintf("%06v", rand.New(rand.NewSource(time.Now().UnixNano())).Int31n(1000000))
-}
-
-// 存储数据
-func SaveCode(code *Code) {
-	db.Mysql.Save(code)
 }
 
 // 获取当天验证码发送次数

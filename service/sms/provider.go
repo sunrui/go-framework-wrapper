@@ -4,18 +4,14 @@
  * Date: 2022/01/12 17:16:12
  */
 
-package provider
+package sms
 
 import (
 	"fmt"
-	"medium-server-go/service/sms"
 )
 
-// 短信定义
-type smsDef struct{}
-
 // 短信发送
-func (*smsDef) Send(phone string, codeType sms.CodeType, sixNumber string) (channel string, reqId string, err error) {
+func Send(phone string, codeType CodeType, sixNumber string) (channel string, reqId string, err error) {
 	echo := fmt.Sprintf("Send - %s, %s, %s", phone, codeType, sixNumber)
 	fmt.Println(echo)
 
@@ -24,6 +20,3 @@ func (*smsDef) Send(phone string, codeType sms.CodeType, sixNumber string) (chan
 	err = nil
 	return
 }
-
-// 短信实体
-var Sms = smsDef{}
