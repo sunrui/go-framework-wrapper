@@ -15,15 +15,15 @@ import (
 	"strings"
 )
 
-// 令牌对象
-type TokenEntity struct {
+// Payload 令牌对象
+type Payload struct {
 	UserId string `json:"userId"`
 }
 
-// Jwt 令牌对象
-type tokenJwtEntity struct {
+// jwt 对象
+type jwtClaims struct {
 	jwt.StandardClaims
-	TokenEntity
+	Payload
 }
 
 // jwt 密钥
@@ -33,10 +33,10 @@ var jwtSecret = config.Get().Jwt.Secret
 const tokenKey = "token"
 
 // 生成 jwt 字符串
-func encode(tokenEntity TokenEntity) (token string, err error) {
-	claims := tokenJwtEntity{
+func encode(payload Payload) (token string, err error) {
+	claims := jwtClaims{
 		jwt.StandardClaims{},
-		tokenEntity,
+		payload,
 	}
 
 	tokenClaims := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
@@ -44,24 +44,24 @@ func encode(tokenEntity TokenEntity) (token string, err error) {
 }
 
 // 验证 jwt 字符串
-func decode(token string) (tokenEntity *TokenEntity, err error) {
-	tokenClaims, err := jwt.ParseWithClaims(token, &tokenJwtEntity{}, func(token *jwt.Token) (interface{}, error) {
+func decode(token string) (payload *Payload, err error) {
+	tokenClaims, err := jwt.ParseWithClaims(token, &jwtClaims{}, func(token *jwt.Token) (interface{}, error) {
 		return jwtSecret, nil
 	})
 
 	if tokenClaims != nil {
-		if claims, ok := tokenClaims.Claims.(*tokenJwtEntity); ok && tokenClaims.Valid {
-			return &claims.TokenEntity, nil
+		if claims, ok := tokenClaims.Claims.(*jwtClaims); ok && tokenClaims.Valid {
+			return &claims.Payload, nil
 		}
 	}
 
 	return nil, err
 }
 
-// 写入 cookie 令牌
-func WriteToken(ctx *gin.Context, userId string, maxAge int) {
+// Write 写入 cookie 令牌
+func Write(ctx *gin.Context, userId string, maxAge int) {
 	// 生成用户令牌
-	token, err := encode(TokenEntity{
+	token, err := encode(Payload{
 		UserId: userId,
 	})
 	if err != nil {
@@ -73,19 +73,19 @@ func WriteToken(ctx *gin.Context, userId string, maxAge int) {
 		"/", "localhost", false, true)
 }
 
-// 获取当前用户 id
+// GetUserId 获取当前用户 id
 func GetUserId(ctx *gin.Context) string {
-	tokenEntity, err := GetTokenEntity(ctx)
+	payload, err := Get(ctx)
 	if err != nil {
 		app.Response(ctx, result.NoAuth)
 		return ""
 	}
 
-	return tokenEntity.UserId
+	return payload.UserId
 }
 
-// 获取当前用户令牌
-func GetTokenEntity(ctx *gin.Context) (tokenEntity *TokenEntity, err error) {
+// Get 获取当前用户令牌
+func Get(ctx *gin.Context) (payload *Payload, err error) {
 	var token string
 
 	// 从 header 中获取令牌
@@ -115,7 +115,7 @@ func GetTokenEntity(ctx *gin.Context) (tokenEntity *TokenEntity, err error) {
 	return decode(token)
 }
 
-// 移除令牌
-func RemoveToken(ctx *gin.Context) {
+// Remove 移除令牌
+func Remove(ctx *gin.Context) {
 	ctx.SetCookie("token", "", -1, "/", "localhost", false, true)
 }

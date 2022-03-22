@@ -11,7 +11,7 @@ import (
 	"medium-server-go/framework/app"
 	"medium-server-go/framework/result"
 	"medium-server-go/framework/token"
-	"medium-server-go/service/open"
+	"medium-server-go/service/open/open"
 )
 
 // 获取指定用户下所有入驻

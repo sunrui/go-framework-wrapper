@@ -8,7 +8,7 @@ package user
 
 import "medium-server-go/framework/db"
 
-// 用户
+// User 用户
 type User struct {
 	db.Model         // 通用参数
 	Phone     string `json:"phone" gorm:"uniqueIndex, not null; comment:手机号"` // 手机号
@@ -16,7 +16,7 @@ type User struct {
 	UserAgent string `json:"userAgent" gorm:"comment:用户 ua"`                  // 用户 ua
 }
 
-// 存储
+// Save 存储
 func (user *User) Save() {
 	db.Mysql.Save(user)
 }

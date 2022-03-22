@@ -53,7 +53,7 @@ func init() {
 	}
 }
 
-// 设置对象
+// Set 设置对象
 func (redisPool *redisPool) Set(key string, value interface{}, second time.Duration) {
 	pool := redisPool.pool.Get()
 	defer func() {
@@ -76,7 +76,7 @@ func (redisPool *redisPool) Set(key string, value interface{}, second time.Durat
 	}
 }
 
-// 获取字符串
+// Get 获取字符串
 func (redisPool *redisPool) Get(key string) *string {
 	pool := redisPool.pool.Get()
 	defer func() {
@@ -96,7 +96,7 @@ func (redisPool *redisPool) Get(key string) *string {
 	return &replyString
 }
 
-// 获取对象
+// GetJson 获取对象
 func (redisPool *redisPool) GetJson(key string, dest interface{}) (err error) {
 	pool := redisPool.pool.Get()
 	defer func() {
@@ -116,7 +116,7 @@ func (redisPool *redisPool) GetJson(key string, dest interface{}) (err error) {
 	return json.Unmarshal(reply.([]uint8), dest)
 }
 
-// 是否存在对象
+// Exists 是否存在对象
 func (redisPool *redisPool) Exists(key string) bool {
 	pool := redisPool.pool.Get()
 	defer func() {
@@ -131,7 +131,7 @@ func (redisPool *redisPool) Exists(key string) bool {
 	return ret.(int64) == 1
 }
 
-// 删除对象
+// Del 删除对象
 func (redisPool *redisPool) Del(key string) {
 	pool := redisPool.pool.Get()
 	defer func() {
@@ -144,7 +144,7 @@ func (redisPool *redisPool) Del(key string) {
 	}
 }
 
-// 设置 hash 对象
+// HashSet 设置 hash 对象
 func (redisPool *redisPool) HashSet(hash string, key string, value interface{}) {
 	pool := redisPool.pool.Get()
 	defer func() {
@@ -169,7 +169,7 @@ func (redisPool *redisPool) HashSet(hash string, key string, value interface{}) 
 	fmt.Println(ret)
 }
 
-// 获取 hash 对象
+// HashGet 获取 hash 对象
 func (redisPool *redisPool) HashGet(hash string, key string) *string {
 	pool := redisPool.pool.Get()
 	defer func() {
@@ -189,7 +189,7 @@ func (redisPool *redisPool) HashGet(hash string, key string) *string {
 	return &replyString
 }
 
-// 获取 hash 对象
+// HashGetJson 获取 hash 对象
 func (redisPool *redisPool) HashGetJson(hash string, key string, dest interface{}) (err error) {
 	pool := redisPool.pool.Get()
 	defer func() {

@@ -1,12 +1,12 @@
 /*
  * Copyright (c) 2022 honeysense All rights reserved.
  * Author: sunrui
- * Date: 2022/01/31 20:36:31
+ * Date: 2022/01/31 20:31:31
  */
 
-package open
+package enum
 
-// 审核状态
+// ApprovalStatus 审核状态
 type ApprovalStatus int
 
 const (

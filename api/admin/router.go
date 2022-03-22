@@ -11,7 +11,7 @@ import (
 	"medium-server-go/framework/app"
 )
 
-// 获取注册路由
+// GetRouters 获取注册路由
 func GetRouters() []app.Router {
 	return []app.Router{
 		user.GetRouter(),

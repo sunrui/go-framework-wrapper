@@ -13,13 +13,13 @@ import (
 	"strings"
 )
 
-// 堆栈对象
+// Stack 堆栈对象
 type Stack struct {
 	Function string // 函数
 	File     string // 行数
 }
 
-// 获取推栈层级
+// GetStack 获取推栈层级
 func GetStack(deep int) []Stack {
 	var stacks []Stack
 

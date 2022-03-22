@@ -1,12 +1,8 @@
-/*
- * Copyright (c) 2022 honeysense All rights reserved.
- * Author: sunrui
- * Date: 2022/01/01
- */
 package auth
 
 import (
 	"github.com/gin-gonic/gin"
+	"medium-server-go/enum"
 	"medium-server-go/framework/app"
 	"medium-server-go/framework/config"
 	"medium-server-go/framework/result"
@@ -33,7 +29,7 @@ func postLoginByPhone(ctx *gin.Context) {
 		// 短信缓存对象
 		smsCache := sms.Cache{
 			Phone:    req.Phone,
-			CodeType: sms.CodeLogin,
+			CodeType: enum.CodeLogin,
 		}
 
 		// 获取缓存数据
@@ -65,7 +61,7 @@ func postLoginByPhone(ctx *gin.Context) {
 		userOne.Save()
 	}
 
-	token.WriteToken(ctx, userOne.Id, 30*24*60*60)
+	token.Write(ctx, userOne.Id, 30*24*60*60)
 
 	ctx.JSON(http.StatusOK,
 		result.Ok.WithData(postLoginByPhoneRes{
@@ -88,7 +84,7 @@ func postLoginByWechat(ctx *gin.Context) {
 // 获取令牌
 func getToken(ctx *gin.Context) {
 	// 获取用户令牌
-	tokenEntity, err := token.GetTokenEntity(ctx)
+	tokenEntity, err := token.Get(ctx)
 	if err != nil {
 		app.Response(ctx, result.NotFound)
 		return
@@ -106,6 +102,6 @@ func postLogout(ctx *gin.Context) {
 	}
 
 	// 移除令牌
-	token.RemoveToken(ctx)
+	token.Remove(ctx)
 	app.Response(ctx, result.Ok)
 }

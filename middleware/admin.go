@@ -13,9 +13,9 @@ import (
 	"medium-server-go/framework/token"
 )
 
-// 管理中间件
+// AdminMiddleware 管理中间件
 func AdminMiddleware(ctx *gin.Context) {
-	_, err := token.GetTokenEntity(ctx)
+	_, err := token.Get(ctx)
 	if err != nil {
 		app.Response(ctx, result.NoAuth)
 	}

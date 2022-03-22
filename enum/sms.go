@@ -4,9 +4,9 @@
  * Date: 2022/01/20 21:25:20
  */
 
-package sms
+package enum
 
-// 验证码类型
+// CodeType 验证码类型
 type CodeType string
 
 const (

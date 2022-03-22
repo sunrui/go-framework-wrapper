@@ -8,10 +8,11 @@ package sms
 
 import (
 	"fmt"
+	"medium-server-go/enum"
 )
 
-// 短信发送
-func Send(phone string, codeType CodeType, sixNumber string) (channel string, reqId string, err error) {
+// Send 短信发送
+func Send(phone string, codeType enum.CodeType, sixNumber string) (channel string, reqId string, err error) {
 	echo := fmt.Sprintf("Send - %s, %s, %s", phone, codeType, sixNumber)
 	fmt.Println(echo)
 

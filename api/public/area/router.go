@@ -11,7 +11,7 @@ import (
 	"net/http"
 )
 
-// 获取路由对象
+// GetRouter 获取路由对象
 func GetRouter() app.Router {
 	return app.Router{
 		GroupName:  "/area",

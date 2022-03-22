@@ -44,7 +44,7 @@ func init() {
 	}
 }
 
-// 创建唯一 id
+// CreateUuid 创建唯一 id
 func CreateUuid() string {
 	id := uuid.NewString()
 	id = strings.ToUpper(id)
@@ -53,7 +53,7 @@ func CreateUuid() string {
 	return id
 }
 
-// 数据库通用对象
+// Model 数据库通用对象
 type Model struct {
 	Id        string     `json:"id" gorm:"primaryKey;type:varchar(32);comment:主键 id"` // 主键 id
 	CreatedAt time.Time  `json:"created_at" gorm:"autoCreateTime:milli;comment:创建时间"` // 创建时间
@@ -61,7 +61,7 @@ type Model struct {
 	DeletedAt *time.Time `json:"deleted_at" gorm:"comment:删除时间"`                      // 删除时间
 }
 
-// 创建对象前回调
+// BeforeCreate 创建对象前回调
 func (base *Model) BeforeCreate(*gorm.DB) (err error) {
 	base.Id = CreateUuid()
 

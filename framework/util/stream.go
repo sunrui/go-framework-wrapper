@@ -11,7 +11,7 @@ import (
 	"os"
 )
 
-// 加载配置文件流
+// ReadStream 加载配置文件流
 func ReadStream(file string) ([]byte, error) {
 	f, err := os.Open(file)
 	if err != nil {

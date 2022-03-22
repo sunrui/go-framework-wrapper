@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2022 honeysense All rights reserved.
+ * Author:sunrui
+ * Date: 2022/01/03 07:51:03
+ */
+
 package middleware
 
 import (
@@ -7,9 +13,9 @@ import (
 	"medium-server-go/framework/token"
 )
 
-// 授权中间件
+// AuthMiddleware 授权中间件
 func AuthMiddleware(ctx *gin.Context) {
-	_, err := token.GetTokenEntity(ctx)
+	_, err := token.Get(ctx)
 	if err != nil {
 		app.Response(ctx, result.NoAuth)
 	}

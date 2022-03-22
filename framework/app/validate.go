@@ -15,7 +15,7 @@ import (
 	"strings"
 )
 
-// 请求参数过滤
+// ValidateParameter 请求参数过滤
 func ValidateParameter(ctx *gin.Context, req interface{}) (errData map[string]interface{}, err error) {
 	var validationErrors validator.ValidationErrors
 

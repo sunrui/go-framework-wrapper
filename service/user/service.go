@@ -12,7 +12,7 @@ import (
 	"medium-server-go/framework/db"
 )
 
-// 根据 id 获取用户
+// FindById 根据 id 获取用户
 func FindById(id string) *User {
 	var user User
 
@@ -24,7 +24,7 @@ func FindById(id string) *User {
 	return &user
 }
 
-// 根据 id 获取用户
+// FindByPhone 根据 id 获取用户
 func FindByPhone(phone string) *User {
 	var user User
 

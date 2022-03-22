@@ -17,9 +17,9 @@ func main() {
 	server := app.New()
 
 	// 注册路由
-	server.RouterGroup("public", public.GetRouters())
-	server.RouterGroup("admin", admin.GetRouters())
-	server.RouterGroup("user", user.GetRouters())
+	server.RouterGroup("/public", public.GetRouters())
+	server.RouterGroup("/admin", admin.GetRouters())
+	server.RouterGroup("/user", user.GetRouters())
 
 	// 启动服务
 	server.Run(8080)

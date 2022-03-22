@@ -6,9 +6,11 @@
 
 package open
 
-import "medium-server-go/framework/db"
+import (
+	"medium-server-go/framework/db"
+)
 
-// 获取指定用户下所有入驻
+// GetOpen 获取指定用户下所有入驻
 func GetOpen(userId string) []Open {
 	var open []Open
 

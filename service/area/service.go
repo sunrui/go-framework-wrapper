@@ -16,12 +16,12 @@ import (
 // 国家对象
 var country Country
 
-// 获取国家
+// GetCountry 获取国家
 func GetCountry() Country {
 	return country
 }
 
-// 获取省
+// GetProvinces 获取省
 func GetProvinces() []Province {
 	var provinces []Province
 
@@ -33,7 +33,7 @@ func GetProvinces() []Province {
 	return provinces
 }
 
-// 获取市
+// GetCity 获取市
 func GetCity(provinceId int) []City {
 	// 根据省 id 获取省节点
 	var province *Province
@@ -57,7 +57,7 @@ func GetCity(provinceId int) []City {
 	return cities
 }
 
-// 获取地区
+// GetArea 获取地区
 func GetArea(cityId int) []Area {
 	// 根据市 id 获取市节点
 	var city *City

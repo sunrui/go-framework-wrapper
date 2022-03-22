@@ -3,18 +3,20 @@
  * Author: sunrui
  * Date: 2022/01/01
  */
+
 package app
 
 import (
-	"github.com/gin-gonic/gin"
 	"medium-server-go/framework/config"
 	"medium-server-go/framework/result"
 	"net/http"
 	"strconv"
 	"time"
+
+	"github.com/gin-gonic/gin"
 )
 
-// 服务对象
+// Server 服务对象
 type Server struct {
 	engine *gin.Engine //  gin 对象
 }
@@ -27,7 +29,7 @@ func init() {
 	}
 }
 
-// 创建新的服务对象
+// New 创建新的服务对象
 func New() *Server {
 	engine := gin.Default()
 
@@ -53,7 +55,7 @@ func New() *Server {
 	}
 }
 
-// 路由对象
+// Router 路由对象
 func (server *Server) Router(router Router) {
 	groupRouter := server.engine.Group(router.GroupName)
 
@@ -79,7 +81,7 @@ func (server *Server) Router(router Router) {
 	}
 }
 
-// 路由对象组
+// RouterGroup 路由对象组
 func (server *Server) RouterGroup(groupName string, routers []Router) {
 	for _, router := range routers {
 		router.GroupName = groupName + router.GroupName
@@ -87,7 +89,7 @@ func (server *Server) RouterGroup(groupName string, routers []Router) {
 	}
 }
 
-// 启动服务
+// Run 启动服务
 func (server *Server) Run(port int) {
 	err := server.engine.Run(":" + strconv.Itoa(port))
 	if err != nil {

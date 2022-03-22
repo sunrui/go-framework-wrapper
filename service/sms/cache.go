@@ -8,19 +8,20 @@ package sms
 
 import (
 	"fmt"
+	"medium-server-go/enum"
 	"medium-server-go/framework/db"
 )
 
-// 缓存数据
+// CodeCache 缓存数据
 type CodeCache struct {
 	Code      string `json:"code"`      // 验证码
 	ErrVerify int    `json:"errVerify"` // 出错较验次数
 }
 
-// 缓存对象
+// Cache 缓存对象
 type Cache struct {
-	Phone    string   `json:"phone"`    // 手机号
-	CodeType CodeType `json:"codeType"` // 验证码类型
+	Phone    string        `json:"phone"`    // 手机号
+	CodeType enum.CodeType `json:"codeType"` // 验证码类型
 }
 
 // 获取主键
@@ -40,22 +41,22 @@ func (cache *Cache) getValue() *CodeCache {
 	return nil
 }
 
-// 获取缓存是否存在
+// Exists 获取缓存是否存在
 func (cache *Cache) Exists() bool {
 	return db.Redis.Exists(cache.getKey())
 }
 
-// 设置新缓存验证码
+// Save 设置新缓存验证码
 func (cache *Cache) Save(codeCache CodeCache) {
 	db.Redis.Set(cache.getKey(), codeCache, 15*60)
 }
 
-// 移除缓存验证码
+// Del 移除缓存验证码
 func (cache *Cache) Del() {
 	db.Redis.Del(cache.getKey())
 }
 
-// 较验验证码
+// Verify 较验验证码
 func (cache *Cache) Verify(code string) bool {
 	// 获取缓存数据
 	value := cache.getValue()
