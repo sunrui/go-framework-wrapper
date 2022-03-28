@@ -17,6 +17,6 @@ import (
 func AuthMiddleware(ctx *gin.Context) {
 	_, err := token.Get(ctx)
 	if err != nil {
-		app.Response(ctx, result.NoAuth)
+		app.Result(ctx, result.NoAuth)
 	}
 }

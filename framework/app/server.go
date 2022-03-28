@@ -35,20 +35,23 @@ func New() *Server {
 
 	// 注册 404 回调
 	engine.NoRoute(func(ctx *gin.Context) {
-		ctx.JSON(http.StatusBadRequest, result.NotFound.WithKeyPair("uri", ctx.Request.URL.RequestURI()))
+		Error(ctx, result.NotFound.WithKeyPair("uri", ctx.Request.URL.RequestURI()))
 	})
 
 	// 注册 405 回调
 	engine.HandleMethodNotAllowed = true
 	engine.NoMethod(func(ctx *gin.Context) {
-		ctx.JSON(http.StatusBadRequest, result.MethodNotAllowed.WithKeyPair("uri", ctx.Request.URL.RequestURI()))
+		Error(ctx, result.MethodNotAllowed.WithKeyPair("uri", ctx.Request.URL.RequestURI()))
 	})
 
-	// 输出 json 声明中间件
-	engine.Use(jsonResponseMiddleware)
-
-	// 限流每 1 秒限制 200 个
+	// 注册限流中间件
 	engine.Use(rateLimitMiddleware(time.Second, 200, 1))
+
+	// 注册文档中间件
+	engine.GET("/swagger/*any", redocMiddleware)
+
+	// 注册 json 声明中间件
+	engine.Use(jsonResponseMiddleware)
 
 	return &Server{
 		engine: engine,

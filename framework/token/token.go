@@ -77,7 +77,7 @@ func Write(ctx *gin.Context, userId string, maxAge int) {
 func GetUserId(ctx *gin.Context) string {
 	payload, err := Get(ctx)
 	if err != nil {
-		app.Response(ctx, result.NoAuth)
+		app.Result(ctx, result.NoAuth)
 		return ""
 	}
 

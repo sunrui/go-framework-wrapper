@@ -71,7 +71,7 @@ func exceptionHandler(handlerFunc gin.HandlerFunc) gin.HandlerFunc {
 					dataMap["error"] = err
 				}
 
-				Response(ctx, result.InternalError.WithData(dataMap))
+				Error(ctx, result.InternalError.WithData(dataMap))
 
 				// 为了更好的调试，在开发环境中输出系统错误。
 				if config.IsDebugMode() {

@@ -12,8 +12,14 @@ import (
 	"net/http"
 )
 
-// Response 统一返回对象
-func Response(ctx *gin.Context, result result.Result) {
+// Result 结果返回对象
+func Result(ctx *gin.Context, result result.Result) {
 	ctx.JSON(http.StatusOK, result)
+	ctx.Abort()
+}
+
+// Error 出错返回对象
+func Error(ctx *gin.Context, result result.Result) {
+	ctx.JSON(http.StatusBadRequest, result)
 	ctx.Abort()
 }

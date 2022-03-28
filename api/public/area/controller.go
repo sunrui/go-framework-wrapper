@@ -17,45 +17,45 @@ import (
 // 获取国家
 func getCountry(ctx *gin.Context) {
 	country := area.GetCountry()
-	app.Response(ctx, result.Ok.WithData(country))
+	app.Result(ctx, result.Ok.WithData(country))
 }
 
 // 获取省
 func getProvince(ctx *gin.Context) {
 	provinces := area.GetProvinces()
-	app.Response(ctx, result.Ok.WithData(provinces))
+	app.Result(ctx, result.Ok.WithData(provinces))
 }
 
 // 获取市
 func getCity(ctx *gin.Context) {
 	provinceId, err := strconv.Atoi(ctx.Param("provinceId"))
 	if err != nil {
-		app.Response(ctx, result.ParameterError.WithKeyPair("provinceId", ctx.Param("provinceId")))
+		app.Result(ctx, result.ParameterError.WithKeyPair("provinceId", ctx.Param("provinceId")))
 		return
 	}
 
 	cities := area.GetCity(provinceId)
 	if cities == nil {
-		app.Response(ctx, result.NotFound.WithKeyPair("provinceId", provinceId))
+		app.Result(ctx, result.NotFound.WithKeyPair("provinceId", provinceId))
 		return
 	}
 
-	app.Response(ctx, result.Ok.WithData(cities))
+	app.Result(ctx, result.Ok.WithData(cities))
 }
 
 // 获取地区
 func getArea(ctx *gin.Context) {
 	cityId, err := strconv.Atoi(ctx.Param("cityId"))
 	if err != nil {
-		app.Response(ctx, result.ParameterError.WithKeyPair("cityId", ctx.Param("cityId")))
+		app.Result(ctx, result.ParameterError.WithKeyPair("cityId", ctx.Param("cityId")))
 		return
 	}
 
 	areas := area.GetArea(cityId)
 	if areas == nil {
-		app.Response(ctx, result.NotFound.WithKeyPair("cityId", cityId))
+		app.Result(ctx, result.NotFound.WithKeyPair("cityId", cityId))
 		return
 	}
 
-	app.Response(ctx, result.Ok.WithData(areas))
+	app.Result(ctx, result.Ok.WithData(areas))
 }
