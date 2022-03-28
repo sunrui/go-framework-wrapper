@@ -11,7 +11,7 @@ import (
 	"github.com/golang-jwt/jwt"
 	"medium-server-go/framework/app"
 	"medium-server-go/framework/config"
-	"medium-server-go/framework/result"
+	"medium-server-go/framework/exception"
 	"strings"
 )
 
@@ -77,7 +77,7 @@ func Write(ctx *gin.Context, userId string, maxAge int) {
 func GetUserId(ctx *gin.Context) string {
 	payload, err := Get(ctx)
 	if err != nil {
-		app.Result(ctx, result.NoAuth)
+		app.Result(ctx).Exception(exception.NoAuth)
 		return ""
 	}
 

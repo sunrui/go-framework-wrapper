@@ -10,7 +10,7 @@ import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"medium-server-go/framework/app"
-	"medium-server-go/framework/result"
+	"medium-server-go/framework/exception"
 	"medium-server-go/service/sms"
 )
 
@@ -24,7 +24,7 @@ func postCode(ctx *gin.Context) {
 	// 获取当天发送条数，判断是否超出最大条数限制
 	count := sms.CountByPhoneAndDate(req.Phone, sms.GetNowDate())
 	if count >= 5 {
-		app.Result(ctx, result.RateLimit)
+		app.Result(ctx).Exception(exception.RateLimit)
 		return
 	}
 
@@ -64,7 +64,7 @@ func postCode(ctx *gin.Context) {
 
 	// 发送验证码失败
 	if err != nil {
-		app.Result(ctx, result.InternalError.WithData(err))
+		app.Result(ctx).Exception(exception.InternalError.WithData(err))
 		return
 	}
 
@@ -79,7 +79,7 @@ func postCode(ctx *gin.Context) {
 	})
 
 	// 发送成功
-	app.Result(ctx, result.Ok)
+	app.Result(ctx).Ok()
 }
 
 // 较验验证码
@@ -97,16 +97,16 @@ func postVerify(ctx *gin.Context) {
 
 	// 获取缓存数据
 	if !cache.Exists() {
-		app.Result(ctx, result.NotFound)
+		app.Result(ctx).Exception(exception.NotFound)
 		return
 	}
 
 	// 较验验证码
 	if !cache.Verify(req.Code) {
-		app.Result(ctx, result.NotMatch)
+		app.Result(ctx).Exception(exception.NotMatch)
 		return
 	}
 
 	// 较验成功
-	app.Result(ctx, result.Ok)
+	app.Result(ctx).Ok()
 }

@@ -10,7 +10,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"medium-server-go/framework/config"
-	"medium-server-go/framework/result"
+	"medium-server-go/framework/exception"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -63,15 +63,15 @@ func exceptionHandler(handlerFunc gin.HandlerFunc) gin.HandlerFunc {
 				dataMap := make(map[string]interface{})
 				dataMap["stack"] = getStack()
 
-				// 判断是否抛出了 result 对象
-				res, ok := err.(*result.Result)
+				// 判断是否抛出了 exception 对象
+				res, ok := err.(*exception.Exception)
 				if ok {
 					dataMap["error"] = res.Data
 				} else {
 					dataMap["error"] = err
 				}
 
-				Error(ctx, result.InternalError.WithData(dataMap))
+				Result(ctx).Exception(exception.InternalError.WithData(dataMap))
 
 				// 为了更好的调试，在开发环境中输出系统错误。
 				if config.IsDebugMode() {

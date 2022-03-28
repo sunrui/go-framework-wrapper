@@ -5,7 +5,7 @@ import (
 	"medium-server-go/enum"
 	"medium-server-go/framework/app"
 	"medium-server-go/framework/config"
-	"medium-server-go/framework/result"
+	"medium-server-go/framework/exception"
 	"medium-server-go/framework/token"
 	"medium-server-go/service/sms"
 	"medium-server-go/service/user"
@@ -17,7 +17,7 @@ import (
 // @Produce  json
 // @Param    "req"  body      postLoginByPhoneReq  true  "参数"
 // @Success  200    {object}  postLoginByPhoneRes
-// @Failure  400    {object}  result.Result
+// @Failure  400    {object}  exception.Exception
 // @Router   /auth/login/phone [post]
 func postLoginByPhone(ctx *gin.Context) {
 	var req postLoginByPhoneReq
@@ -36,13 +36,13 @@ func postLoginByPhone(ctx *gin.Context) {
 
 		// 获取缓存数据
 		if !smsCache.Exists() {
-			app.Result(ctx, result.NotFound.WithKeyPair("code", req.Code))
+			app.Result(ctx).Exception(exception.NotFound.WithKeyPair("code", req.Code))
 			return
 		}
 
 		// 较验验证码
 		if !smsCache.Verify(req.Code) {
-			app.Result(ctx, result.NotMatch)
+			app.Result(ctx).Exception(exception.NotMatch)
 			return
 		}
 
@@ -65,9 +65,9 @@ func postLoginByPhone(ctx *gin.Context) {
 
 	token.Write(ctx, userOne.Id, 30*24*60*60)
 
-	app.Result(ctx, result.Ok.WithData(postLoginByPhoneRes{
+	app.Result(ctx).Data(postLoginByPhoneRes{
 		UserId: userOne.Id,
-	}))
+	})
 }
 
 // 微信登录
@@ -83,22 +83,22 @@ func getToken(ctx *gin.Context) {
 	// 获取用户令牌
 	tokenEntity, err := token.Get(ctx)
 	if err != nil {
-		app.Result(ctx, result.NotFound)
+		app.Result(ctx).Exception(exception.NotFound)
 		return
 	}
 
-	app.Result(ctx, result.Ok.WithData(tokenEntity))
+	app.Result(ctx).Data(tokenEntity)
 }
 
 // 登出
 func postLogout(ctx *gin.Context) {
 	_, err := ctx.Cookie("token")
 	if err != nil {
-		app.Result(ctx, result.NotFound)
+		app.Result(ctx).Exception(exception.NotFound)
 		return
 	}
 
 	// 移除令牌
 	token.Remove(ctx)
-	app.Result(ctx, result.Ok)
+	app.Result(ctx).Ok()
 }

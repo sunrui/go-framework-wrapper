@@ -8,7 +8,7 @@ package app
 
 import (
 	"medium-server-go/framework/config"
-	"medium-server-go/framework/result"
+	"medium-server-go/framework/exception"
 	"net/http"
 	"strconv"
 	"time"
@@ -35,13 +35,13 @@ func New() *Server {
 
 	// 注册 404 回调
 	engine.NoRoute(func(ctx *gin.Context) {
-		Error(ctx, result.NotFound.WithKeyPair("uri", ctx.Request.URL.RequestURI()))
+		Result(ctx).Exception(exception.NotFound.WithKeyPair("uri", ctx.Request.URL.RequestURI()))
 	})
 
 	// 注册 405 回调
 	engine.HandleMethodNotAllowed = true
 	engine.NoMethod(func(ctx *gin.Context) {
-		Error(ctx, result.MethodNotAllowed.WithKeyPair("uri", ctx.Request.URL.RequestURI()))
+		Result(ctx).Exception(exception.MethodNotAllowed.WithKeyPair("uri", ctx.Request.URL.RequestURI()))
 	})
 
 	// 注册限流中间件

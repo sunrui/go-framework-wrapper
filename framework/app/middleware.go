@@ -10,7 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/juju/ratelimit"
 	"io/ioutil"
-	"medium-server-go/framework/result"
+	"medium-server-go/framework/exception"
 	"path/filepath"
 	"time"
 )
@@ -31,7 +31,7 @@ func rateLimitMiddleware(fillInterval time.Duration, capacity, quantum int64) gi
 
 	return func(ctx *gin.Context) {
 		if bucket.TakeAvailable(1) < 1 {
-			Error(ctx, result.RateLimit)
+			Result(ctx).Exception(exception.RateLimit)
 			return
 		}
 
@@ -69,6 +69,6 @@ func redocMiddleware(ctx *gin.Context) {
 					`))
 		return
 	default:
-		Error(ctx, result.NotFound)
+		Result(ctx).Exception(exception.NotFound)
 	}
 }
