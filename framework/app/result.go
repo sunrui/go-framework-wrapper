@@ -17,7 +17,7 @@ type resultDef struct {
 	ctx *gin.Context
 }
 
-// 结果对象
+// Result 结果对象
 func Result(ctx *gin.Context) *resultDef {
 	return &resultDef{
 		ctx: ctx,
