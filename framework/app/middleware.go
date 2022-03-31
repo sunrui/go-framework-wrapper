@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"medium-server-go/framework/config"
 	"medium-server-go/framework/exception"
+	"net/http"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -45,11 +46,17 @@ func ratelimitMiddleware(fillInterval time.Duration, capacity, quantum int64) gi
 
 // swagger 文档中间件
 func redocMiddleware(ctx *gin.Context) {
-	suffix := filepath.Base(ctx.Request.URL.Path)
-
+	path := ctx.Request.URL.Path
+	suffix := filepath.Base(path)
 	if suffix == "doc.json" {
 		data, _ := ioutil.ReadFile("docs/swagger.json")
 		_, _ = ctx.Writer.Write(data)
+		return
+	}
+
+	// 过滤掉非法的 /doc/? 路径
+	if path != "/doc/" || suffix != "doc" {
+		ctx.Redirect(http.StatusFound, "/doc")
 		return
 	}
 
