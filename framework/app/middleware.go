@@ -135,10 +135,10 @@ func recoverMiddleware(ctx *gin.Context) {
 			if config.IsDebugMode() {
 				debug.PrintStack()
 			}
-		} else {
-			ctx.Next()
 		}
 	}()
+
+	ctx.Next()
 }
 
 // body 中间件
