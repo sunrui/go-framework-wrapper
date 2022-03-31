@@ -141,8 +141,8 @@ func recoverMiddleware(ctx *gin.Context) {
 	}()
 }
 
-// 输出 json body 中间件
-func jsonResponseMiddleware(ctx *gin.Context) {
+// body 中间件
+func bodyMiddleware(ctx *gin.Context) {
 	ctx.Writer.Header().Set("Content-Type", "application/json; charset=utf-8")
 	ctx.Next()
 }
@@ -165,6 +165,6 @@ func registerMiddleware(engine *gin.Engine) {
 	// 注册异常中间件
 	engine.Use(recoverMiddleware)
 
-	// 注册 json 声明中间件
-	engine.Use(jsonResponseMiddleware)
+	// 注册 body 中间件
+	engine.Use(bodyMiddleware)
 }
