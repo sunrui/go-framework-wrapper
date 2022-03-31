@@ -46,35 +46,32 @@ func ratelimitMiddleware(fillInterval time.Duration, capacity, quantum int64) gi
 // swagger 文档中间件
 func redocMiddleware(ctx *gin.Context) {
 	suffix := filepath.Base(ctx.Request.URL.Path)
-	switch suffix {
-	case "doc.json":
+
+	if suffix == "doc.json" {
 		data, _ := ioutil.ReadFile("docs/swagger.json")
 		_, _ = ctx.Writer.Write(data)
 		return
-	case "index.html":
-		_, _ = ctx.Writer.Write([]byte(`
-					<!DOCTYPE html>
-					<html>
-					  <head>
-						<meta charset="utf-8"/>
-						<meta name="viewport" content="width=device-width, initial-scale=1">
-						<style>
-						  body {
-							margin: 0;
-							padding: 0;
-						  }
-						</style>
-					  </head>
-					  <body>
-						<redoc spec-url='swagger/doc.json'></redoc>
-						<script src="https://cdn.jsdelivr.net/npm/redoc@latest/bundles/redoc.standalone.js"> </script>
-					  </body>
-					</html>
-					`))
-		return
-	default:
-		Result(ctx).Exception(exception.NotFound)
 	}
+
+	_, _ = ctx.Writer.Write([]byte(`
+		<!DOCTYPE html>
+		<html>
+		  <head>
+			<meta charset="utf-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1">
+			<style>
+			  body {
+				margin: 0;
+				padding: 0;
+			  }
+			</style>
+		  </head>
+		  <body>
+			<redoc spec-url='swagger/doc.json'></redoc>
+			<script src="https://cdn.jsdelivr.net/npm/redoc@latest/bundles/redoc.standalone.js"> </script>
+		  </body>
+		</html>
+	`))
 }
 
 // 堆栈对象
@@ -160,7 +157,7 @@ func registerMiddleware(engine *gin.Engine) {
 	engine.Use(ratelimitMiddleware(time.Second, 200, 1))
 
 	// 注册文档中间件
-	engine.GET("/swagger/*any", redocMiddleware)
+	engine.GET("/doc/*any", redocMiddleware)
 
 	// 注册异常中间件
 	engine.Use(recoverMiddleware)
