@@ -15,7 +15,7 @@ import (
 // @Tags     认证
 // @Accept   json
 // @Produce  json
-// @Param    "req"  body      postLoginByPhoneReq  true  "参数"
+// @Param    "req"  body      postLoginByPhoneReq  true  "req"
 // @Success  200    {object}  postLoginByPhoneRes
 // @Failure  400    {object}  exception.Exception
 // @Router   /auth/login/phone [post]
@@ -63,7 +63,7 @@ func postLoginByPhone(ctx *gin.Context) {
 		userOne.Save()
 	}
 
-	token.Write(ctx, userOne.Id, 30*24*60*60)
+	token.Write(ctx, userOne.Id)
 
 	app.Result(ctx).Data(postLoginByPhoneRes{
 		UserId: userOne.Id,

@@ -7,13 +7,9 @@
 package app
 
 import (
-	"medium-server-go/framework/config"
-	"medium-server-go/framework/exception"
-	"net/http"
-	"strconv"
-	"time"
-
 	"github.com/gin-gonic/gin"
+	"medium-server-go/framework/config"
+	"strconv"
 )
 
 // Server 服务对象
@@ -33,54 +29,11 @@ func init() {
 func New() *Server {
 	engine := gin.Default()
 
-	// 注册 404 回调
-	engine.NoRoute(func(ctx *gin.Context) {
-		Result(ctx).Exception(exception.NotFound.WithKeyPair("uri", ctx.Request.URL.RequestURI()))
-	})
-
-	// 注册 405 回调
-	engine.HandleMethodNotAllowed = true
-	engine.NoMethod(func(ctx *gin.Context) {
-		Result(ctx).Exception(exception.MethodNotAllowed.WithKeyPair("uri", ctx.Request.URL.RequestURI()))
-	})
-
-	// 注册限流中间件
-	engine.Use(rateLimitMiddleware(time.Second, 200, 1))
-
-	// 注册文档中间件
-	engine.GET("/swagger/*any", redocMiddleware)
-
-	// 注册 json 声明中间件
-	engine.Use(jsonResponseMiddleware)
+	// 注册中间件
+	registerMiddleware(engine)
 
 	return &Server{
 		engine: engine,
-	}
-}
-
-// Router 路由对象
-func (server *Server) Router(router Router) {
-	groupRouter := server.engine.Group(router.GroupName)
-
-	// 启用中间件
-	if router.Middleware != nil {
-		groupRouter.Use(router.Middleware)
-	}
-
-	// 注册路由回调
-	for _, routerPath := range router.RouterPaths {
-		switch routerPath.HttpMethod {
-		case http.MethodGet:
-			groupRouter.GET(routerPath.RelativePath, exceptionHandler(routerPath.HandlerFunc))
-		case http.MethodPost:
-			groupRouter.POST(routerPath.RelativePath, exceptionHandler(routerPath.HandlerFunc))
-		case http.MethodPut:
-			groupRouter.PUT(routerPath.RelativePath, exceptionHandler(routerPath.HandlerFunc))
-		case http.MethodDelete:
-			groupRouter.DELETE(routerPath.RelativePath, exceptionHandler(routerPath.HandlerFunc))
-		default:
-			panic("http method not supported")
-		}
 	}
 }
 
@@ -88,7 +41,7 @@ func (server *Server) Router(router Router) {
 func (server *Server) RouterGroup(groupName string, routers []Router) {
 	for _, router := range routers {
 		router.GroupName = groupName + router.GroupName
-		server.Router(router)
+		registerRouter(server.engine, router)
 	}
 }
 

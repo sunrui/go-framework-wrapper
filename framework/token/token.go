@@ -32,6 +32,9 @@ var jwtSecret = config.Get().Jwt.Secret
 // 令牌 key 名称
 const tokenKey = "token"
 
+// 令牌过期时间默认 30 天
+const tokenMaxAge = 30 * 24 * 60 * 60
+
 // 生成 jwt 字符串
 func encode(payload Payload) (token string, err error) {
 	claims := jwtClaims{
@@ -59,7 +62,7 @@ func decode(token string) (payload *Payload, err error) {
 }
 
 // Write 写入 cookie 令牌
-func Write(ctx *gin.Context, userId string, maxAge int) {
+func Write(ctx *gin.Context, userId string) {
 	// 生成用户令牌
 	token, err := encode(Payload{
 		UserId: userId,
@@ -69,8 +72,8 @@ func Write(ctx *gin.Context, userId string, maxAge int) {
 	}
 
 	// 写入令牌，默认 30 天
-	ctx.SetCookie(tokenKey, token, maxAge,
-		"/", "localhost", false, true)
+	ctx.SetCookie(tokenKey, token, tokenMaxAge,
+		"/", "", false, true)
 }
 
 // GetUserId 获取当前用户 id
