@@ -9,7 +9,6 @@ import (
 	"medium-server-go/api/admin"
 	"medium-server-go/api/public"
 	"medium-server-go/api/user"
-	_ "medium-server-go/docs"
 	"medium-server-go/framework/app"
 )
 

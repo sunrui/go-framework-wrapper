@@ -8,6 +8,7 @@ package app
 
 import (
 	"github.com/gin-gonic/gin"
+	_ "medium-server-go/docs"
 	"medium-server-go/framework/config"
 	"strconv"
 )

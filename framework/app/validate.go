@@ -64,5 +64,5 @@ ERROR:
 		errData["error"] = fmt.Sprintf("%s", err)
 	}
 
-	Result(ctx).Exception(exception.ParameterError.WithData(errData))
+	panic(exception.ParameterError.WithData(errData))
 }
