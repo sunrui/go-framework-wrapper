@@ -11,7 +11,7 @@ import (
 	"github.com/golang-jwt/jwt"
 	"medium-server-go/framework/app"
 	"medium-server-go/framework/config"
-	"medium-server-go/framework/exception"
+	"medium-server-go/framework/result"
 	"strings"
 )
 
@@ -80,7 +80,7 @@ func Write(ctx *gin.Context, userId string) {
 func GetUserId(ctx *gin.Context) string {
 	payload, err := Get(ctx)
 	if err != nil {
-		app.Result(ctx).Exception(exception.NoAuth)
+		app.Response(ctx).Data(result.NoAuth)
 		return ""
 	}
 
@@ -106,9 +106,9 @@ func Get(ctx *gin.Context) (payload *Payload, err error) {
 		return token[len(prefix):]
 	}
 
+	// 从 cookie 中获取令牌
 	token = getHeaderToken()
 	if token == "" {
-		// 从 cookie 中取出 token
 		token, err = ctx.Cookie(tokenKey)
 		if err != nil {
 			return nil, err

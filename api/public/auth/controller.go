@@ -5,7 +5,7 @@ import (
 	"medium-server-go/enum"
 	"medium-server-go/framework/app"
 	"medium-server-go/framework/config"
-	"medium-server-go/framework/exception"
+	"medium-server-go/framework/result"
 	"medium-server-go/framework/token"
 	"medium-server-go/service/sms"
 	"medium-server-go/service/user"
@@ -17,7 +17,7 @@ import (
 // @Produce  json
 // @Param    "req"  body      postLoginByPhoneReq  true  "req"
 // @Success  200    {object}  postLoginByPhoneRes
-// @Failure  400    {object}  exception.Exception
+// @Failure  400    {object}  result.Result
 // @Router   /auth/login/phone [post]
 func postLoginByPhone(ctx *gin.Context) {
 	var req postLoginByPhoneReq
@@ -36,13 +36,13 @@ func postLoginByPhone(ctx *gin.Context) {
 
 		// 获取缓存数据
 		if !smsCache.Exists() {
-			app.Result(ctx).Exception(exception.NotFound.WithData(req))
+			app.Response(ctx).Data(result.NotFound.WithData(req))
 			return
 		}
 
 		// 较验验证码
 		if !smsCache.Verify(req.Code) {
-			app.Result(ctx).Exception(exception.NotMatch)
+			app.Response(ctx).Data(result.NotMatch)
 			return
 		}
 
@@ -65,7 +65,7 @@ func postLoginByPhone(ctx *gin.Context) {
 
 	token.Write(ctx, userOne.Id)
 
-	app.Result(ctx).Data(postLoginByPhoneRes{
+	app.Response(ctx).Data(postLoginByPhoneRes{
 		UserId: userOne.Id,
 	})
 }
@@ -83,22 +83,22 @@ func getToken(ctx *gin.Context) {
 	// 获取用户令牌
 	tokenEntity, err := token.Get(ctx)
 	if err != nil {
-		app.Result(ctx).Exception(exception.NotFound)
+		app.Response(ctx).Data(result.NotFound)
 		return
 	}
 
-	app.Result(ctx).Data(tokenEntity)
+	app.Response(ctx).Data(tokenEntity)
 }
 
 // 登出
 func postLogout(ctx *gin.Context) {
 	_, err := ctx.Cookie("token")
 	if err != nil {
-		app.Result(ctx).Exception(exception.NotFound)
+		app.Response(ctx).Data(result.NotFound.WithData(err.Error()))
 		return
 	}
 
 	// 移除令牌
 	token.Remove(ctx)
-	app.Result(ctx).Ok()
+	app.Response(ctx).Ok()
 }

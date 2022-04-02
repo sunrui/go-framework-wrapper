@@ -12,7 +12,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/validator/v10"
-	"medium-server-go/framework/exception"
+	"medium-server-go/framework/result"
 	"strings"
 )
 
@@ -64,5 +64,5 @@ ERROR:
 		errData["error"] = fmt.Sprintf("%s", err)
 	}
 
-	panic(exception.ParameterError.WithData(errData))
+	panic(result.ParameterError.WithData(errData))
 }

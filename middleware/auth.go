@@ -9,7 +9,7 @@ package middleware
 import (
 	"github.com/gin-gonic/gin"
 	"medium-server-go/framework/app"
-	"medium-server-go/framework/exception"
+	"medium-server-go/framework/result"
 	"medium-server-go/framework/token"
 )
 
@@ -17,6 +17,6 @@ import (
 func AuthMiddleware(ctx *gin.Context) {
 	_, err := token.Get(ctx)
 	if err != nil {
-		app.Result(ctx).Exception(exception.NoAuth)
+		app.Response(ctx).Data(result.NoAuth)
 	}
 }

@@ -20,7 +20,7 @@ func getOpen(ctx *gin.Context) {
 
 	// 获取当前用户下的入驻
 	opens := open.GetOpen(userId)
-	app.Result(ctx).Data(opens)
+	app.Response(ctx).Data(opens)
 }
 
 // 提交入驻
