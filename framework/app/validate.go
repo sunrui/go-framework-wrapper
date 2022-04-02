@@ -59,7 +59,7 @@ ERROR:
 			})
 		}
 
-		errData["errors"] = paramErrors
+		errData["parameter"] = paramErrors
 	} else {
 		errData["error"] = fmt.Sprintf("%s", err)
 	}

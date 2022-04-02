@@ -122,18 +122,16 @@ func recoverMiddleware(ctx *gin.Context) {
 	// 捕获对象，全部抛出可以使用 panic 方法。
 	defer func() {
 		if err := recover(); err != nil {
-			dataMap := make(map[string]interface{})
-			dataMap["stack"] = getStack()
-
-			// 判断是否抛出了 exception 对象
-			res, ok := err.(*result.Result)
+			// 判断是否抛出了 Result 对象
+			res, ok := err.(result.Result)
 			if ok {
-				dataMap["error"] = res.Data
+				Response(ctx).Data(res)
 			} else {
-				dataMap["error"] = err
+				dataMap := make(map[string]interface{})
+				dataMap["stack"] = getStack()
+				dataMap["error"] = fmt.Sprintf("%s", err)
+				Response(ctx).Data(result.InternalError.WithData(dataMap))
 			}
-
-			Response(ctx).Data(result.InternalError.WithData(dataMap))
 
 			// 为了更好的调试，在开发环境中输出系统错误。
 			if config.IsDebugMode() {

@@ -63,9 +63,10 @@ func (result Result) String() string {
 var (
 	Ok               = newResult("Ok", "成功")
 	NoAuth           = newResult("NoAuth", "没有登录")
-	Duplicate        = newResult("Duplicate", "重复")
+	Duplicate        = newResult("Duplicate", "重复操作")
 	Forbidden        = newResult("Forbidden", "没有权限")
 	NotFound         = newResult("NotFound", "不存在")
+	NotMatch         = newResult("NotMatch", "不匹配")
 	RateLimit        = newResult("ExceedLimit", "超出限制")
 	StateError       = newResult("StateError", "状态错误")
 	ParameterError   = newResult("ParameterError", "参数错误")
