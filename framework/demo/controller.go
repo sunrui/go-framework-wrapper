@@ -32,8 +32,11 @@ func postSms(ctx *gin.Context) {
 	// 发送验证码
 	create(req.Phone)
 
+	r := result.Ok.WithMessage("发送成功了")
+	println(r.String())
+
 	// 假定发送成功
-	response.Response(ctx).Ok()
+	response.Response(ctx).Data(r)
 }
 
 // @Summary  获取所有验证码

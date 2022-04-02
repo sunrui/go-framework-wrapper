@@ -32,7 +32,7 @@ func (responseDef *responseDef) Ok() {
 
 // Data 数据返回对象
 func (responseDef *responseDef) Data(data interface{}) {
-	// 判断是否抛出了 Result 对象
+	// 判断是否为 Result 对象
 	_, ok := data.(result.Result)
 	if ok {
 		responseDef.ctx.JSON(http.StatusOK, data)

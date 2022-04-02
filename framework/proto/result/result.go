@@ -13,7 +13,7 @@ import (
 // Result 结果对象
 type Result struct {
 	Code    string      `json:"code"`    // 代码
-	Message string      `json:"message"` // 说明
+	Message string      `json:"message"` // 消息
 	Data    interface{} `json:"data"`    // 数据
 }
 
@@ -29,6 +29,12 @@ type Pagination struct {
 type PageResult struct {
 	Result                // 结果对象
 	Pagination Pagination `json:"pagination"` // 分页对象
+}
+
+// WithMessage 设置消息
+func (result Result) WithMessage(message string) Result {
+	result.Message = message
+	return result
 }
 
 // WithKeyPair 设置结果对象参数对
