@@ -10,11 +10,9 @@ import (
 // @Tags      演示
 // @Accept    json
 // @Produce   json
-// @Param     "req"  body      postSmsReq     true  "req"
-// @Success   200    {object}  result.Result  true  {"code":"response","message":"成功"}
-// @Response  201    {object}  result.Result  true  {"code":"Response","message":"成功"}
-// @Response  202    {object}  result.Result  true  {"code":"Response2","message":"成功"}
-// @Response  203    {object}  result.Result  true  {"code":"Response3","message":"成功"}
+// @Param     json  body      postSmsReq     true  "struct"
+// @Success   200   {object}  result.Result  true  {"code":"Ok","message":"成功"}
+// @Response  201   {object}  result.Result  true  {"code":"NotMatch","message":"不匹配"}
 // @Router    /sms [post]
 func postSms(ctx *gin.Context) {
 	var req postSmsReq
@@ -40,9 +38,9 @@ func postSms(ctx *gin.Context) {
 // @Tags     演示
 // @Accept   json
 // @Produce  json
-// @Param    page      query     int                false  "分页"
-// @Param    pageSize  query     int                false  "分页大小"
-// @Success  200       {object}  result.PageResult  true
+// @Param    page      query     int                            false  "分页"
+// @Param    pageSize  query     int                            false  "分页大小"
+// @Success  200       {object}  result.PageResult{data=[]Sms}  true
 // @Router   /sms [get]
 func getSms(ctx *gin.Context) {
 	var req app.PageRequest
@@ -62,8 +60,8 @@ func getSms(ctx *gin.Context) {
 // @Tags     演示
 // @Accept   json
 // @Produce  json
-// @Param    phone  path      string         true  "13012341234"
-// @Success  200    {object}  result.Result  true
+// @Param    phone  path      string                   true  "13012341234"
+// @Success  200    {object}  result.Result{data=Sms}  true
 // @Router   /sms/{phone} [get]
 func getSmsOne(ctx *gin.Context) {
 	phone := ctx.Param("phone")
