@@ -14,8 +14,8 @@ import (
 
 // 分页请求对象
 type PageRequest struct {
-	Page     int `json:"page"`     // 分页，从 0 开始
-	PageSize int `json:"pageSize"` // 分页大小
+	Page     int `json:"page" form:"page"`         // 分页，从 0 开始
+	PageSize int `json:"pageSize" form:"pageSize"` // 分页大小
 }
 
 // 结果对象实体

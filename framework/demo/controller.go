@@ -40,8 +40,8 @@ func postSms(ctx *gin.Context) {
 // @Tags     演示
 // @Accept   json
 // @Produce  json
-// @Param    page      query     int    false  "分页"
-// @Param    pageSize  query     int    false  "分页大小"
+// @Param    page      query     int                false  "分页"
+// @Param    pageSize  query     int                false  "分页大小"
 // @Success  200       {object}  result.PageResult  true
 // @Router   /sms [get]
 func getSms(ctx *gin.Context) {
@@ -50,15 +50,20 @@ func getSms(ctx *gin.Context) {
 	// 较验参数
 	app.ValidateParameter(ctx, &req)
 
-	app.Response(ctx).Data(all())
+	app.Response(ctx).PageData(all(), result.Pagination{
+		Page:      req.Page,
+		PageSize:  req.PageSize,
+		TotalPage: 10,
+		TotalSize: 100,
+	})
 }
 
 // @Summary  获取某个验证码
 // @Tags     演示
 // @Accept   json
 // @Produce  json
-// @Param    phone  path      string  true  "13012341234"
-// @Success  200    {object}  Sms     true
+// @Param    phone  path      string         true  "13012341234"
+// @Success  200    {object}  result.Result  true
 // @Router   /sms/{phone} [get]
 func getSmsOne(ctx *gin.Context) {
 	phone := ctx.Param("phone")

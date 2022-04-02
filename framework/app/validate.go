@@ -13,21 +13,24 @@ import (
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/validator/v10"
 	"medium-server-go/framework/result"
+	"net/http"
 	"strings"
 )
 
 // ValidateParameter 请求参数过滤
 func ValidateParameter(ctx *gin.Context, req interface{}) {
 	var validationErrors validator.ValidationErrors
+	var bindingType binding.Binding
 	var err error
 
-	err = ctx.ShouldBindQuery(&req)
-	if err != nil {
-		return
+	if ctx.Request.Method == http.MethodGet {
+		bindingType = binding.Query
+	} else {
+		bindingType = binding.JSON
 	}
 
-	// 默认以 json 方式解析
-	if err = ctx.MustBindWith(&req, binding.JSON); err != nil {
+	// 强制解析
+	if err = ctx.MustBindWith(req, bindingType); err != nil {
 		goto ERROR
 	}
 
