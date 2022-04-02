@@ -21,6 +21,11 @@ func ValidateParameter(ctx *gin.Context, req interface{}) {
 	var validationErrors validator.ValidationErrors
 	var err error
 
+	err = ctx.ShouldBindQuery(&req)
+	if err != nil {
+		return
+	}
+
 	// 默认以 json 方式解析
 	if err = ctx.MustBindWith(&req, binding.JSON); err != nil {
 		goto ERROR

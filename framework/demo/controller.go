@@ -40,9 +40,16 @@ func postSms(ctx *gin.Context) {
 // @Tags     演示
 // @Accept   json
 // @Produce  json
-// @Success  200  {object}  []Sms  true
+// @Param    page      query     int    false  "分页"
+// @Param    pageSize  query     int    false  "分页大小"
+// @Success  200       {object}  result.PageResult  true
 // @Router   /sms [get]
 func getSms(ctx *gin.Context) {
+	var req app.PageRequest
+
+	// 较验参数
+	app.ValidateParameter(ctx, &req)
+
 	app.Response(ctx).Data(all())
 }
 
@@ -50,17 +57,14 @@ func getSms(ctx *gin.Context) {
 // @Tags     演示
 // @Accept   json
 // @Produce  json
-// @Param    "req"  body      postSmsReq  true  "req"
-// @Success  200    {object}  Sms         true
+// @Param    phone  path      string  true  "13012341234"
+// @Success  200    {object}  Sms     true
 // @Router   /sms/{phone} [get]
 func getSmsOne(ctx *gin.Context) {
-	var req postSmsReq
-
-	// 较验参数
-	app.ValidateParameter(ctx, &req)
+	phone := ctx.Param("phone")
 
 	// 检测是否已经发送
-	smsCode := find(req.Phone)
+	smsCode := find(phone)
 	if smsCode == nil {
 		app.Response(ctx).Data(result.NotFound)
 		return
