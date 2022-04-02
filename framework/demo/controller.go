@@ -67,6 +67,7 @@ func getSms(ctx *gin.Context) {
 // @Produce  json
 // @Param    phone  path      string                   true  "13012341234"
 // @Success  200    {object}  result.Result{data=Sms}  true
+// @Success  400    {object}  result.Result            true  "{"code":"NotFound", "message":"不存在"}"
 // @Router   /sms/{phone} [get]
 func getSmsOne(ctx *gin.Context) {
 	phone := ctx.Param("phone")
