@@ -8,15 +8,15 @@ package middleware
 
 import (
 	"github.com/gin-gonic/gin"
-	"medium-server-go/framework/app"
-	"medium-server-go/framework/result"
-	"medium-server-go/framework/token"
+	"medium-server-go/framework/proto/response"
+	"medium-server-go/framework/proto/result"
+	"medium-server-go/framework/proto/token"
 )
 
 // Admin 管理中间件
 func Admin(ctx *gin.Context) {
 	_, err := token.Get(ctx)
 	if err != nil {
-		app.Response(ctx).Data(result.NoAuth)
+		response.Response(ctx).Data(result.NoAuth)
 	}
 }

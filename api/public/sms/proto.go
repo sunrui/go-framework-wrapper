@@ -12,13 +12,13 @@ import (
 
 // 发送验证码请求
 type postCodeReq struct {
-	Phone    string        `json:"phone" validate:"required,len=11,numeric"` // 手机号
-	CodeType enum.CodeType `json:"codeType" validate:"required,oneof=LOGIN"` // 验证码类型
+	Phone   string       `json:"phone" validate:"required,len=11,numeric"` // 手机号
+	SmsType enum.SmsType `json:"smsType" validate:"required,oneof=LOGIN"`  // 验证码类型
 }
 
 // 较验验证码请求
 type postVerifyReq struct {
-	Phone    string        `json:"phone" validate:"required,len=11,numeric"` // 手机号
-	CodeType enum.CodeType `json:"codeType" validate:"required,oneof=LOGIN"` // 验证码类型
-	Code     string        `json:"code" validate:"required,len=6,numeric"`   // 验证码
+	Phone   string       `json:"phone" validate:"required,len=11,numeric"` // 手机号
+	SmsType enum.SmsType `json:"smsType" validate:"required,oneof=LOGIN"`  // 验证码类型
+	Code    string       `json:"code" validate:"required,len=6,numeric"`   // 验证码
 }

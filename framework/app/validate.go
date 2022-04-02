@@ -12,7 +12,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/validator/v10"
-	"medium-server-go/framework/result"
+	"medium-server-go/framework/proto/result"
 	"net/http"
 	"strings"
 )

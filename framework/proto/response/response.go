@@ -1,22 +1,16 @@
 /*
- * Copyright (c) 2022 honeysense All rights reserved.
+ * Copyright (c) 2022 honeysense.com All rights reserved.
  * Author: sunrui
- * Date: 2022/01/07 01:55:07
+ * Date: 2022/04/03 00:05:03
  */
 
-package app
+package response
 
 import (
 	"github.com/gin-gonic/gin"
-	"medium-server-go/framework/result"
+	"medium-server-go/framework/proto/result"
 	"net/http"
 )
-
-// 分页请求对象
-type PageRequest struct {
-	Page     int `json:"page" form:"page" validate:"required,gte=0,lte=9999"`       // 分页，从 0 开始
-	PageSize int `json:"pageSize" form:"pageSize" validate:"required,gte=1,lte=99"` // 分页大小
-}
 
 // 结果对象实体
 type responseDef struct {

@@ -1,16 +1,16 @@
 /*
- * Copyright (c) 2022 honeysense All rights reserved.
+ * Copyright (c) 2022 honeysense.com All rights reserved.
  * Author: sunrui
- * Date: 2022/01/31 20:31:31
+ * Date: 2022/04/03 00:18:03
  */
 
 package enum
 
 // OpenApprovalStatus 审核状态
-type OpenApprovalStatus int
+type OpenApprovalStatus string
 
 const (
-	OpenApprovalWaiting = iota // 待审核
-	OpenApprovalRefuse         // 审核拒绝
-	OpenApprovalSuccess        // 审核成功
+	OpenApprovalWaiting = "OpenApprovalWaiting" // 待审核
+	OpenApprovalRefuse  = "OpenApprovalRefuse"  // 审核拒绝
+	OpenApprovalSuccess = "OpenApprovalSuccess" // 审核成功
 )

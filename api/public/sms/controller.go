@@ -10,7 +10,8 @@ import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"medium-server-go/framework/app"
-	"medium-server-go/framework/result"
+	"medium-server-go/framework/proto/response"
+	"medium-server-go/framework/proto/result"
 	"medium-server-go/service/sms"
 )
 
@@ -24,7 +25,7 @@ func postCode(ctx *gin.Context) {
 	// 获取当天发送条数，判断是否超出最大条数限制
 	count := sms.CountByPhoneAndDate(req.Phone, sms.GetNowDate())
 	if count >= 5 {
-		app.Response(ctx).Data(result.RateLimit)
+		response.Response(ctx).Data(result.RateLimit)
 		return
 	}
 
@@ -32,7 +33,7 @@ func postCode(ctx *gin.Context) {
 	sixNumber := sms.RandomCode()
 
 	// 调用服务发送验证码
-	channel, reqId, err := sms.Send(req.Phone, req.CodeType, sixNumber)
+	channel, reqId, err := sms.Send(req.Phone, req.SmsType, sixNumber)
 	var comment string
 	if err != nil {
 		comment = err.Error()
@@ -51,9 +52,9 @@ func postCode(ctx *gin.Context) {
 	}
 
 	// 存储发送记录
-	code := sms.Code{
+	code := sms.Sms{
 		Phone:     req.Phone,
-		CodeType:  req.CodeType,
+		SmsType:   req.SmsType,
 		Code:      sixNumber,
 		Ip:        ctx.ClientIP(),
 		UserAgent: ctx.Request.UserAgent(),
@@ -64,14 +65,14 @@ func postCode(ctx *gin.Context) {
 
 	// 发送验证码失败
 	if err != nil {
-		app.Response(ctx).Data(result.InternalError.WithData(err))
+		response.Response(ctx).Data(result.InternalError.WithData(err))
 		return
 	}
 
 	// 将验证码缓存到 redis 中
 	cache := sms.Cache{
-		Phone:    req.Phone,
-		CodeType: req.CodeType,
+		Phone:   req.Phone,
+		SmsType: req.SmsType,
 	}
 	cache.Save(sms.CodeCache{
 		Code:      sixNumber,
@@ -79,7 +80,7 @@ func postCode(ctx *gin.Context) {
 	})
 
 	// 发送成功
-	app.Response(ctx).Ok()
+	response.Response(ctx).Ok()
 }
 
 // 较验验证码
@@ -91,22 +92,22 @@ func postVerify(ctx *gin.Context) {
 
 	// 缓存对象
 	cache := sms.Cache{
-		Phone:    req.Phone,
-		CodeType: req.CodeType,
+		Phone:   req.Phone,
+		SmsType: req.SmsType,
 	}
 
 	// 获取缓存数据
 	if !cache.Exists() {
-		app.Response(ctx).Data(result.NotFound)
+		response.Response(ctx).Data(result.NotFound)
 		return
 	}
 
 	// 较验验证码
 	if !cache.Verify(req.Code) {
-		app.Response(ctx).Data("result.NotMatch")
+		response.Response(ctx).Data("result.NotMatch")
 		return
 	}
 
 	// 较验成功
-	app.Response(ctx).Ok()
+	response.Response(ctx).Ok()
 }

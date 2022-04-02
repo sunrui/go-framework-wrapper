@@ -6,7 +6,8 @@ import (
 	"github.com/juju/ratelimit"
 	"io/ioutil"
 	"medium-server-go/framework/config"
-	"medium-server-go/framework/result"
+	"medium-server-go/framework/proto/response"
+	"medium-server-go/framework/proto/result"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -18,12 +19,12 @@ import (
 
 // 异常 404 中间件
 func notFoundMiddleware(ctx *gin.Context) {
-	Response(ctx).Data(result.NotFound.WithKeyPair("uri", ctx.Request.URL.RequestURI()))
+	response.Response(ctx).Data(result.NotFound.WithKeyPair("uri", ctx.Request.URL.RequestURI()))
 }
 
 // 异常 405 中间件
 func methodNotAllowedMiddleware(ctx *gin.Context) {
-	Response(ctx).Data(result.MethodNotAllowed.WithKeyPair("uri", ctx.Request.URL.RequestURI()))
+	response.Response(ctx).Data(result.MethodNotAllowed.WithKeyPair("uri", ctx.Request.URL.RequestURI()))
 }
 
 // 流量限制中间件
@@ -36,7 +37,7 @@ func ratelimitMiddleware(fillInterval time.Duration, capacity, quantum int64) gi
 
 	return func(ctx *gin.Context) {
 		if bucket.TakeAvailable(1) < 1 {
-			Response(ctx).Data(result.RateLimit)
+			response.Response(ctx).Data(result.RateLimit)
 			return
 		}
 
@@ -125,12 +126,12 @@ func recoverMiddleware(ctx *gin.Context) {
 			// 判断是否抛出了 Result 对象
 			res, ok := err.(result.Result)
 			if ok {
-				Response(ctx).Data(res)
+				response.Response(ctx).Data(res)
 			} else {
 				dataMap := make(map[string]interface{})
 				dataMap["stack"] = getStack()
 				dataMap["error"] = fmt.Sprintf("%s", err)
-				Response(ctx).Data(result.InternalError.WithData(dataMap))
+				response.Response(ctx).Data(result.InternalError.WithData(dataMap))
 			}
 
 			// 为了更好的调试，在开发环境中输出系统错误。

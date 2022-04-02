@@ -3,7 +3,9 @@ package demo
 import (
 	"github.com/gin-gonic/gin"
 	"medium-server-go/framework/app"
-	"medium-server-go/framework/result"
+	"medium-server-go/framework/proto/request"
+	"medium-server-go/framework/proto/response"
+	"medium-server-go/framework/proto/result"
 )
 
 // @Summary   发送验证码
@@ -23,7 +25,7 @@ func postSms(ctx *gin.Context) {
 	// 检测是否已经发送
 	smsCode := find(req.Phone)
 	if smsCode != nil {
-		app.Response(ctx).Data(result.Duplicate)
+		response.Response(ctx).Data(result.Duplicate)
 		return
 	}
 
@@ -31,7 +33,7 @@ func postSms(ctx *gin.Context) {
 	create(req.Phone)
 
 	// 假定发送成功
-	app.Response(ctx).Ok()
+	response.Response(ctx).Ok()
 }
 
 // @Summary  获取所有验证码
@@ -43,12 +45,12 @@ func postSms(ctx *gin.Context) {
 // @Success  200       {object}  result.PageResult{data=[]Sms}  true
 // @Router   /sms [get]
 func getSms(ctx *gin.Context) {
-	var req app.PageRequest
+	var req request.PageRequest
 
 	// 较验参数
 	app.ValidateParameter(ctx, &req)
 
-	app.Response(ctx).PageData(all(), result.Pagination{
+	response.Response(ctx).PageData(all(), result.Pagination{
 		Page:      req.Page,
 		PageSize:  req.PageSize,
 		TotalPage: 10,
@@ -69,10 +71,10 @@ func getSmsOne(ctx *gin.Context) {
 	// 检测是否已经发送
 	smsCode := find(phone)
 	if smsCode == nil {
-		app.Response(ctx).Data(result.NotFound)
+		response.Response(ctx).Data(result.NotFound)
 		return
 	}
 
 	// 返回验证码
-	app.Response(ctx).Data(smsCode)
+	response.Response(ctx).Data(smsCode)
 }

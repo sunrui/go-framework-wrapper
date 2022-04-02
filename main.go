@@ -6,6 +6,9 @@
 package main
 
 import (
+	"medium-server-go/api/admin"
+	"medium-server-go/api/public"
+	"medium-server-go/api/user"
 	"medium-server-go/framework/app"
 	"medium-server-go/framework/demo"
 )
@@ -19,9 +22,11 @@ func main() {
 	server := app.New()
 
 	// 注册路由
-	//server.RouterGroup("/public", public.GetRouters())
-	//server.RouterGroup("/admin", admin.GetRouters())
-	//server.RouterGroup("/user", user.GetRouters())
+	server.RouterGroup("/public", public.GetRouters())
+	server.RouterGroup("/admin", admin.GetRouters())
+	server.RouterGroup("/user", user.GetRouters())
+
+	// 注册演示路由
 	server.RouterGroup("/", demo.GetRouters())
 
 	// 启动服务

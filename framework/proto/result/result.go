@@ -17,7 +17,7 @@ type Result struct {
 	Data    interface{} `json:"data"`    // 数据
 }
 
-// 分页对象
+// Pagination 分页对象
 type Pagination struct {
 	Page      int `json:"page"`      // 当前页，从 0 开始
 	PageSize  int `json:"pageSize"`  // 每页大小

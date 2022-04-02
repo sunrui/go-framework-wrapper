@@ -9,7 +9,8 @@ package open
 import (
 	"github.com/gin-gonic/gin"
 	"medium-server-go/framework/app"
-	"medium-server-go/framework/token"
+	"medium-server-go/framework/proto/response"
+	"medium-server-go/framework/proto/token"
 	"medium-server-go/service/open/open"
 )
 
@@ -20,7 +21,7 @@ func getOpen(ctx *gin.Context) {
 
 	// 获取当前用户下的入驻
 	opens := open.GetOpen(userId)
-	app.Response(ctx).Data(opens)
+	response.Response(ctx).Data(opens)
 }
 
 // 提交入驻

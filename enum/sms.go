@@ -1,15 +1,15 @@
 /*
- * Copyright (c) 2022 honeysense All rights reserved.
+ * Copyright (c) 2022 honeysense.com All rights reserved.
  * Author: sunrui
- * Date: 2022/01/20 21:25:20
+ * Date: 2022/04/03 00:12:03
  */
 
 package enum
 
-// CodeType 验证码类型
-type CodeType string
+// SmsType 验证码类型
+type SmsType string
 
 const (
-	CodeLogin         = "LOGIN"          // 登录
-	CodeResetPassword = "RESET_PASSWORD" // 重置密码
+	SmsLogin         = "SmsLogin"       // 登录
+	SmsResetPassword = "RESET_PASSWORD" // 重置密码
 )
