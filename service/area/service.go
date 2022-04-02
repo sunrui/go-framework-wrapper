@@ -45,6 +45,7 @@ func GetCity(provinceId int) []City {
 		}
 	}
 
+	// 不存在的省默认返回 nil
 	if province == nil {
 		return nil
 	}
@@ -71,6 +72,7 @@ func GetArea(cityId int) []Area {
 		}
 	}
 
+	// 不存在的城市默认返回 nil
 	if city == nil {
 		return nil
 	}

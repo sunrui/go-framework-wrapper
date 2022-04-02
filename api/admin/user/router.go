@@ -16,7 +16,7 @@ import (
 func GetRouter() app.Router {
 	return app.Router{
 		GroupName:  "/user",
-		Middleware: middleware.AdminMiddleware,
+		Middleware: middleware.Admin,
 		RouterPaths: []app.RouterPath{
 			{
 				HttpMethod:   http.MethodPost,

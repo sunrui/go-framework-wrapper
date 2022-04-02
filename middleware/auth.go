@@ -13,8 +13,8 @@ import (
 	"medium-server-go/framework/token"
 )
 
-// AuthMiddleware 授权中间件
-func AuthMiddleware(ctx *gin.Context) {
+// Auth 授权中间件
+func Auth(ctx *gin.Context) {
 	_, err := token.Get(ctx)
 	if err != nil {
 		app.Response(ctx).Data(result.NoAuth)

@@ -103,7 +103,7 @@ func postVerify(ctx *gin.Context) {
 
 	// 较验验证码
 	if !cache.Verify(req.Code) {
-		app.Response(ctx).Data(result.NotMatch)
+		app.Response(ctx).Data("result.NotMatch")
 		return
 	}
 
