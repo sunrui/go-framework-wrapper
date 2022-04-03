@@ -25,7 +25,7 @@ func postSms(ctx *gin.Context) {
 	// 检测是否已经发送
 	smsCode := find(req.Phone)
 	if smsCode != nil {
-		response.Response(ctx).Data(result.Duplicate)
+		response.New(ctx).Data(result.Duplicate)
 		return
 	}
 
@@ -36,7 +36,7 @@ func postSms(ctx *gin.Context) {
 	println(r.String())
 
 	// 假定发送成功
-	response.Response(ctx).Data(r)
+	response.New(ctx).Data(r)
 }
 
 // @Summary  获取所有验证码
@@ -53,7 +53,7 @@ func getSms(ctx *gin.Context) {
 	// 较验参数
 	app.ValidateParameter(ctx, &req)
 
-	response.Response(ctx).PageData(all(), result.Pagination{
+	response.New(ctx).PageData(all(), result.Pagination{
 		Page:      req.Page,
 		PageSize:  req.PageSize,
 		TotalPage: 10,
@@ -78,10 +78,10 @@ func getSmsOne(ctx *gin.Context) {
 	// 检测是否已经发送
 	smsCode := find(phone)
 	if smsCode == nil {
-		response.Response(ctx).Data(result.NotFound)
+		response.New(ctx).Data(result.NotFound)
 		return
 	}
 
 	// 返回验证码
-	response.Response(ctx).Data(smsCode)
+	response.New(ctx).Data(smsCode)
 }

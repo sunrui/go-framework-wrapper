@@ -37,13 +37,13 @@ func postLoginByPhone(ctx *gin.Context) {
 
 		// 获取缓存数据
 		if !smsCache.Exists() {
-			response.Response(ctx).Data(result.NotFound.WithData(req))
+			response.New(ctx).Data(result.NotFound.WithData(req))
 			return
 		}
 
 		// 较验验证码
 		if !smsCache.Verify(req.Code) {
-			response.Response(ctx).Data("common.NotMatch")
+			response.New(ctx).Data("common.NotMatch")
 			return
 		}
 
@@ -66,7 +66,7 @@ func postLoginByPhone(ctx *gin.Context) {
 
 	token.Write(ctx, userOne.Id)
 
-	response.Response(ctx).Data(postLoginByPhoneRes{
+	response.New(ctx).Data(postLoginByPhoneRes{
 		UserId: userOne.Id,
 	})
 }
@@ -84,22 +84,22 @@ func getToken(ctx *gin.Context) {
 	// 获取用户令牌
 	tokenEntity, err := token.Get(ctx)
 	if err != nil {
-		response.Response(ctx).Data(result.NotFound)
+		response.New(ctx).Data(result.NotFound)
 		return
 	}
 
-	response.Response(ctx).Data(tokenEntity)
+	response.New(ctx).Data(tokenEntity)
 }
 
 // 登出
 func postLogout(ctx *gin.Context) {
 	_, err := ctx.Cookie("token")
 	if err != nil {
-		response.Response(ctx).Data(result.NotFound.WithData(err.Error()))
+		response.New(ctx).Data(result.NotFound.WithData(err.Error()))
 		return
 	}
 
 	// 移除令牌
 	token.Remove(ctx)
-	response.Response(ctx).Ok()
+	response.New(ctx).Ok()
 }

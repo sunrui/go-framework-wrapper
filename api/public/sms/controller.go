@@ -25,7 +25,7 @@ func postCode(ctx *gin.Context) {
 	// 获取当天发送条数，判断是否超出最大条数限制
 	count := sms.CountByPhoneAndDate(req.Phone, sms.GetNowDate())
 	if count >= 5 {
-		response.Response(ctx).Data(result.RateLimit)
+		response.New(ctx).Data(result.RateLimit)
 		return
 	}
 
@@ -65,7 +65,7 @@ func postCode(ctx *gin.Context) {
 
 	// 发送验证码失败
 	if err != nil {
-		response.Response(ctx).Data(result.InternalError.WithData(err))
+		response.New(ctx).Data(result.InternalError.WithData(err))
 		return
 	}
 
@@ -80,7 +80,7 @@ func postCode(ctx *gin.Context) {
 	})
 
 	// 发送成功
-	response.Response(ctx).Ok()
+	response.New(ctx).Ok()
 }
 
 // 较验验证码
@@ -98,16 +98,16 @@ func postVerify(ctx *gin.Context) {
 
 	// 获取缓存数据
 	if !cache.Exists() {
-		response.Response(ctx).Data(result.NotFound)
+		response.New(ctx).Data(result.NotFound)
 		return
 	}
 
 	// 较验验证码
 	if !cache.Verify(req.Code) {
-		response.Response(ctx).Data(result.NotMatch)
+		response.New(ctx).Data(result.NotMatch)
 		return
 	}
 
 	// 较验成功
-	response.Response(ctx).Ok()
+	response.New(ctx).Ok()
 }

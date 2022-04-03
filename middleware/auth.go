@@ -17,6 +17,6 @@ import (
 func Auth(ctx *gin.Context) {
 	_, err := token.Get(ctx)
 	if err != nil {
-		response.Response(ctx).Data(result.NoAuth)
+		response.New(ctx).Data(result.NoAuth)
 	}
 }

@@ -10,7 +10,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
 	"medium-server-go/framework/config"
-	"medium-server-go/framework/proto/response"
 	"medium-server-go/framework/proto/result"
 	"strings"
 )
@@ -80,8 +79,7 @@ func Write(ctx *gin.Context, userId string) {
 func GetUserId(ctx *gin.Context) string {
 	payload, err := Get(ctx)
 	if err != nil {
-		response.Response(ctx).Data(result.NoAuth)
-		return ""
+		panic(result.NoAuth)
 	}
 
 	return payload.UserId
