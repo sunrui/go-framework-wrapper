@@ -24,40 +24,40 @@ func New(ctx *gin.Context) *Response {
 }
 
 // Ok 操作成功返回对象
-func (responseDef *Response) Ok() {
-	responseDef.ctx.JSON(result.Ok.Status, result.Ok)
-	responseDef.ctx.Abort()
+func (response *Response) Ok() {
+	response.ctx.JSON(result.Ok.Status, result.Ok)
+	response.ctx.Abort()
 }
 
 // Data 数据返回对象
-func (responseDef *Response) Data(data interface{}) {
+func (response *Response) Data(data interface{}) {
 	// 判断是否为 Result 对象
 	r, ok := data.(result.Result)
 	if ok {
-		responseDef.ctx.JSON(r.Status, data)
+		response.ctx.JSON(r.Status, data)
 	} else {
-		responseDef.ctx.JSON(result.Ok.Status, result.Ok.WithData(data))
+		response.ctx.JSON(result.Ok.Status, result.Ok.WithData(data))
 	}
 
-	responseDef.ctx.Abort()
+	response.ctx.Abort()
 }
 
 // IdData 主键返回对象
-func (responseDef *Response) IdData(id string) {
+func (response *Response) IdData(id string) {
 	type idData struct {
 		Id string `json:"id"`
 	}
 
-	responseDef.Data(idData{
+	response.Data(idData{
 		Id: id,
 	})
 }
 
 // PageData 分页数据返回对象
-func (responseDef *Response) PageData(data interface{}, pagination result.Pagination) {
-	responseDef.ctx.JSON(result.Ok.Status, result.PageResult{
+func (response *Response) PageData(data interface{}, pagination result.Pagination) {
+	response.ctx.JSON(result.Ok.Status, result.PageResult{
 		Result:     result.Ok.WithData(data),
 		Pagination: pagination,
 	})
-	responseDef.ctx.Abort()
+	response.ctx.Abort()
 }

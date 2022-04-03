@@ -32,7 +32,7 @@ func methodNotAllowedMiddleware(ctx *gin.Context) {
 // @fillInterval  间隔单位
 // @capacity      令牌桶容量
 // @quantum       每隔多久
-func ratelimitMiddleware(fillInterval time.Duration, capacity, quantum int64) gin.HandlerFunc {
+func rateLimitMiddleware(fillInterval time.Duration, capacity, quantum int64) gin.HandlerFunc {
 	bucket := ratelimit.NewBucketWithQuantum(fillInterval, capacity, quantum)
 
 	return func(ctx *gin.Context) {
@@ -160,7 +160,7 @@ func registerMiddleware(engine *gin.Engine) {
 	engine.NoMethod(methodNotAllowedMiddleware)
 
 	// 注册限流中间件
-	engine.Use(ratelimitMiddleware(time.Second, 200, 1))
+	engine.Use(rateLimitMiddleware(time.Second, 200, 1))
 
 	// 注册文档中间件
 	engine.GET("/doc/*any", redocMiddleware)

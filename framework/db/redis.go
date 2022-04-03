@@ -26,6 +26,7 @@ var Redis *redisPool
 // 初始化
 func init() {
 	redisConf := config.Get().Redis
+	const timeout = 10 * time.Second
 
 	// 建立连接池
 	Redis = &redisPool{
@@ -39,9 +40,9 @@ func init() {
 				return redis.Dial("tcp", address,
 					redis.DialPassword(redisConf.Password),
 					redis.DialDatabase(redisConf.Database),
-					redis.DialConnectTimeout(10*time.Second),
-					redis.DialReadTimeout(10*time.Second),
-					redis.DialWriteTimeout(10*time.Second))
+					redis.DialConnectTimeout(timeout),
+					redis.DialReadTimeout(timeout),
+					redis.DialWriteTimeout(timeout))
 			},
 		},
 	}

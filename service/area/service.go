@@ -82,7 +82,7 @@ func GetArea(cityId int) []Area {
 
 // 加载当前配置
 func init() {
-	// 获取当前项目根目录 area.json
+	// 获取当前目录 area.json
 	_, file, _, _ := runtime.Caller(0)
 	path := filepath.Dir(file)
 

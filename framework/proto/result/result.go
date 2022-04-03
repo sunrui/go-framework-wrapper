@@ -98,7 +98,7 @@ func newResult(status int, code string, message string) Result {
 	}
 }
 
-// All 获取所有 common 对象
+// All 获取所有 result 对象
 func All() []Result {
 	return []Result{
 		Ok,                                        // 操作成功 200
