@@ -9,6 +9,7 @@ package public
 import (
 	"medium-server-go/api/public/area"
 	"medium-server-go/api/public/auth"
+	"medium-server-go/api/public/common"
 	"medium-server-go/api/public/sms"
 	"medium-server-go/framework/app"
 )
@@ -16,6 +17,7 @@ import (
 // GetRouters 获取注册路由
 func GetRouters() []app.Router {
 	return []app.Router{
+		common.GetRouter(),
 		area.GetRouter(),
 		sms.GetRouter(),
 		auth.GetRouter(),

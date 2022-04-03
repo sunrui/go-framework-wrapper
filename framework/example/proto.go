@@ -1,4 +1,4 @@
-package demo
+package example
 
 // 发送验证码 - 请求
 type postSmsReq struct {

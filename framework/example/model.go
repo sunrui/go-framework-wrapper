@@ -1,4 +1,4 @@
-package demo
+package example
 
 // Sms 验证码
 type Sms struct {

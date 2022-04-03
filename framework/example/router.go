@@ -1,4 +1,4 @@
-package demo
+package example
 
 import (
 	"medium-server-go/framework/app"

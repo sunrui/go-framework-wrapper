@@ -1,4 +1,4 @@
-package demo
+package example
 
 import (
 	"github.com/gin-gonic/gin"
@@ -9,9 +9,9 @@ import (
 )
 
 // @Summary   发送验证码
-// @Tags      演示
-// @Accept    json
-// @Produce   json
+// @Tags     演示
+// @Accept   json
+// @Produce  json
 // @Param     json  body      postSmsReq     true  "struct"
 // @Success   200   {object}  result.Result  true  {"code":"Ok","message":"成功"}
 // @Response  201   {object}  result.Result  true  {"code":"NotMatch","message":"不匹配"}
@@ -40,9 +40,9 @@ func postSms(ctx *gin.Context) {
 }
 
 // @Summary  获取所有验证码
-// @Tags     演示
-// @Accept   json
-// @Produce  json
+// @Tags      演示
+// @Accept    json
+// @Produce   json
 // @Param    page      query     int                            false  "分页"
 // @Param    pageSize  query     int                            false  "分页大小"
 // @Success  200       {object}  result.PageResult{data=[]Sms}  true
@@ -61,13 +61,16 @@ func getSms(ctx *gin.Context) {
 	})
 }
 
-// @Summary  获取某个验证码
+// @Summary  获取手机号获取验证码
+// @Description
 // @Tags     演示
 // @Accept   json
 // @Produce  json
-// @Param    phone  path      string                   true  "13012341234"
-// @Success  200    {object}  result.Result{data=Sms}  true
-// @Success  400    {object}  result.Result            true  "{"code":"NotFound", "message":"不存在"}"
+// @Param    phone        path      string                   true  "13012341234"
+// @Success  200          {object}  result.Result{data=Sms}  true
+// @Failure  300          {object}  result.Result            true  "{"code":"NotFound", "message":"不存在"}"
+// @Failure  301          {object}  result.Result            true  "{"code":"NotMatch", "message":"不匹配"}"
+// @Header   400,401,402  {string}  Token2                   "token2"
 // @Router   /sms/{phone} [get]
 func getSmsOne(ctx *gin.Context) {
 	phone := ctx.Param("phone")

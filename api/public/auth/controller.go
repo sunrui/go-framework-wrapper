@@ -43,7 +43,7 @@ func postLoginByPhone(ctx *gin.Context) {
 
 		// 较验验证码
 		if !smsCache.Verify(req.Code) {
-			response.Response(ctx).Data("result.NotMatch")
+			response.Response(ctx).Data("common.NotMatch")
 			return
 		}
 

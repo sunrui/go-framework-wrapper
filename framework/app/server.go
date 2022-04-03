@@ -18,14 +18,6 @@ type Server struct {
 	engine *gin.Engine // gin 对象
 }
 
-// 初始化
-func init() {
-	// 如果非调式环境注册 release 模式
-	if !config.IsDebugMode() {
-		gin.SetMode(gin.ReleaseMode)
-	}
-}
-
 // New 创建新的服务对象
 func New() *Server {
 	engine := gin.Default()
@@ -51,5 +43,13 @@ func (server *Server) Run(port int) {
 	err := server.engine.Run(":" + strconv.Itoa(port))
 	if err != nil {
 		panic(err.Error())
+	}
+}
+
+// 初始化
+func init() {
+	// 如果非调式环境注册 release 模式
+	if !config.IsDebugMode() {
+		gin.SetMode(gin.ReleaseMode)
 	}
 }
