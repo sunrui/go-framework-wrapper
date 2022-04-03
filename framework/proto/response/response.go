@@ -11,7 +11,7 @@ import (
 	"medium-server-go/framework/proto/result"
 )
 
-// 结果对象实体
+// Response 结果对象实体
 type Response struct {
 	ctx *gin.Context
 }

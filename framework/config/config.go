@@ -62,12 +62,7 @@ var config *jsonConfig
 func init() {
 	// 获取当前项目根目录 config.json
 	pwd, _ := os.Getwd()
-	f, err := os.Open(pwd + "/config.json")
-	if err != nil {
-		panic(err.Error())
-	}
-
-	stream, err := ioutil.ReadAll(f)
+	stream, err := ioutil.ReadFile(pwd + "/config.json")
 	if err != nil {
 		panic(err.Error())
 	}

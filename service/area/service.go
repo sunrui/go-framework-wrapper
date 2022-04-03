@@ -9,7 +9,6 @@ package area
 import (
 	"encoding/json"
 	"io/ioutil"
-	"os"
 	"path/filepath"
 	"runtime"
 )
@@ -86,12 +85,7 @@ func init() {
 	_, file, _, _ := runtime.Caller(0)
 	path := filepath.Dir(file)
 
-	f, err := os.Open(path + "/area.json")
-	if err != nil {
-		panic(err.Error())
-	}
-
-	stream, err := ioutil.ReadAll(f)
+	stream, err := ioutil.ReadFile(path + "/area.json")
 	if err != nil {
 		panic(err.Error())
 	}
