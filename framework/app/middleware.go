@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/juju/ratelimit"
-	"io/ioutil"
 	"medium-server-go/framework/config"
 	"medium-server-go/framework/proto/response"
 	"medium-server-go/framework/proto/result"
@@ -49,37 +48,14 @@ func rateLimitMiddleware(fillInterval time.Duration, capacity, quantum int64) gi
 func redocMiddleware(ctx *gin.Context) {
 	path := ctx.Request.URL.Path
 	suffix := filepath.Base(path)
-	if suffix == "doc.json" {
-		data, _ := ioutil.ReadFile("docs/swagger.json")
-		_, _ = ctx.Writer.Write(data)
-		return
-	}
 
 	// 过滤掉非法的 /doc/? 路径
-	if path != "/doc/" || suffix != "doc" {
+	if suffix != "doc.json" && (path != "/doc/" || suffix != "doc") {
 		ctx.Redirect(http.StatusFound, "/doc")
 		return
 	}
 
-	_, _ = ctx.Writer.Write([]byte(`
-		<!DOCTYPE html>
-		<html>
-		  <head>
-			<meta charset="utf-8"/>
-			<meta name="viewport" content="width=device-width, initial-scale=1">
-			<style>
-			  body {
-				margin: 0;
-				padding: 0;
-			  }
-			</style>
-		  </head>
-		  <body>
-			<redoc spec-url='swagger/doc.json'></redoc>
-			<script src="https://cdn.jsdelivr.net/npm/redoc@latest/bundles/redoc.standalone.js"> </script>
-		  </body>
-		</html>
-	`))
+	_, _ = ctx.Writer.Write(redoc(suffix))
 }
 
 // 堆栈对象

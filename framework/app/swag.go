@@ -8,9 +8,38 @@ package app
 
 import (
 	"bytes"
+	"io/ioutil"
 	_ "medium-server-go/docs"
 	"os/exec"
 )
+
+// redoc 文档中间件
+func redoc(suffix string) []byte {
+	if suffix == "doc.json" {
+		data, _ := ioutil.ReadFile("docs/swagger.json")
+		return data
+	}
+
+	return []byte(`
+		<!DOCTYPE html>
+		<html>
+		  <head>
+			<meta charset="utf-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1">
+			<style>
+			  body {
+				margin: 0;
+				padding: 0;
+			  }
+			</style>
+		  </head>
+		  <body>
+			<redoc spec-url='swagger/doc.json'></redoc>
+			<script src="https://cdn.jsdelivr.net/npm/redoc@latest/bundles/redoc.standalone.js"> </script>
+		  </body>
+		</html>
+	`)
+}
 
 // 执行命令行
 func commandExec(name string, argv string) {
