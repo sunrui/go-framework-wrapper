@@ -25,7 +25,7 @@ type Router struct {
 	RouterPaths []RouterPath    // 路由路径
 }
 
-// Router 路由对象
+// 注册路由
 func registerRouter(engine *gin.Engine, router Router) {
 	groupRouter := engine.Group(router.GroupName)
 
