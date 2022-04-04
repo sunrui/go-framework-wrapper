@@ -30,10 +30,10 @@ func postCode(ctx *gin.Context) {
 	}
 
 	// 创建 6 位验证码
-	sixNumber := sms.RandomCode()
+	randomCode := sms.RandomCode()
 
 	// 调用服务发送验证码
-	channel, reqId, err := sms.Send(req.Phone, req.SmsType, sixNumber)
+	channel, reqId, err := sms.Send(req.Phone, req.SmsType, randomCode)
 	var comment string
 	if err != nil {
 		comment = err.Error()
@@ -52,16 +52,16 @@ func postCode(ctx *gin.Context) {
 	}
 
 	// 存储发送记录
-	code := sms.Sms{
+	history := sms.Sms{
 		Phone:     req.Phone,
 		SmsType:   req.SmsType,
-		Code:      sixNumber,
+		Code:      randomCode,
 		Ip:        ctx.ClientIP(),
 		UserAgent: ctx.Request.UserAgent(),
 		Success:   err == nil,
 		Comment:   comment,
 	}
-	code.Save()
+	history.Save()
 
 	// 发送验证码失败
 	if err != nil {
@@ -74,10 +74,7 @@ func postCode(ctx *gin.Context) {
 		Phone:   req.Phone,
 		SmsType: req.SmsType,
 	}
-	cache.Save(sms.CodeCache{
-		Code:      sixNumber,
-		ErrVerify: 0,
-	})
+	cache.SaveCode(randomCode)
 
 	// 发送成功
 	response.New(ctx).Ok()

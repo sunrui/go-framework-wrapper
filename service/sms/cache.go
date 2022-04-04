@@ -12,10 +12,10 @@ import (
 	"medium-server-go/framework/db"
 )
 
-// CodeCache 缓存数据
-type CodeCache struct {
-	Code      string `json:"code"`      // 验证码
-	ErrVerify int    `json:"errVerify"` // 出错较验次数
+// 缓存数据
+type codeCache struct {
+	Code       string `json:"code"`       // 验证码
+	VerifyTime int    `json:"verifyTime"` // 较验次数
 }
 
 // Cache 缓存对象
@@ -30,8 +30,8 @@ func (cache *Cache) getKey() string {
 }
 
 // 获取缓存的值
-func (cache *Cache) getValue() *CodeCache {
-	var codeCache CodeCache
+func (cache *Cache) getValue() *codeCache {
+	var codeCache codeCache
 
 	err := db.Redis.GetJson(cache.getKey(), &codeCache)
 	if err == nil {
@@ -47,7 +47,15 @@ func (cache *Cache) Exists() bool {
 }
 
 // Save 设置新缓存验证码
-func (cache *Cache) Save(codeCache CodeCache) {
+func (cache *Cache) SaveCode(randomCode string) {
+	db.Redis.Set(cache.getKey(), codeCache{
+		Code:       randomCode,
+		VerifyTime: 0,
+	}, 15*60)
+}
+
+// Save 设置新缓存验证码
+func (cache *Cache) Save(codeCache codeCache) {
 	db.Redis.Set(cache.getKey(), codeCache, 15*60)
 }
 
@@ -67,10 +75,10 @@ func (cache *Cache) Verify(code string) bool {
 	// 如果验证码较验错误
 	if value.Code != code {
 		// 增加缓存引用记数
-		value.ErrVerify += 1
+		value.VerifyTime += 1
 
 		// 如果已经较验出错 5 次，移除现有验证码
-		if value.ErrVerify == 5 {
+		if value.VerifyTime == 5 {
 			cache.Del()
 		} else {
 			// 更新出错较验次数

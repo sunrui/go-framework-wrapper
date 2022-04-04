@@ -21,7 +21,7 @@ var build = time.Now()
 // @Success  200  {object}  result.Result{data=string}  true  {"code":"Ok","message":"成功"}
 // @Router   /public/common/build [get]
 func getBuild(ctx *gin.Context) {
-	response.New(ctx).Data(build.Format("2006-01-02 15:04:5"))
+	response.New(ctx).Data(build.Format("2006-01-02 15:04:05"))
 }
 
 // @Summary  结果列表
