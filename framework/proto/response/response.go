@@ -7,8 +7,8 @@
 package response
 
 import (
+	"framework/proto/result"
 	"github.com/gin-gonic/gin"
-	"medium-server-go/framework/proto/result"
 )
 
 // Response 结果对象实体

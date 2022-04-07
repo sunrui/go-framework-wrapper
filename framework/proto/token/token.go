@@ -7,10 +7,10 @@
 package token
 
 import (
+	"framework/config"
+	"framework/proto/result"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
-	"medium-server-go/framework/config"
-	"medium-server-go/framework/proto/result"
 	"strings"
 )
 

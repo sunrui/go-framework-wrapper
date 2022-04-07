@@ -9,7 +9,7 @@ package app
 import (
 	"bytes"
 	"io/ioutil"
-	_ "medium-server-go/docs"
+	//_ "medium-server-go/docs"
 	"os/exec"
 )
 

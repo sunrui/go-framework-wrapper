@@ -8,11 +8,11 @@ package db
 
 import (
 	"fmt"
+	"framework/config"
 	"github.com/google/uuid"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
-	"medium-server-go/framework/config"
 	"strings"
 	"time"
 )

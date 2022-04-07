@@ -1,12 +1,18 @@
+/*
+ * Copyright (c) 2022 honeysense.com All rights reserved.
+ * Author: sunrui
+ * Date: 2022/04/03 21:03:03
+ */
+
 package app
 
 import (
 	"fmt"
+	"framework/config"
+	"framework/proto/response"
+	"framework/proto/result"
 	"github.com/gin-gonic/gin"
 	"github.com/juju/ratelimit"
-	"medium-server-go/framework/config"
-	"medium-server-go/framework/proto/response"
-	"medium-server-go/framework/proto/result"
 	"net/http"
 	"os"
 	"path/filepath"
