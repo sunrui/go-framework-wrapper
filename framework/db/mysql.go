@@ -62,8 +62,8 @@ type Model struct {
 }
 
 // BeforeCreate 创建对象前回调
-func (base *Model) BeforeCreate(*gorm.DB) (err error) {
-	base.Id = CreateUuid()
+func (model *Model) BeforeCreate(*gorm.DB) (err error) {
+	model.Id = CreateUuid()
 
 	return nil
 }

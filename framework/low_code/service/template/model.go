@@ -8,10 +8,11 @@ package template
 
 import "medium-server-go/framework/db"
 
-// Template 对象
+// Template ${Template.name}
 type Template struct {
 	db.Model        // 通用参数
 	UserId   string `json:"userId"` // 用户 id
+	Name     string `json:"name"`   // 名称
 }
 
 // 初始化
@@ -25,7 +26,7 @@ func init() {
 	}
 }
 
-// Save 存储
+// Save 保存
 func (template *Template) Save() {
 	db.Mysql.Save(template)
 }

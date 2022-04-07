@@ -25,6 +25,22 @@ func FindById(id string) *Template {
 	return &template
 }
 
+// FindByIdAndUserId 根据 id、userId 查询
+func FindByIdAndUserId(id string, userId string) *Template {
+	var template Template
+
+	query := db.Mysql.Find(&template, id)
+	if errors.Is(query.Error, gorm.ErrRecordNotFound) {
+		return nil
+	}
+
+	if template.UserId != userId {
+		return nil
+	}
+
+	return &template
+}
+
 // FindByUserId 根据 userId 查询
 func FindByUserId(userId string) *Template {
 	var template Template
@@ -103,5 +119,53 @@ func UpdateById(id string, template Template) bool {
 
 	template.Id = one.Id
 	db.Mysql.Save(template)
+	return true
+}
+
+// UpdateByIdAndUserId 根据 id、userId 更新
+func UpdateByIdAndUserId(id string, userId string, template Template) bool {
+	var one Template
+
+	query := db.Mysql.Find(&one, id)
+	if errors.Is(query.Error, gorm.ErrRecordNotFound) {
+		return false
+	}
+
+	if one.UserId != userId {
+		return false
+	}
+
+	template.Id = one.Id
+	db.Mysql.Save(template)
+	return true
+}
+
+// UpdateById 根据 id 删除
+func DeleteById(id string) bool {
+	var one Template
+
+	query := db.Mysql.Find(&one, id)
+	if errors.Is(query.Error, gorm.ErrRecordNotFound) {
+		return false
+	}
+
+	db.Mysql.Delete(query)
+	return true
+}
+
+// DeleteByIdAndUserId 根据 id 删除
+func DeleteByIdAndUserId(id string, userId string) bool {
+	var one Template
+
+	query := db.Mysql.Find(&one, id)
+	if errors.Is(query.Error, gorm.ErrRecordNotFound) {
+		return false
+	}
+
+	if one.UserId != userId {
+		return false
+	}
+
+	db.Mysql.Delete(query)
 	return true
 }

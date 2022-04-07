@@ -5,3 +5,13 @@
  */
 
 package template
+
+// 创建请求
+type postTemplateReq struct {
+	Name string `json:"name" validate:"required"` // 名称
+}
+
+// 更新请求
+type putTemplateReq struct {
+	Name string `json:"name" validate:"required"` // 名称
+}
