@@ -10,7 +10,7 @@ import (
 	"medium-server-go/api/public"
 	"medium-server-go/api/user"
 	"medium-server-go/framework/app"
-	"medium-server-go/framework/example"
+	"medium-server-go/framework/generate/api"
 )
 
 // @title    Medium 接口文档
@@ -27,7 +27,7 @@ func main() {
 	server.RouterGroup("/user", user.GetRouters())
 
 	// 注册演示路由
-	server.RouterGroup("/", example.GetRouters())
+	server.RouterGroup("/", api.GetRouters())
 
 	// 启动服务
 	server.Run(8080)

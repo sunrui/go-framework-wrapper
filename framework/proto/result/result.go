@@ -20,10 +20,10 @@ type Result struct {
 
 // Pagination 分页对象
 type Pagination struct {
-	Page      int `json:"page"`      // 当前页，从 0 开始
-	PageSize  int `json:"pageSize"`  // 每页大小
-	TotalPage int `json:"totalPage"` // 总页数
-	TotalSize int `json:"totalSize"` // 总大小
+	Page      int   `json:"page"`      // 当前页，从 0 开始
+	PageSize  int   `json:"pageSize"`  // 每页大小
+	TotalPage int64 `json:"totalPage"` // 总页数
+	TotalSize int64 `json:"totalSize"` // 总大小
 }
 
 // PageResult 结果对象
