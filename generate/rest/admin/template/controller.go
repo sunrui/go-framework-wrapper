@@ -7,12 +7,12 @@
 package template
 
 import (
+	"framework/app"
+	"framework/proto/request"
+	"framework/proto/response"
+	"framework/proto/result"
+	"generate/service/template"
 	"github.com/gin-gonic/gin"
-	"medium-server-go/framework/app"
-	"medium-server-go/framework/proto/request"
-	"medium-server-go/framework/proto/response"
-	"medium-server-go/framework/proto/result"
-	"medium-server-go/generate/service/template"
 )
 
 // @Summary  获取某一个
@@ -20,7 +20,7 @@ import (
 // @Accept   json
 // @Produce  json
 // @Success  200  {object}  result.Result{data=Template}  true
-// @Router   /Template/:id [get]
+// @Router   /admin/Template/:id [get]
 func getOne(ctx *gin.Context) {
 	// 获取 id
 	id := ctx.Param("id")
@@ -45,7 +45,7 @@ func getOne(ctx *gin.Context) {
 // @Param    page      query     int                                 true  "分页，从 0 开始"
 // @Param    pageSize  query     int                                 true  "分页大小"
 // @Success  200       {object}  result.PageResult{data=[]Template}  true
-// @Router   /Template [get]
+// @Router   /admin/Template [get]
 func getAll(ctx *gin.Context) {
 	// 分页请求对象
 	var req request.PageRequest
@@ -75,7 +75,7 @@ func getAll(ctx *gin.Context) {
 // @Produce  json
 // @Param    json  body      putTemplateReq  true  "struct"
 // @Success  200   {object}  result.Result   true
-// @Router   /Template/:id [put]
+// @Router   /admin/Template/:id [put]
 func putOne(ctx *gin.Context) {
 	// 分页请求对象
 	var req putTemplateReq
@@ -98,7 +98,7 @@ func putOne(ctx *gin.Context) {
 // @Accept   json
 // @Produce  json
 // @Success  200  {object}  result.Result  true
-// @Router   /Template/ [put]
+// @Router   /admin/Template/ [put]
 func deleteOne(ctx *gin.Context) {
 	// 获取 id
 	id := ctx.Param("id")

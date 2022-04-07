@@ -19,7 +19,7 @@ func main() {
 	//server.RouterGroup("/user", rest.GetRouters())
 	//
 	//// 注册演示路由
-	//server.RouterGroup("/", api.GetRouters())
+	//server.RouterGroup("/", rest.GetRouters())
 	//
 	//// 启动服务
 	//server.Run(8080)

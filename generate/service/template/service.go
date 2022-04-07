@@ -8,9 +8,9 @@ package template
 
 import (
 	"errors"
+	"framework/db"
+	"framework/proto/result"
 	"gorm.io/gorm"
-	"medium-server-go/framework/db"
-	"medium-server-go/framework/proto/result"
 )
 
 // FindById 根据 id 查询

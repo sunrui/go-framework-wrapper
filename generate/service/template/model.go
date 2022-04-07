@@ -6,9 +6,7 @@
 
 package template
 
-import (
-	"medium-server-go/framework/db"
-)
+import "framework/db"
 
 // Template ${Template.name}
 type Template struct {
