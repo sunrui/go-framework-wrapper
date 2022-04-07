@@ -52,6 +52,18 @@ func (result Result) WithData(data interface{}) Result {
 	return result
 }
 
+// WithIdData 设置 id 结果对象数据
+func (result Result) WithIdData(id string) Result {
+	type idData struct {
+		Id string `json:"id"`
+	}
+
+	result.Data = idData{
+		Id: id,
+	}
+	return result
+}
+
 // WithError 设置错误对象数据
 func (result Result) WithError(data interface{}) Result {
 	dataMap := make(map[string]interface{})
