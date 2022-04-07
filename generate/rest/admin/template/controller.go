@@ -1,7 +1,7 @@
 /*
- * Copyright (c) 2022 honeysense.com All rights reserved.
+ * Copyright (c) $today.year honeysense.com All rights reserved.
  * Author: sunrui
- * Date: 2022-04-07 16:12:19
+ * Date: $today.format("yyyy-MM-dd HH:mm:ss")
  */
 
 package template
@@ -16,7 +16,7 @@ import (
 )
 
 // @Summary  获取某一个
-// @Tags     ${Template.name}
+// @Tags     模板
 // @Accept   json
 // @Produce  json
 // @Param    id   path      string                        true  "id"
@@ -41,7 +41,7 @@ func getOne(ctx *gin.Context) {
 }
 
 // @Summary  获取所有
-// @Tags     ${Template.name}
+// @Tags     模板
 // @Accept   json
 // @Produce  json
 // @Param    page      query     int                                 true  "分页，从 0 开始"
@@ -73,7 +73,7 @@ func getAll(ctx *gin.Context) {
 }
 
 // @Summary  更新
-// @Tags     ${Template.name}
+// @Tags     模板
 // @Accept   json
 // @Produce  json
 // @Param    id    path      string          true  "id"
@@ -108,7 +108,7 @@ func putOne(ctx *gin.Context) {
 }
 
 // @Summary  删除
-// @Tags     ${Template.name}
+// @Tags     模板
 // @Accept   json
 // @Produce  json
 // @Param    id   path      string         true  "id"

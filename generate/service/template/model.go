@@ -1,14 +1,14 @@
 /*
- * Copyright (c) 2022 honeysense.com All rights reserved.
+ * Copyright (c) $today.year honeysense.com All rights reserved.
  * Author: sunrui
- * Date: 2022-04-07 16:12:55
+ * Date: $today.format("yyyy-MM-dd HH:mm:ss")
  */
 
 package template
 
 import "framework/db"
 
-// Template ${Template.name}
+// Template 模板
 type Template struct {
 	db.Model        // 通用参数
 	UserId   string `json:"userId"` // 用户 id

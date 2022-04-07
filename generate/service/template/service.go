@@ -1,7 +1,7 @@
 /*
- * Copyright (c) 2022 honeysense.com All rights reserved.
+ * Copyright (c) $today.year honeysense.com All rights reserved.
  * Author: sunrui
- * Date: 2022-04-07 16:12:55
+ * Date: $today.format("yyyy-MM-dd HH:mm:ss")
  */
 
 package template
