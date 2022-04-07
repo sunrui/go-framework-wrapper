@@ -10,7 +10,7 @@ import (
 	"medium-server-go/api/public"
 	"medium-server-go/api/user"
 	"medium-server-go/framework/app"
-	"medium-server-go/framework/generate/api"
+	"medium-server-go/framework/low_code/api"
 )
 
 // @title    Medium 接口文档
