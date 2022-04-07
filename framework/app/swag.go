@@ -9,7 +9,6 @@ package app
 import (
 	"bytes"
 	"io/ioutil"
-	//_ "medium-server-go/docs"
 	"os/exec"
 )
 
@@ -42,10 +41,10 @@ func redoc(suffix string) []byte {
 }
 
 // 执行命令行
-func commandExec(name string, argv string) {
+func commandExec(name string, arg ...string) {
 	var out bytes.Buffer
 
-	cmd := exec.Command(name, argv)
+	cmd := exec.Command(name, arg...)
 	cmd.Stdout = &out
 
 	err := cmd.Start()
@@ -63,6 +62,6 @@ func commandExec(name string, argv string) {
 
 // 执行 swag 更新文档
 func init() {
-	commandExec("swag", "init")
+	commandExec("swag", "init", "--parseDependency")
 	commandExec("swag", "fmt")
 }

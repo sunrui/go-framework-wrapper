@@ -10,9 +10,9 @@ import (
 	"framework/app"
 )
 
-// @title    Medium 接口文档
+// @title    Medium 后台接口文档
 // @version  1.0
-// @host     127.0.0.1:8080
+// @host     127.0.0.1:8082
 // @BasePath
 func main() {
 	// 创建服务
@@ -23,8 +23,6 @@ func main() {
 		user.GetRouter(),
 	})
 
-	// 注册演示路由
-
 	// 启动服务
-	server.Run(8080)
+	server.Run(8082)
 }

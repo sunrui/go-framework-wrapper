@@ -13,7 +13,7 @@ import (
 	"framework/app"
 )
 
-// @title    Medium 接口文档
+// @title    Medium 公用接口文档
 // @version  1.0
 // @host     127.0.0.1:8080
 // @BasePath
