@@ -48,11 +48,11 @@ ERROR:
 		Validate string `json:"validate"` // 较验值
 	}
 
-	errData := make(map[string]interface{})
+	dataMap := make(map[string]interface{})
 
 	// 解析内容出错
 	if errors.As(err, &validationErrors) {
-		var paramErrors []ParamError
+		var parameter []ParamError
 
 		// 遍历解析参数
 		for _, e := range validationErrors {
@@ -61,16 +61,16 @@ ERROR:
 				validate += "=" + e.Param()
 			}
 
-			paramErrors = append(paramErrors, ParamError{
+			parameter = append(parameter, ParamError{
 				Field:    strings.ToLower(e.Field()),
 				Validate: validate,
 			})
 		}
 
-		errData["parameter"] = paramErrors
+		dataMap["parameter"] = parameter
 	} else {
-		errData["error"] = fmt.Sprintf("%s", err)
+		dataMap["error"] = fmt.Sprintf("%s", err)
 	}
 
-	panic(result.ParameterError.WithData(errData))
+	panic(result.ParameterError.WithData(dataMap))
 }
