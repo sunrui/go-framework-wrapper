@@ -32,7 +32,7 @@ func getOne(ctx *gin.Context) {
 
 	// 未找到结果
 	if one == nil {
-		response.New(ctx).Data(result.NotFound)
+		response.New(ctx).Data(result.NoData)
 		return
 	}
 
@@ -44,7 +44,7 @@ func getOne(ctx *gin.Context) {
 // @Tags     模板
 // @Accept   json
 // @Produce  json
-// @Param    page      query     int                                 true  "分页，从 0 开始"
+// @Param    page      query     int                                 true  "分页，从 1 开始"
 // @Param    pageSize  query     int                                 true  "分页大小"
 // @Success  200       {object}  result.PageResult{data=[]Template}  true
 // @Failure  400       {object}  result.Result                       true  "{"code":"NotFound","message":"不存在"}"
@@ -57,11 +57,11 @@ func getAll(ctx *gin.Context) {
 	app.ValidateParameter(ctx, &req)
 
 	// 根据 userId 查询所有
-	array, pagination := template.FindAll(req.Page, req.PageSize)
+	array, pagination := template.FindAll(req.Page, req.PageSize, true)
 
 	// 未找到结果
 	if len(array) == 0 {
-		response.New(ctx).Data(result.NotFound)
+		response.New(ctx).Data(result.NoData)
 		return
 	}
 
@@ -70,6 +70,35 @@ func getAll(ctx *gin.Context) {
 		Result:     result.Ok.WithData(array),
 		Pagination: pagination,
 	})
+}
+
+// @Summary  创建
+// @Tags     模板
+// @Accept   json
+// @Produce  json
+// @Param    json  body      postTemplateReq  true  "json"
+// @Success  200   {object}  result.Result    true
+// @Failure  400   {object}  result.Result    true  "{"code":"NotFound","message":"不存在"}"
+// @Router   /admin/Template [post]
+func postOne(ctx *gin.Context) {
+	// 分页请求对象
+	var req postTemplateReq
+
+	// 较验参数
+	app.ValidateParameter(ctx, &req)
+
+	// 获取当前 userId
+	userId := "token.GetUserId(ctx)"
+
+	// 保存
+	one := template.Template{
+		UserId: userId,
+		Name:   req.Name,
+	}
+	one.Save()
+
+	// 返回结果
+	response.New(ctx).IdData(one.Id)
 }
 
 // @Summary  更新

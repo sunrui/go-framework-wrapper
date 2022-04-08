@@ -8,6 +8,6 @@ package request
 
 // PageRequest 分页请求对象
 type PageRequest struct {
-	Page     int `json:"page" form:"page" validate:"required,gte=0,lte=9999"`       // 分页，从 0 开始
+	Page     int `json:"page" form:"page" validate:"required,gte=1,lte=9999"`       // 分页，从 1 开始
 	PageSize int `json:"pageSize" form:"pageSize" validate:"required,gte=1,lte=99"` // 分页大小
 }

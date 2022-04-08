@@ -56,24 +56,35 @@ func FindByUserId(userId string) *Template {
 }
 
 // FindAllByUserId 根据 userId 查询所有
-func FindAllByUserId(userId string, page int, pageSize int) (template []Template, pagination result.Pagination) {
-	return FindAllByModel(Template{
+func FindAllByUserId(userId string, page int, pageSize int, asc bool) (template []Template, pagination result.Pagination) {
+	return FindAllByModel(&Template{
 		UserId: userId,
-	}, page, pageSize)
+	}, page, pageSize, asc)
 }
 
 // FindAll 查询所有
-func FindAll(page int, pageSize int) (template []Template, pagination result.Pagination) {
-	return FindAllByModel(Template{}, page, pageSize)
+func FindAll(page int, pageSize int, asc bool) (template []Template, pagination result.Pagination) {
+	return FindAllByModel(nil, page, pageSize, asc)
 }
 
 // FindAllByModel 根据 Model 查询所有
-func FindAllByModel(where Template, page int, pageSize int) (template []Template, pagination result.Pagination) {
-	db.Mysql.Limit(pageSize).Offset((page - 1) * pageSize).Where(where).Find(&template)
+func FindAllByModel(where *Template, page int, pageSize int, asc bool) (template []Template, pagination result.Pagination) {
+	var order string
 
-	var totalSize int64
-	db.Mysql.Model(&Template{}).Find(where).Count(&totalSize)
+	// 升降序
+	if asc {
+		order = "created_at ASC"
+	} else {
+		order = "created_at DESC"
+	}
 
+	// 查询结果
+	db.Mysql.Limit(pageSize).Offset((page - 1) * pageSize).Order(order).Where(where).Find(&template)
+
+	// 总条数
+	totalSize := CountAllByModel(where)
+
+	// 计算分页
 	totalPage := totalSize / int64(pageSize)
 	if totalSize%int64(pageSize) != 0 {
 		totalPage++
@@ -91,20 +102,26 @@ func FindAllByModel(where Template, page int, pageSize int) (template []Template
 
 // CountAllByUserId 根据 userId 获取总条数
 func CountAllByUserId(userId string) int64 {
-	return CountAllByModel(Template{
+	return CountAllByModel(&Template{
 		UserId: userId,
 	})
 }
 
 // CountAll 获取总条数
 func CountAll() int64 {
-	return CountAllByModel(Template{})
+	return CountAllByModel(nil)
 }
 
 // CountAllByModel 根据 Model 获取总条数
-func CountAllByModel(where Template) int64 {
+func CountAllByModel(where *Template) int64 {
 	var totalSize int64
-	db.Mysql.Model(&Template{}).Find(where).Count(&totalSize)
+
+	if where != nil {
+		db.Mysql.Where(where).Count(&totalSize)
+	} else {
+		db.Mysql.Model(Template{}).Count(&totalSize)
+	}
+
 	return totalSize
 }
 

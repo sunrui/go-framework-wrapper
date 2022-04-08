@@ -84,6 +84,7 @@ var (
 	Ok = newResult(200, "Ok", "成功")
 
 	// 业务级错误 400
+	NoData     = newResult(400, "NoData", "没有数据")
 	NotFound   = newResult(400, "NotFound", "不存在")
 	NotMatch   = newResult(400, "NotMatch", "不匹配")
 	Duplicate  = newResult(400, "Duplicate", "重复操作")

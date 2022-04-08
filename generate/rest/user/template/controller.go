@@ -36,7 +36,7 @@ func getOne(ctx *gin.Context) {
 
 	// 未找到结果
 	if one == nil {
-		response.New(ctx).Data(result.NotFound)
+		response.New(ctx).Data(result.NoData)
 		return
 	}
 
@@ -48,7 +48,7 @@ func getOne(ctx *gin.Context) {
 // @Tags     模板
 // @Accept   json
 // @Produce  json
-// @Param    page      query     int                                 true  "分页，从 0 开始"
+// @Param    page      query     int                                 true  "分页，从 1 开始"
 // @Param    pageSize  query     int                                 true  "分页大小"
 // @Success  200       {object}  result.PageResult{data=[]Template}  true
 // @Failure  400       {object}  result.Result                       true  "{"code":"NotFound","message":"不存在"}"
@@ -64,11 +64,11 @@ func getAll(ctx *gin.Context) {
 	app.ValidateParameter(ctx, &req)
 
 	// 根据 userId 查询所有
-	array, pagination := template.FindAllByUserId(userId, req.Page, req.PageSize)
+	array, pagination := template.FindAllByUserId(userId, req.Page, req.PageSize, true)
 
 	// 未找到结果
 	if len(array) == 0 {
-		response.New(ctx).Data(result.NotFound)
+		response.New(ctx).Data(result.NoData)
 		return
 	}
 

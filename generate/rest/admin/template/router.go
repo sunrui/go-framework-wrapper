@@ -26,8 +26,12 @@ func GetRouter() app.Router {
 				RelativePath: "/",
 				HandlerFunc:  getAll,
 			}, {
-				HttpMethod:   http.MethodPut,
+				HttpMethod:   http.MethodPost,
 				RelativePath: "/",
+				HandlerFunc:  postOne,
+			}, {
+				HttpMethod:   http.MethodPut,
+				RelativePath: "/:id",
 				HandlerFunc:  putOne,
 			}, {
 				HttpMethod:   http.MethodDelete,
