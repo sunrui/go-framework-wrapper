@@ -21,7 +21,7 @@ import (
 // @Produce  json
 // @Param    id   path      string                        true  "id"
 // @Success  200  {object}  result.Result{data=Template}  true
-// @Failure  400  {object}  result.Result                 true  "{"code":"NotFound","message":"不存在"}"
+// @Failure  400  {object}  result.Result                 true  "{"code":"NoData","message":"没有数据"}"
 // @Router   /admin/Template/:id [get]
 func getOne(ctx *gin.Context) {
 	// 获取 id
@@ -47,7 +47,7 @@ func getOne(ctx *gin.Context) {
 // @Param    page      query     int                                 true  "分页，从 1 开始"
 // @Param    pageSize  query     int                                 true  "分页大小"
 // @Success  200       {object}  result.PageResult{data=[]Template}  true
-// @Failure  400       {object}  result.Result                       true  "{"code":"NotFound","message":"不存在"}"
+// @Failure  400       {object}  result.Result                       true  "{"code":"NoData","message":"没有数据"}"
 // @Router   /admin/Template [get]
 func getAll(ctx *gin.Context) {
 	// 分页请求对象
@@ -78,7 +78,6 @@ func getAll(ctx *gin.Context) {
 // @Produce  json
 // @Param    json  body      postTemplateReq  true  "json"
 // @Success  200   {object}  result.Result    true
-// @Failure  400   {object}  result.Result    true  "{"code":"NotFound","message":"不存在"}"
 // @Router   /admin/Template [post]
 func postOne(ctx *gin.Context) {
 	// 分页请求对象

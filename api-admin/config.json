@@ -6,12 +6,12 @@
       "port": 3306,
       "database": "medium",
       "user": "root",
-      "password": "honeysenselt"
+      "password": "root"
     },
     "redis": {
       "host": "localhost",
       "port": 6379,
-      "password": "honeysenselt",
+      "password": "",
       "database": 0
     },
     "jwt": {
