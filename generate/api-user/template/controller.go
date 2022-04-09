@@ -23,7 +23,7 @@ import (
 // @Param    id   path      string                        true  "id"
 // @Success  200  {object}  result.Result{data=Template}  true
 // @Failure  400  {object}  result.Result                 true  "{"code":"NoData","message":"没有数据"}"
-// @Router   /user/Template/:id [get]
+// @Router   /api-user/Template/:id [get]
 func getOne(ctx *gin.Context) {
 	// 获取 id
 	id := ctx.Param("id")
@@ -52,7 +52,7 @@ func getOne(ctx *gin.Context) {
 // @Param    pageSize  query     int                                 true  "分页大小"
 // @Success  200       {object}  result.PageResult{data=[]Template}  true
 // @Failure  400       {object}  result.Result                       true  "{"code":"NoData","message":"没有数据"}"
-// @Router   /user/Template [get]
+// @Router   /api-user/Template [get]
 func getAll(ctx *gin.Context) {
 	// 分页请求对象
 	var req request.PageRequest
@@ -85,9 +85,9 @@ func getAll(ctx *gin.Context) {
 // @Produce  json
 // @Param    json  body      postTemplateReq  true  "json"
 // @Success  200   {object}  result.Result    true
-// @Router   /user/Template [post]
+// @Router   /api-user/Template [post]
 func postOne(ctx *gin.Context) {
-	// 分页请求对象
+	// 创建请求对象
 	var req postTemplateReq
 
 	// 较验参数
@@ -115,9 +115,9 @@ func postOne(ctx *gin.Context) {
 // @Param    json  body      putTemplateReq  true  "json"
 // @Success  200   {object}  result.Result   true
 // @Failure  400   {object}  result.Result   true  "{"code":"NotFound","message":"不存在"}"
-// @Router   /user/Template/:id [put]
+// @Router   /api-user/Template/:id [put]
 func putOne(ctx *gin.Context) {
-	// 分页请求对象
+	// 更新请求对象
 	var req putTemplateReq
 
 	// 较验参数
@@ -151,7 +151,7 @@ func putOne(ctx *gin.Context) {
 // @Param    id   path      string         true  "id"
 // @Success  200  {object}  result.Result  true
 // @Failure  400  {object}  result.Result  true  "{"code":"NotFound","message":"不存在"}"
-// @Router   /user/Template/ [put]
+// @Router   /api-user/Template/ [put]
 func deleteOne(ctx *gin.Context) {
 	// 获取 id
 	id := ctx.Param("id")

@@ -6,8 +6,8 @@
 package main
 
 import (
-	"api-user/rest/open"
-	"api-user/rest/user"
+	"api-user/open"
+	"api-user/user"
 	"framework/app"
 )
 
@@ -20,7 +20,7 @@ func main() {
 	server := app.New()
 
 	// 注册路由
-	server.RouterGroup("/user", []app.Router{
+	server.RouterGroup("/api-user", []app.Router{
 		open.GetRouter(),
 		user.GetRouter(),
 	})

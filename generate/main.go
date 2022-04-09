@@ -8,8 +8,8 @@ package main
 
 import (
 	"framework/app"
-	admin "generate/rest/admin/template"
-	user "generate/rest/user/template"
+	admin "generate/api-admin/template"
+	user "generate/api-user/template"
 )
 
 // @title    Medium 模板接口文档

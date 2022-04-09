@@ -16,5 +16,5 @@ func getUser(ctx *gin.Context) {
 	id := ctx.Param("id")
 	fmt.Println(id)
 
-	//common-gin.Response(ctx, exception.Result.WithData(example-example-user))
+	//common-gin.Response(ctx, exception.Result.WithData(example-example-api-user))
 }

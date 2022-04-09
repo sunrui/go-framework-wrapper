@@ -6,10 +6,10 @@
 package main
 
 import (
-	"api-public/rest/area"
-	"api-public/rest/auth"
-	"api-public/rest/common"
-	"api-public/rest/sms"
+	"api-public/area"
+	"api-public/auth"
+	"api-public/common"
+	"api-public/sms"
 	"framework/app"
 )
 

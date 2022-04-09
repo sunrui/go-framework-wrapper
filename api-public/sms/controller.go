@@ -95,7 +95,7 @@ func postVerify(ctx *gin.Context) {
 
 	// 获取缓存数据
 	if !cache.Exists() {
-		response.New(ctx).Data(result.NotFound)
+		response.New(ctx).Data(result.NoData)
 		return
 	}
 
