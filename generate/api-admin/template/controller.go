@@ -1,6 +1,6 @@
 /*
  * Copyright (c) $today.year honeysense.com All rights reserved.
- * Author: sunrui
+ * Author: $author
  * Date: $today.format("yyyy-MM-dd HH:mm:ss")
  */
 
@@ -22,7 +22,7 @@ import (
 // @Param    id   path      string                        true  "id"
 // @Success  200  {object}  result.Result{data=Template}  true
 // @Failure  400  {object}  result.Result                 true  "{"code":"NoData","message":"没有数据"}"
-// @Router   /api-admin/Template/:id [get]
+// @Router   /api-admin/template/:id [get]
 func getOne(ctx *gin.Context) {
 	// 获取 id
 	id := ctx.Param("id")
@@ -48,7 +48,7 @@ func getOne(ctx *gin.Context) {
 // @Param    pageSize  query     int                                 true  "分页大小"
 // @Success  200       {object}  result.PageResult{data=[]Template}  true
 // @Failure  400       {object}  result.Result                       true  "{"code":"NoData","message":"没有数据"}"
-// @Router   /api-admin/Template [get]
+// @Router   /api-admin/template [get]
 func getAll(ctx *gin.Context) {
 	// 分页请求对象
 	var req request.PageRequest
@@ -78,7 +78,7 @@ func getAll(ctx *gin.Context) {
 // @Produce  json
 // @Param    json  body      postTemplateReq  true  "json"
 // @Success  200   {object}  result.Result    true
-// @Router   /api-admin/Template [post]
+// @Router   /api-admin/template [post]
 func postOne(ctx *gin.Context) {
 	// 创建请求对象
 	var req postTemplateReq
@@ -108,7 +108,7 @@ func postOne(ctx *gin.Context) {
 // @Param    json  body      putTemplateReq  true  "json"
 // @Success  200   {object}  result.Result   true
 // @Failure  400   {object}  result.Result   true  "{"code":"NotFound","message":"不存在"}"
-// @Router   /api-admin/Template/:id [put]
+// @Router   /api-admin/template/:id [put]
 func putOne(ctx *gin.Context) {
 	// 更新请求对象
 	var req putTemplateReq
@@ -142,7 +142,7 @@ func putOne(ctx *gin.Context) {
 // @Param    id   path      string         true  "id"
 // @Success  200  {object}  result.Result  true
 // @Failure  400  {object}  result.Result  true  "{"code":"NotFound","message":"不存在"}"
-// @Router   /api-admin/Template/ [put]
+// @Router   /api-admin/template/ [put]
 func deleteOne(ctx *gin.Context) {
 	// 获取 id
 	id := ctx.Param("id")

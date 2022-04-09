@@ -1,6 +1,6 @@
 /*
  * Copyright (c) $today.year honeysense.com All rights reserved.
- * Author: sunrui
+ * Author: $author
  * Date: $today.format("yyyy-MM-dd HH:mm:ss")
  */
 
