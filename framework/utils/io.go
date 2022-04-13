@@ -8,6 +8,7 @@ package utils
 
 import (
 	"io"
+	"io/fs"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -39,14 +40,16 @@ func CopyFile(dst, src string) error {
 
 // CopyDirectory 拷贝文件夹
 func CopyDirectory(src, dst string) error {
-	fileInfo, e := os.Stat(src)
-	if e != nil {
-		return e
+	fileInfo, err := os.Stat(src)
+	if err != nil {
+		return err
 	}
 
 	if fileInfo.IsDir() {
+		var list []fs.FileInfo
+		
 		// src 是文件夹，那么定义 dst 也是文件夹
-		if list, e := ioutil.ReadDir(src); e == nil {
+		if list, err = ioutil.ReadDir(src); err == nil {
 			for _, item := range list {
 				src = filepath.Join(src, item.Name())
 				dst = filepath.Join(dst, item.Name())
@@ -54,18 +57,18 @@ func CopyDirectory(src, dst string) error {
 				return CopyDirectory(src, dst)
 			}
 		} else {
-			return e
+			return err
 		}
 	} else {
 		// src 是文件，那么创建 dst 的文件夹
 		dir := filepath.Dir(dst)
 
-		if _, e = os.Stat(dir); e != nil {
-			return e
+		if _, err = os.Stat(dir); err != nil {
+			return err
 		}
 
-		if e = os.MkdirAll(dir, os.ModeDir); e != nil {
-			return e
+		if err = os.MkdirAll(dir, os.ModeDir); err != nil {
+			return err
 		}
 	}
 
