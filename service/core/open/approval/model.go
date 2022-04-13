@@ -24,11 +24,8 @@ type OpenApproval struct {
 
 // 初始化
 func init() {
-	var err error
-
 	// 创建表入驻审核
-	err = db.Mysql.AutoMigrate(&OpenApproval{})
-	if err != nil {
+	if err := db.Mysql.AutoMigrate(&OpenApproval{}); err != nil {
 		panic(err.Error())
 	}
 }

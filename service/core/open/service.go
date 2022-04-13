@@ -14,11 +14,9 @@ import (
 func GetOpen(userId string) []Open {
 	var open []Open
 
-	query := db.Mysql.Where(Open{
+	if query := db.Mysql.Where(Open{
 		UserId: userId,
-	}).Find(&open)
-
-	if query.Error != nil {
+	}).Find(&open); query.Error != nil {
 		panic(query.Error.Error())
 	}
 

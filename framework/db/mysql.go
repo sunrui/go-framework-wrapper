@@ -33,13 +33,12 @@ func init() {
 		mysqlConf.Port,
 		mysqlConf.Database)
 
-	Mysql, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
+	if Mysql, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
 		NamingStrategy: schema.NamingStrategy{
 			TablePrefix:   "t_", // 表名前缀
 			SingularTable: true, // 使用单数表名
 		},
-	})
-	if err != nil {
+	}); err != nil {
 		panic(err.Error())
 	}
 }

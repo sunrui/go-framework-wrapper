@@ -15,8 +15,7 @@ import (
 
 // Auth 授权中间件
 func Auth(ctx *gin.Context) {
-	_, err := token.Get(ctx)
-	if err != nil {
+	if _, err := token.Get(ctx); err != nil {
 		response.New(ctx).Data(result.NoAuth)
 	}
 }

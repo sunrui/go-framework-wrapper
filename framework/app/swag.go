@@ -43,17 +43,16 @@ func redoc(suffix string) []byte {
 // 执行命令行
 func commandExec(name string, arg ...string) {
 	var out bytes.Buffer
+	var err error
 
 	cmd := exec.Command(name, arg...)
 	cmd.Stdout = &out
 
-	err := cmd.Start()
-	if err != nil {
+	if err = cmd.Start(); err != nil {
 		panic(err.Error())
 	}
 
-	err = cmd.Wait()
-	if err != nil {
+	if err = cmd.Wait(); err != nil {
 		panic(err.Error())
 	}
 

@@ -74,16 +74,17 @@ func Get() *Config {
 
 // 加载当前配置
 func init() {
+	var stream []byte
+	var err error
+
 	// 获取当前项目根目录 config.json
 	pwd, _ := os.Getwd()
-	stream, err := ioutil.ReadFile(pwd + "/config.json")
-	if err != nil {
+	if stream, err = ioutil.ReadFile(pwd + "/config.json"); err != nil {
 		panic(err.Error())
 	}
 
 	// 反射配置文件
-	err = json.Unmarshal(stream, &config)
-	if err != nil {
+	if err = json.Unmarshal(stream, &config); err != nil {
 		panic(err.Error())
 	}
 }

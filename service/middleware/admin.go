@@ -15,8 +15,7 @@ import (
 
 // Admin 管理中间件
 func Admin(ctx *gin.Context) {
-	_, err := token.Get(ctx)
-	if err != nil {
+	if _, err := token.Get(ctx); err != nil {
 		response.New(ctx).Data(result.NoAuth)
 	}
 }

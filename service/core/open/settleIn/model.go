@@ -26,11 +26,8 @@ type OpenSettleIn struct {
 
 // 初始化
 func init() {
-	var err error
-
 	// 创建表入驻资料
-	err = db.Mysql.AutoMigrate(&OpenSettleIn{})
-	if err != nil {
+	if err := db.Mysql.AutoMigrate(&OpenSettleIn{}); err != nil {
 		panic(err.Error())
 	}
 }

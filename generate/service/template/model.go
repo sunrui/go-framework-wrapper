@@ -17,11 +17,8 @@ type Template struct {
 
 // 初始化
 func init() {
-	var err error
-
 	// 创建表入驻
-	err = db.Mysql.AutoMigrate(&Template{})
-	if err != nil {
+	if err := db.Mysql.AutoMigrate(&Template{}); err != nil {
 		panic(err.Error())
 	}
 }

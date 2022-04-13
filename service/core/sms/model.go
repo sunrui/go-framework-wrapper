@@ -26,8 +26,7 @@ type Sms struct {
 // 初始化
 func init() {
 	// 创建表验证码
-	err := db.Mysql.AutoMigrate(&Sms{})
-	if err != nil {
+	if err := db.Mysql.AutoMigrate(&Sms{}); err != nil {
 		panic(err.Error())
 	}
 }

@@ -91,8 +91,7 @@ func Get(ctx *gin.Context) (payload *Payload, err error) {
 
 	// 从 header 中获取令牌
 	getHeaderToken := func() string {
-		token = ctx.GetHeader("Authorization")
-		if token == "" {
+		if token = ctx.GetHeader("Authorization"); token == "" {
 			return ""
 		}
 
@@ -105,10 +104,8 @@ func Get(ctx *gin.Context) (payload *Payload, err error) {
 	}
 
 	// 从 cookie 中获取令牌
-	token = getHeaderToken()
-	if token == "" {
-		token, err = ctx.Cookie(tokenKey)
-		if err != nil {
+	if token = getHeaderToken(); token == "" {
+		if token, err = ctx.Cookie(tokenKey); err != nil {
 			return nil, err
 		}
 	}

@@ -20,11 +20,8 @@ type Open struct {
 
 // 初始化
 func init() {
-	var err error
-
 	// 创建表入驻
-	err = db.Mysql.AutoMigrate(&Open{})
-	if err != nil {
+	if err := db.Mysql.AutoMigrate(&Open{}); err != nil {
 		panic(err.Error())
 	}
 }

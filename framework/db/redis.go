@@ -48,8 +48,7 @@ func init() {
 	}
 
 	// 尝试数据库连接
-	_, err := Redis.pool.Get().Do("PING")
-	if err != nil {
+	if _, err := Redis.pool.Get().Do("PING"); err != nil {
 		panic(err.Error())
 	}
 }

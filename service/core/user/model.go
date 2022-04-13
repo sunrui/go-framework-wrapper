@@ -24,8 +24,7 @@ func (user *User) Save() {
 // 初始化
 func init() {
 	// 创建表用户
-	err := db.Mysql.AutoMigrate(&User{})
-	if err != nil {
+	if err := db.Mysql.AutoMigrate(&User{}); err != nil {
 		panic(err.Error())
 	}
 }
