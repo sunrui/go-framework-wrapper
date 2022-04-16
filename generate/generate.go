@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2022 honeysense.com All rights reserved.
  * Author: sunrui
- * Date: 2022/04/16 16:07:16
+ * Date: 2022/04/16 16:43:16
  */
 
 package main
@@ -65,7 +65,7 @@ func runGenerate(model, modelName string) error {
 				fileContent = strings.ReplaceAll(fileContent, "Template", model)
 				fileContent = strings.ReplaceAll(fileContent, strings.ToLower("Template"), strings.ToLower(model))
 				fileContent = strings.ReplaceAll(fileContent, "模板", modelName)
-				fileContent = strings.ReplaceAll(fileContent, "generate/service/core/test", "service/core/test")
+				fileContent = strings.ReplaceAll(fileContent, "generate/service/core", "service/core")
 
 				err = ioutil.WriteFile(fileName, []byte(fileContent), os.ModeDevice)
 				if err != nil {
