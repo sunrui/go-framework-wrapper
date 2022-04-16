@@ -1,14 +1,13 @@
 /*
  * Copyright (c) 2022 honeysense.com All rights reserved.
  * Author: sunrui
- * Date: 2022/04/16 14:28:16
+ * Date: 2022/04/16 15:40:16
  */
 
 package utils
 
 import (
 	"io"
-	"io/fs"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -46,10 +45,8 @@ func CopyDirectory(src, dst string) error {
 	}
 
 	if fileInfo.IsDir() {
-		var list []fs.FileInfo
-
 		// src 是文件夹，那么定义 dst 也是文件夹
-		if list, err = ioutil.ReadDir(src); err == nil {
+		if list, err := ioutil.ReadDir(src); err == nil {
 			// 递归每一个文件
 			for _, item := range list {
 				if err = CopyDirectory(filepath.Join(src, item.Name()), filepath.Join(dst, item.Name())); err != nil {
@@ -63,7 +60,7 @@ func CopyDirectory(src, dst string) error {
 		// src 是文件，那么创建 dst 的文件夹
 		dir := filepath.Dir(dst)
 
-		if _, err = os.Stat(dir); err != nil {
+		if _, err := os.Stat(dir); err != nil {
 			if err = os.MkdirAll(dir, os.ModePerm); err != nil {
 				return err
 			}
