@@ -1,14 +1,13 @@
 /*
- * Copyright (c) 2022 honeysense All rights reserved.
+ * Copyright (c) 2022 honeysense.com All rights reserved.
  * Author: sunrui
- * Date: 2022/01/12 01:07:12
+ * Date: 2022-04-16 22:43:52
  */
 
 package db
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"framework/config"
 	"github.com/garyburd/redigo/redis"
@@ -97,7 +96,7 @@ func (redisPool *redisPool) Get(key string) *string {
 }
 
 // GetJson 获取对象
-func (redisPool *redisPool) GetJson(key string, dest interface{}) (err error) {
+func (redisPool *redisPool) GetJson(key string, dst interface{}) bool {
 	pool := redisPool.pool.Get()
 	defer func() {
 		_ = pool.Close()
@@ -105,15 +104,20 @@ func (redisPool *redisPool) GetJson(key string, dest interface{}) (err error) {
 
 	reply, err := pool.Do("GET", key)
 	if err != nil {
-		return err
+		panic(err.Error())
 	}
 
 	if reply == nil {
-		return errors.New("key not exist")
+		return false
 	}
 
 	// json 反序列化
-	return json.Unmarshal(reply.([]uint8), dest)
+	err = json.Unmarshal(reply.([]uint8), dst)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	return true
 }
 
 // Exists 是否存在对象
@@ -161,12 +165,10 @@ func (redisPool *redisPool) HashSet(hash string, key string, value interface{}) 
 		value = string(marshal)
 	}
 
-	ret, err := pool.Do("HSET", hash, key, value)
+	_, err := pool.Do("HSET", hash, key, value)
 	if err != nil {
 		panic(err.Error())
 	}
-
-	fmt.Println(ret)
 }
 
 // HashGet 获取 hash 对象
@@ -190,7 +192,7 @@ func (redisPool *redisPool) HashGet(hash string, key string) *string {
 }
 
 // HashGetJson 获取 hash 对象
-func (redisPool *redisPool) HashGetJson(hash string, key string, dest interface{}) (err error) {
+func (redisPool *redisPool) HashGetJson(hash string, key string, dst interface{}) bool {
 	pool := redisPool.pool.Get()
 	defer func() {
 		_ = pool.Close()
@@ -198,13 +200,18 @@ func (redisPool *redisPool) HashGetJson(hash string, key string, dest interface{
 
 	reply, err := pool.Do("HGET", hash, key)
 	if err != nil {
-		return err
+		panic(err.Error())
 	}
 
 	if reply == nil {
-		return errors.New("key not exist")
+		return false
 	}
 
 	// json 反序列化
-	return json.Unmarshal(reply.([]uint8), dest)
+	err = json.Unmarshal(reply.([]uint8), dst)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	return true
 }
