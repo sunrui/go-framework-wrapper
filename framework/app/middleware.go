@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2022 honeysense.com All rights reserved.
  * Author: sunrui
- * Date: 2022/04/03 21:03:03
+ * Date: 2022/04/16 17:02:16
  */
 
 package app
@@ -11,14 +11,12 @@ import (
 	"framework/config"
 	"framework/proto/response"
 	"framework/proto/result"
+	"framework/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/juju/ratelimit"
 	"net/http"
-	"os"
 	"path/filepath"
-	"runtime"
 	"runtime/debug"
-	"strings"
 	"time"
 )
 
@@ -64,42 +62,6 @@ func redocMiddleware(ctx *gin.Context) {
 	_, _ = ctx.Writer.Write(redoc(suffix))
 }
 
-// 堆栈对象
-type stack struct {
-	Function string `json:"function"` // 函数
-	File     string `json:"file"`     // 行数
-}
-
-// 获取推栈层级
-func getStack() stack {
-	// 最大函数层级 5
-	pc := make([]uintptr, 5)
-	runtime.Callers(3, pc)
-	frames := runtime.CallersFrames(pc)
-
-	// 当前项目目录
-	pwd, _ := os.Getwd()
-
-	for frame, ok := frames.Next(); ok; frame, ok = frames.Next() {
-		// 过滤掉系统目录
-		if !strings.HasPrefix(frame.File, pwd) {
-			continue
-		}
-
-		// 去掉项目目录
-		file := strings.Replace(frame.File, pwd, "", -1)
-		file = fmt.Sprintf("%s:%d", file, frame.Line)
-		function := filepath.Base(frame.Function)
-
-		return stack{
-			Function: function,
-			File:     file,
-		}
-	}
-
-	return stack{}
-}
-
 // 异常捕获中间件
 func recoverMiddleware(ctx *gin.Context) {
 	// 捕获对象，全部抛出可以使用 panic 方法。
@@ -111,7 +73,7 @@ func recoverMiddleware(ctx *gin.Context) {
 				response.New(ctx).Data(res)
 			} else {
 				dataMap := make(map[string]interface{})
-				dataMap["stack"] = getStack()
+				dataMap["stack"] = utils.GetStack(5)
 				dataMap["error"] = fmt.Sprintf("%s", err)
 				response.New(ctx).Data(result.InternalError.WithData(dataMap))
 			}
