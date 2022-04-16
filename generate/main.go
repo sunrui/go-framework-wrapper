@@ -1,10 +1,10 @@
 /*
  * Copyright (c) 2022 honeysense.com All rights reserved.
  * Author: sunrui
- * Date: 2022/04/16 14:35:16
+ * Date: 2022/04/16 15:08:16
  */
 
-package generate
+package main
 
 import (
 	"framework/app"
@@ -32,7 +32,7 @@ func runServer() {
 // @host     127.0.0.1:8080
 // @BasePath
 func main() {
-	err := Run("Test", "测试")
+	err := runGenerate("Test", "测试")
 	if err != nil {
 		println(err.Error())
 	}

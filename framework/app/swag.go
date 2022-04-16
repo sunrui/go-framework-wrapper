@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2022 honeysense.com All rights reserved.
  * Author: sunrui
- * Date: 2022/04/03 21:03:03
+ * Date: 2022/04/16 14:11:16
  */
 
 package app
@@ -61,6 +61,6 @@ func commandExec(name string, arg ...string) {
 
 // 执行 swag 更新文档
 func init() {
-	commandExec("swag", "init", "--parseDependency")
-	commandExec("swag", "fmt")
+	//commandExec("swag", "init", "--parseDependency")
+	//commandExec("swag", "fmt")
 }
