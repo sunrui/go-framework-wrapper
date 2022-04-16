@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2022 honeysense.com All rights reserved.
  * Author: sunrui
- * Date: 2022/04/13 23:49:13
+ * Date: 2022/04/16 14:28:16
  */
 
 package utils
@@ -24,7 +24,7 @@ func CopyFile(dst, src string) error {
 		return err
 	}
 
-	if dstFile, err = os.Open(dst); err != nil {
+	if dstFile, err = os.Create(dst); err != nil {
 		return err
 	}
 
@@ -47,14 +47,14 @@ func CopyDirectory(src, dst string) error {
 
 	if fileInfo.IsDir() {
 		var list []fs.FileInfo
-		
+
 		// src 是文件夹，那么定义 dst 也是文件夹
 		if list, err = ioutil.ReadDir(src); err == nil {
+			// 递归每一个文件
 			for _, item := range list {
-				src = filepath.Join(src, item.Name())
-				dst = filepath.Join(dst, item.Name())
-
-				return CopyDirectory(src, dst)
+				if err = CopyDirectory(filepath.Join(src, item.Name()), filepath.Join(dst, item.Name())); err != nil {
+					return err
+				}
 			}
 		} else {
 			return err
@@ -64,13 +64,13 @@ func CopyDirectory(src, dst string) error {
 		dir := filepath.Dir(dst)
 
 		if _, err = os.Stat(dir); err != nil {
-			return err
+			if err = os.MkdirAll(dir, os.ModePerm); err != nil {
+				return err
+			}
 		}
 
-		if err = os.MkdirAll(dir, os.ModeDir); err != nil {
-			return err
-		}
+		return CopyFile(dst, src)
 	}
 
-	return CopyFile(dst, src)
+	return nil
 }

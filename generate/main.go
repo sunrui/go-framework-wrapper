@@ -1,10 +1,10 @@
 /*
  * Copyright (c) 2022 honeysense.com All rights reserved.
  * Author: sunrui
- * Date: 2022/04/07 23:29:07
+ * Date: 2022/04/16 14:35:16
  */
 
-package main
+package generate
 
 import (
 	"framework/app"
@@ -12,11 +12,8 @@ import (
 	user "generate/api-user/template"
 )
 
-// @title    Medium 模板接口文档
-// @version  1.0
-// @host     127.0.0.1:8080
-// @BasePath
-func main() {
+// 启动服务器
+func runServer() {
 	// 创建服务
 	server := app.New()
 
@@ -28,4 +25,15 @@ func main() {
 
 	// 启动服务
 	server.Run(8080)
+}
+
+// @title    Medium 模板接口文档
+// @version  1.0
+// @host     127.0.0.1:8080
+// @BasePath
+func main() {
+	err := Run("Test", "测试")
+	if err != nil {
+		println(err.Error())
+	}
 }
