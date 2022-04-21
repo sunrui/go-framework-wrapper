@@ -80,26 +80,19 @@ func (result Result) String() string {
 
 // 通用返回对象码
 var (
-	// 操作成功 200
-	Ok = newResult(200, "Ok", "成功")
-
-	// 业务级错误 400
-	NoData     = newResult(400, "NoData", "没有数据")
-	NotFound   = newResult(400, "NotFound", "不存在")
-	NotMatch   = newResult(400, "NotMatch", "不匹配")
-	Duplicate  = newResult(400, "Duplicate", "重复操作")
-	StateError = newResult(400, "StateError", "状态错误")
-
-	// 应用级错误 400
-	NoAuth    = newResult(400, "NoAuth", "没有登录")
-	Forbidden = newResult(400, "Forbidden", "没有权限")
-	RateLimit = newResult(400, "RateLimit", "超出限制")
-
-	// 系统级错误 400
-	MethodNotAllowed = newResult(400, "MethodNotAllowed", "请求方式不允许")
-	ParameterError   = newResult(400, "ParameterError", "参数错误")
-	InternalError    = newResult(400, "InternalError", "内部错误")
-	ThirdPartyError  = newResult(400, "ThirdPartyError", "第三方错误")
+	Ok                     = newResult(200, "Ok", "成功")
+	NoContent              = newResult(204, "NoContent", "无内容")
+	BadRequest             = newResult(400, "BadRequest", "语法错误")
+	NoAuth                 = newResult(401, "NoAuth", "没有登录")
+	Forbidden              = newResult(403, "Forbidden", "没有权限")
+	NotFound               = newResult(404, "NotFound", "不存在")
+	MethodNotAllowed       = newResult(405, "MethodNotAllowed", "请求方式不允许")
+	Conflict               = newResult(409, "Conflict", "请求冲突")
+	Gone                   = newResult(410, "Gone", "请求资源不存在")
+	InternalError          = newResult(500, "InternalError", "内部错误")
+	NotImplemented         = newResult(501, "NotImplemented", "未实现")
+	BadGateway             = newResult(502, "Bad Gateway", "网关错误")
+	BandwidthLimitExceeded = newResult(509, "BandwidthLimitExceeded", "带宽限制超过")
 )
 
 // 创建结果对象
@@ -114,9 +107,8 @@ func newResult(status int, code string, message string) Result {
 // All 获取所有 result 对象
 func All() []Result {
 	return []Result{
-		Ok,                                        // 操作成功 200
-		NotFound, NotMatch, Duplicate, StateError, // 业务级错误 400
-		NoAuth, Forbidden, RateLimit, // 应用级错误 400
-		MethodNotAllowed, ParameterError, InternalError, ThirdPartyError, // 系统级错误 400
+		Ok, NoContent,
+		BadRequest, NoAuth, Forbidden, NotFound, MethodNotAllowed, Conflict, Gone,
+		InternalError, NotImplemented, BandwidthLimitExceeded, BadGateway,
 	}
 }

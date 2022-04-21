@@ -25,7 +25,7 @@ func postCode(ctx *gin.Context) {
 	// 获取当天发送条数，判断是否超出最大条数限制
 	count := sms.CountByPhoneAndDate(req.Phone, sms.GetNowDate())
 	if count >= 5 {
-		response.New(ctx).Data(result.RateLimit)
+		response.New(ctx).Data(result.BandwidthLimitExceeded)
 		return
 	}
 
@@ -95,7 +95,7 @@ func postVerify(ctx *gin.Context) {
 
 	// 获取缓存数据
 	if !cache.Exists() {
-		response.New(ctx).Data(result.NoData)
+		response.New(ctx).Data(result.NoContent)
 		return
 	}
 

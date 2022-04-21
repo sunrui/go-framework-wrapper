@@ -40,7 +40,7 @@ func rateLimitMiddleware(fillInterval time.Duration, capacity, quantum int64) gi
 
 	return func(ctx *gin.Context) {
 		if bucket.TakeAvailable(1) < 1 {
-			response.New(ctx).Data(result.RateLimit)
+			response.New(ctx).Data(result.BandwidthLimitExceeded)
 			return
 		}
 
