@@ -1,7 +1,7 @@
 /*
- * Copyright (c) 2022 honeysense All rights reserved.
+ * Copyright (c) 2022 honeysense.com All rights reserved.
  * Author: sunrui
- * Date: 2022/01/31 20:31:31
+ * Date: 2022-04-25 22:26:01
  */
 
 package open
@@ -13,9 +13,9 @@ import (
 
 // Open 入驻
 type Open struct {
-	db.Model                               // 通用参数
-	UserId         string                  `json:"userId"`         // 用户 id
-	ApprovalStatus enum.OpenApprovalStatus `json:"approvalStatus"` // 审核状态
+	db.Model                           // 通用参数
+	UserId         string              `json:"userId"`         // 用户 id
+	ApprovalStatus enum.ApprovalStatus `json:"approvalStatus"` // 审核状态
 }
 
 // 初始化

@@ -1,7 +1,7 @@
 /*
- * Copyright (c) 2022 honeysense All rights reserved.
+ * Copyright (c) 2022 honeysense.com All rights reserved.
  * Author: sunrui
- * Date: 2022/01/03 18:07:03
+ * Date: 2022-04-25 22:14:48
  */
 
 package sms
@@ -25,7 +25,7 @@ func postCode(ctx *gin.Context) {
 	// 获取当天发送条数，判断是否超出最大条数限制
 	count := sms.CountByPhoneAndDate(req.Phone, sms.GetNowDate())
 	if count >= 5 {
-		response.New(ctx).Data(result.BandwidthLimitExceeded)
+		response.New(ctx).Data(result.RateLimit)
 		return
 	}
 
@@ -101,7 +101,7 @@ func postVerify(ctx *gin.Context) {
 
 	// 较验验证码
 	if !cache.Verify(req.Code) {
-		response.New(ctx).Data(result.NotMatch)
+		response.New(ctx).Data(result.Gone)
 		return
 	}
 

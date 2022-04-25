@@ -1,7 +1,7 @@
 /*
- * Copyright (c) 2022 honeysense All rights reserved.
+ * Copyright (c) 2022 honeysense.com All rights reserved.
  * Author: sunrui
- * Date: 2022/01/20 21:16:20
+ * Date: 2022-04-25 21:28:29
  */
 
 package sms
@@ -33,7 +33,7 @@ func (cache *Cache) getKey() string {
 func (cache *Cache) getValue() *codeCache {
 	var codeCache codeCache
 
-	if err := db.Redis.GetJson(cache.getKey(), &codeCache); err == nil {
+	if success := db.Redis.GetJson(cache.getKey(), &codeCache); success {
 		return &codeCache
 	}
 

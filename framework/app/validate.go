@@ -1,7 +1,7 @@
 /*
- * Copyright (c) 2022 honeysense All rights reserved.
+ * Copyright (c) 2022 honeysense.com All rights reserved.
  * Author: sunrui
- * Date: 2022/01/03 07:50:03
+ * Date: 2022-04-25 22:13:11
  */
 
 package app
@@ -72,5 +72,5 @@ ERROR:
 		dataMap["error"] = fmt.Sprintf("%s", err)
 	}
 
-	panic(result.ParameterError.WithData(dataMap))
+	panic(result.BadRequest.WithData(dataMap))
 }

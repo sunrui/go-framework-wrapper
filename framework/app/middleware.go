@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2022 honeysense.com All rights reserved.
  * Author: sunrui
- * Date: 2022/04/16 17:02:16
+ * Date: 2022-04-25 22:13:05
  */
 
 package app
@@ -40,7 +40,7 @@ func rateLimitMiddleware(fillInterval time.Duration, capacity, quantum int64) gi
 
 	return func(ctx *gin.Context) {
 		if bucket.TakeAvailable(1) < 1 {
-			response.New(ctx).Data(result.BandwidthLimitExceeded)
+			response.New(ctx).Data(result.RateLimit)
 			return
 		}
 

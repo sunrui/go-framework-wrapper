@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2022 honeysense.com All rights reserved.
+ * Author: sunrui
+ * Date: 2022-04-25 22:14:59
+ */
+
 package auth
 
 import (
@@ -32,7 +38,7 @@ func postLoginByPhone(ctx *gin.Context) {
 		// 短信缓存对象
 		smsCache := sms.Cache{
 			Phone:   req.Phone,
-			SmsType: enum.SmsLogin,
+			SmsType: enum.Login,
 		}
 
 		// 获取缓存数据

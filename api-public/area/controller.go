@@ -1,7 +1,7 @@
 /*
- * Copyright (c) 2022 honeysense All rights reserved.
+ * Copyright (c) 2022 honeysense.com All rights reserved.
  * Author: sunrui
- * Date: 2022/01/29 18:02:29
+ * Date: 2022-04-25 22:14:14
  */
 
 package area
@@ -30,7 +30,7 @@ func getProvince(ctx *gin.Context) {
 func getCity(ctx *gin.Context) {
 	provinceId, err := strconv.Atoi(ctx.Param("provinceId"))
 	if err != nil {
-		response.New(ctx).Data(result.ParameterError.WithKeyPair("provinceId", ctx.Param("provinceId")))
+		response.New(ctx).Data(result.BadRequest.WithKeyPair("provinceId", ctx.Param("provinceId")))
 		return
 	}
 
@@ -47,7 +47,7 @@ func getCity(ctx *gin.Context) {
 func getArea(ctx *gin.Context) {
 	cityId, err := strconv.Atoi(ctx.Param("cityId"))
 	if err != nil {
-		response.New(ctx).Data(result.ParameterError.WithKeyPair("cityId", ctx.Param("cityId")))
+		response.New(ctx).Data(result.BadRequest.WithKeyPair("cityId", ctx.Param("cityId")))
 		return
 	}
 

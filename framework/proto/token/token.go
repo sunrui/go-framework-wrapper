@@ -1,7 +1,7 @@
 /*
- * Copyright (c) 2022 honeysense All rights reserved.
+ * Copyright (c) 2022 honeysense.com All rights reserved.
  * Author: sunrui
- * Date: 2022/01/18 19:00:18
+ * Date: 2022-04-25 20:46:17
  */
 
 package token
@@ -71,8 +71,7 @@ func Write(ctx *gin.Context, userId string) {
 	}
 
 	// 写入令牌，默认 30 天
-	ctx.SetCookie(tokenKey, token, tokenMaxAge,
-		"/", "", false, true)
+	ctx.SetCookie(tokenKey, token, tokenMaxAge, "/", "", false, true)
 }
 
 // GetUserId 获取当前用户 id
