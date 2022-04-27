@@ -9,7 +9,8 @@ package config
 import (
 	"encoding/json"
 	"io/ioutil"
-	"os"
+	"path/filepath"
+	"runtime"
 	"strings"
 )
 
@@ -77,9 +78,10 @@ func init() {
 	var stream []byte
 	var err error
 
-	// 获取当前项目根目录 config.json
-	pwd, _ := os.Getwd()
-	if stream, err = ioutil.ReadFile(pwd + "/config.json"); err != nil {
+	_, file, _, _ := runtime.Caller(0)
+	path := filepath.Dir(file)
+
+	if stream, err = ioutil.ReadFile(path + "/config.json"); err != nil {
 		panic(err.Error())
 	}
 
