@@ -14,8 +14,8 @@ import (
 
 // 缓存数据
 type codeCache struct {
-	Code       string `json:"code"`       // 验证码
-	VerifyTime int    `json:"verifyTime"` // 较验次数
+	Code        string `json:"code"`        // 验证码
+	VerifyTimes int    `json:"verifyTimes"` // 较验次数
 }
 
 // Cache 缓存对象
@@ -48,8 +48,8 @@ func (cache *Cache) Exists() bool {
 // Save 设置新缓存验证码
 func (cache *Cache) SaveCode(randomCode string) {
 	db.Redis.Set(cache.getKey(), codeCache{
-		Code:       randomCode,
-		VerifyTime: 0,
+		Code:        randomCode,
+		VerifyTimes: 0,
 	}, 15*60)
 }
 
@@ -74,10 +74,10 @@ func (cache *Cache) Verify(code string) bool {
 	// 如果验证码较验错误
 	if value.Code != code {
 		// 增加缓存引用记数
-		value.VerifyTime += 1
+		value.VerifyTimes += 1
 
 		// 如果已经较验出错 5 次，移除现有验证码
-		if value.VerifyTime == 5 {
+		if value.VerifyTimes == 5 {
 			cache.Del()
 		} else {
 			// 更新出错较验次数

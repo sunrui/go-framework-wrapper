@@ -16,7 +16,7 @@ import (
 )
 
 // 发送验证码
-func postCode(ctx *gin.Context) {
+func postSend(ctx *gin.Context) {
 	var req postCodeReq
 
 	// 较验参数

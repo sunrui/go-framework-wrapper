@@ -19,8 +19,8 @@ func GetRouter() app.Router {
 		RouterPaths: []app.RouterPath{
 			{
 				HttpMethod:   http.MethodPost,
-				RelativePath: "/code",
-				HandlerFunc:  postCode,
+				RelativePath: "/send",
+				HandlerFunc:  postSend,
 			}, {
 				HttpMethod:   http.MethodPost,
 				RelativePath: "/verify",

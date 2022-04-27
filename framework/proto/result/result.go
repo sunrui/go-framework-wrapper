@@ -89,7 +89,7 @@ var (
 	MethodNotAllowed = newResult(405, "MethodNotAllowed", "请求方式不允许")
 	Conflict         = newResult(409, "Conflict", "请求冲突")
 	Gone             = newResult(410, "Gone", "请求资源不存在")
-	RateLimit        = newResult(429, "RateLimit", "达到限流")
+	RateLimit        = newResult(429, "RateLimit", "限流")
 	InternalError    = newResult(500, "InternalError", "内部错误")
 	NotImplemented   = newResult(501, "NotImplemented", "未实现")
 	BadGateway       = newResult(502, "BadGateway", "网关错误")
