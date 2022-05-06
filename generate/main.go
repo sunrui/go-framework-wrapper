@@ -32,7 +32,7 @@ func runServer() {
 // @host     127.0.0.1:8080
 // @BasePath
 func main() {
-	err := runGenerate("Test", "测试")
+	err := runGenerate("Test", "测试", "sunrui")
 	if err != nil {
 		println(err.Error())
 	}

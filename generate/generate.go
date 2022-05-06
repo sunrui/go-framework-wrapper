@@ -11,11 +11,13 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
+	"time"
 )
 
 // 生成模板
-func runGenerate(model, modelName string) error {
+func runGenerate(model, modelName string, author string) error {
 	var err error
 	// 获取当前项目根目录
 	pwd, _ := os.Getwd()
@@ -66,6 +68,9 @@ func runGenerate(model, modelName string) error {
 				fileContent = strings.ReplaceAll(fileContent, strings.ToLower("Template"), strings.ToLower(model))
 				fileContent = strings.ReplaceAll(fileContent, "模板", modelName)
 				fileContent = strings.ReplaceAll(fileContent, "generate/service/core", "service/core")
+				fileContent = strings.ReplaceAll(fileContent, "$today.year", strconv.Itoa(time.Now().Year()))
+				fileContent = strings.ReplaceAll(fileContent, "$author", author)
+				fileContent = strings.ReplaceAll(fileContent, "$today.format(\"yyyy-MM-dd HH:mm:ss\")", time.Now().Format("2006-01-02 15:04:05"))
 
 				err = ioutil.WriteFile(fileName, []byte(fileContent), os.ModeDevice)
 				if err != nil {
