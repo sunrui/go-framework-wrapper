@@ -9,11 +9,10 @@ package db
 import (
 	"fmt"
 	"framework/config"
-	"github.com/google/uuid"
+	"framework/utils"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
-	"strings"
 	"time"
 )
 
@@ -43,18 +42,9 @@ func init() {
 	}
 }
 
-// CreateUuid 创建唯一 id
-func CreateUuid() string {
-	id := uuid.NewString()
-	id = strings.ToUpper(id)
-	id = strings.ReplaceAll(id, "-", "")
-
-	return id
-}
-
 // Model 数据库通用对象
 type Model struct {
-	Id        string     `json:"id" gorm:"primaryKey;type:varchar(32);comment:主键 id"` // 主键 id
+	Id        string     `json:"id" gorm:"primaryKey;type:varchar(12);comment:主键 id"` // 主键 id
 	CreatedAt time.Time  `json:"created_at" gorm:"autoCreateTime:milli;comment:创建时间"` // 创建时间
 	UpdatedAt time.Time  `json:"updated_at" gorm:"autoUpdateTime:milli;comment:更新时间"` // 更新时间
 	DeletedAt *time.Time `json:"deleted_at,omitempty" gorm:"comment:删除时间"`            // 删除时间
@@ -62,7 +52,7 @@ type Model struct {
 
 // BeforeCreate 创建对象前回调
 func (model *Model) BeforeCreate(*gorm.DB) (err error) {
-	model.Id = CreateUuid()
+	model.Id = utils.CreateNanoid()
 
 	return nil
 }
