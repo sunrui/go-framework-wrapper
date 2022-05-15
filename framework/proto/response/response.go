@@ -25,7 +25,7 @@ func New(ctx *gin.Context) *Response {
 
 // Ok 操作成功返回对象
 func (response *Response) Ok() {
-	response.ctx.JSON(result.Ok.Status, result.Ok)
+	response.ctx.JSON(result.Ok.Code, result.Ok)
 	response.ctx.Abort()
 }
 
@@ -34,9 +34,9 @@ func (response *Response) Data(data interface{}) {
 	// 判断是否为 Result 对象
 	r, ok := data.(result.Result)
 	if ok {
-		response.ctx.JSON(r.Status, data)
+		response.ctx.JSON(r.Code, data)
 	} else {
-		response.ctx.JSON(result.Ok.Status, result.Ok.WithData(data))
+		response.ctx.JSON(result.Ok.Code, result.Ok.WithData(data))
 	}
 
 	response.ctx.Abort()
@@ -55,7 +55,7 @@ func (response *Response) IdData(id string) {
 
 // PageData 分页数据返回对象
 func (response *Response) PageData(data interface{}, pagination result.Pagination) {
-	response.ctx.JSON(result.Ok.Status, result.PageResult{
+	response.ctx.JSON(result.Ok.Code, result.PageResult{
 		Result:     result.Ok.WithData(data),
 		Pagination: pagination,
 	})
