@@ -58,7 +58,7 @@ func (server *Server) Run(port int) {
 // 初始化
 func init() {
 	// 如果非调式环境注册 release 模式
-	if !config.IsDebugMode() {
+	if !config.IsDebug() {
 		gin.SetMode(gin.ReleaseMode)
 	}
 }

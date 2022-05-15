@@ -58,7 +58,7 @@ type jsonConfig struct {
 
 // Get 获取当前配置
 func (jsonConfig jsonConfig) current() *Config {
-	if IsDebugMode() {
+	if IsDebug() {
 		return &config.Debug
 	} else {
 		return &config.Release
@@ -88,8 +88,8 @@ func Sms() *sms {
 	return &config.current().Sms
 }
 
-// IsDebugMode 是否在调试环境
-func IsDebugMode() bool {
+// IsDebug 是否在调试环境
+func IsDebug() bool {
 	return strings.ToLower(config.Environment) == "debug"
 }
 

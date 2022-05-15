@@ -8,6 +8,7 @@ package app
 
 import (
 	"bytes"
+	"framework/config"
 	"io/ioutil"
 	"os/exec"
 )
@@ -34,6 +35,9 @@ func redoc(suffix string) []byte {
 		  </head>
 		  <body>
 			<redoc spec-url='swagger/doc.json'></redoc>
+  			<!--
+				<redoc spec-url='http://petstore.swagger.io/v2/swagger.json'></redoc>
+			-->
 			<script src="https://cdn.jsdelivr.net/npm/redoc@latest/bundles/redoc.standalone.js"> </script>
 		  </body>
 		</html>
@@ -61,6 +65,8 @@ func commandExec(name string, arg ...string) {
 
 // 执行 swag 更新文档
 func init() {
-	//commandExec("swag", "init", "--parseDependency")
-	//commandExec("swag", "fmt")
+	if !config.IsDebug() {
+		commandExec("swag", "init", "--parseDependency")
+		commandExec("swag", "fmt")
+	}
 }
