@@ -88,13 +88,13 @@ func postLoginByWechat(ctx *gin.Context) {
 // 获取令牌
 func getToken(ctx *gin.Context) {
 	// 获取用户令牌
-	tokenEntity, err := token.Get(ctx)
+	token, err := token.GetToken(ctx)
 	if err != nil {
 		response.New(ctx).Data(result.NotFound)
 		return
 	}
 
-	response.New(ctx).Data(tokenEntity)
+	response.New(ctx).Data(token)
 }
 
 // 登出

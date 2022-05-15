@@ -14,15 +14,15 @@ import (
 	"strings"
 )
 
-// Payload 令牌对象
-type Payload struct {
+// Token 令牌对象
+type Token struct {
 	UserId string `json:"userId"`
 }
 
 // jwt 对象
 type jwtClaims struct {
 	jwt.StandardClaims
-	Payload
+	Token
 }
 
 // jwt 密钥
@@ -35,10 +35,10 @@ const tokenKey = "token"
 const tokenMaxAge = 30 * 24 * 60 * 60
 
 // 生成 jwt 字符串
-func encode(payload Payload) (token string, err error) {
+func encode(token Token) (string, error) {
 	claims := jwtClaims{
 		jwt.StandardClaims{},
-		payload,
+		token,
 	}
 
 	tokenClaims := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
@@ -46,14 +46,14 @@ func encode(payload Payload) (token string, err error) {
 }
 
 // 验证 jwt 字符串
-func decode(token string) (payload *Payload, err error) {
+func decode(token string) (*Token, error) {
 	tokenClaims, err := jwt.ParseWithClaims(token, &jwtClaims{}, func(token *jwt.Token) (interface{}, error) {
 		return jwtSecret, nil
 	})
 
 	if tokenClaims != nil {
 		if claims, ok := tokenClaims.Claims.(*jwtClaims); ok && tokenClaims.Valid {
-			return &claims.Payload, nil
+			return &claims.Token, nil
 		}
 	}
 
@@ -63,7 +63,7 @@ func decode(token string) (payload *Payload, err error) {
 // Write 写入 cookie 令牌
 func Write(ctx *gin.Context, userId string) {
 	// 生成用户令牌
-	token, err := encode(Payload{
+	tokenString, err := encode(Token{
 		UserId: userId,
 	})
 	if err != nil {
@@ -71,45 +71,46 @@ func Write(ctx *gin.Context, userId string) {
 	}
 
 	// 写入令牌，默认 30 天
-	ctx.SetCookie(tokenKey, token, tokenMaxAge, "/", "", false, true)
+	ctx.SetCookie(tokenKey, tokenString, tokenMaxAge, "/", "", false, true)
 }
 
 // GetUserId 获取当前用户 id
 func GetUserId(ctx *gin.Context) string {
-	payload, err := Get(ctx)
+	token, err := GetToken(ctx)
 	if err != nil {
 		panic(result.NoAuth)
 	}
 
-	return payload.UserId
+	return token.UserId
 }
 
-// Get 获取当前用户令牌
-func Get(ctx *gin.Context) (payload *Payload, err error) {
-	var token string
+// GetToken 获取当前用户令牌
+func GetToken(ctx *gin.Context) (*Token, error) {
+	var tokenString string
+	var err error
 
 	// 从 header 中获取令牌
 	getHeaderToken := func() string {
-		if token = ctx.GetHeader("Authorization"); token == "" {
+		if tokenString = ctx.GetHeader("Authorization"); tokenString == "" {
 			return ""
 		}
 
 		prefix := "Bearer "
-		if strings.Index(token, prefix) != 0 {
+		if strings.Index(tokenString, prefix) != 0 {
 			return ""
 		}
 
-		return token[len(prefix):]
+		return tokenString[len(prefix):]
 	}
 
 	// 从 cookie 中获取令牌
-	if token = getHeaderToken(); token == "" {
-		if token, err = ctx.Cookie(tokenKey); err != nil {
+	if tokenString = getHeaderToken(); tokenString == "" {
+		if tokenString, err = ctx.Cookie(tokenKey); err != nil {
 			return nil, err
 		}
 	}
 
-	return decode(token)
+	return decode(tokenString)
 }
 
 // Remove 移除令牌

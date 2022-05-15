@@ -45,8 +45,8 @@ type sms struct {
 type Config struct {
 	Mysql mysql `json:"mysql"` // Mysql 配置对象
 	Redis redis `json:"redis"` // Redis 配置对象
-	Jwt   jwt   `json:"jwt"`   // jwt 配置对象
-	Sms   sms   `json:"sms"`   // sms 配置对象
+	Jwt   jwt   `json:"jwt"`   // Jwt 配置对象
+	Sms   sms   `json:"sms"`   // Sms 配置对象
 }
 
 // json 反射对象
