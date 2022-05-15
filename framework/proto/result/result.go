@@ -12,10 +12,10 @@ import (
 
 // Result 结果对象
 type Result struct {
-	Code    int         `json:"code"`           // 状态码
-	Status  string      `json:"status"`         // 结果
-	Message string      `json:"message"`        // 消息
-	Data    interface{} `json:"data,omitempty"` // 数据
+	Code        int         `json:"-"`              // 状态码
+	Status      string      `json:"status"`         // 结果
+	Description string      `json:"description"`    // 描述
+	Data        interface{} `json:"data,omitempty"` // 数据
 }
 
 // Pagination 分页对象
@@ -34,7 +34,7 @@ type PageResult struct {
 
 // WithMessage 设置消息
 func (result Result) WithMessage(message string) Result {
-	result.Message = message
+	result.Description = message
 	return result
 }
 
@@ -94,11 +94,11 @@ var (
 )
 
 // 创建结果对象
-func newResult(code int, status string, message string) Result {
+func newResult(code int, status string, description string) Result {
 	return Result{
-		Status:  status,
-		Code:    code,
-		Message: message,
+		Status:      status,
+		Code:        code,
+		Description: description,
 	}
 }
 
