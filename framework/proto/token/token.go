@@ -26,7 +26,7 @@ type jwtClaims struct {
 }
 
 // jwt 密钥
-var jwtSecret = config.Get().Jwt.Secret
+var jwtSecret = config.Jwt().Secret
 
 // 令牌 key 名称
 const tokenKey = "token"

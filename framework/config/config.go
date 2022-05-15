@@ -56,21 +56,41 @@ type jsonConfig struct {
 	Release     Config `json:"release"`     // 正式环境
 }
 
-// 当前配置
-var config *jsonConfig
-
-// IsDebugMode 是否在调试环境
-func IsDebugMode() bool {
-	return strings.ToLower(config.Environment) == "debug"
-}
-
 // Get 获取当前配置
-func Get() *Config {
+func (jsonConfig jsonConfig) current() *Config {
 	if IsDebugMode() {
 		return &config.Debug
 	} else {
 		return &config.Release
 	}
+}
+
+// 当前配置
+var config *jsonConfig
+
+// Mysql 配置
+func Mysql() *mysql {
+	return &config.current().Mysql
+}
+
+// Redis 配置
+func Redis() *redis {
+	return &config.current().Redis
+}
+
+// Jwt 配置
+func Jwt() *jwt {
+	return &config.current().Jwt
+}
+
+// Sms 配置
+func Sms() *sms {
+	return &config.current().Sms
+}
+
+// IsDebugMode 是否在调试环境
+func IsDebugMode() bool {
+	return strings.ToLower(config.Environment) == "debug"
 }
 
 // 加载当前配置
