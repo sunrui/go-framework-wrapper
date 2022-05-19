@@ -38,7 +38,7 @@ func redoc(suffix string) []byte {
   			<!--
 				<redoc spec-url='http://petstore.swagger.io/v2/swagger.json'></redoc>
 			-->
-			<script src="https://cdn.jsdelivr.net/npm/redoc@latest/bundles/redoc.standalone.js"> </script>
+			<script src="https://rebilly.github.io/ReDoc/releases/latest/redoc.min.js"> </script>
 		  </body>
 		</html>
 	`)
