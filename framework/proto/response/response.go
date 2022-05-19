@@ -9,6 +9,7 @@ package response
 import (
 	"framework/proto/result"
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 // Response 结果对象实体
@@ -25,18 +26,18 @@ func New(ctx *gin.Context) *Response {
 
 // Ok 操作成功返回对象
 func (response *Response) Ok() {
-	response.ctx.JSON(result.Ok.Code, result.Ok)
+	response.ctx.JSON(http.StatusOK, result.Ok)
 	response.ctx.Abort()
 }
 
 // Data 数据返回对象
 func (response *Response) Data(data interface{}) {
 	// 判断是否为 Result 对象
-	r, ok := data.(result.Result)
+	_, ok := data.(result.Result)
 	if ok {
-		response.ctx.JSON(r.Code, data)
+		response.ctx.JSON(http.StatusOK, data)
 	} else {
-		response.ctx.JSON(result.Ok.Code, result.Ok.WithData(data))
+		response.ctx.JSON(http.StatusOK, result.Ok.WithData(data))
 	}
 
 	response.ctx.Abort()
@@ -55,7 +56,7 @@ func (response *Response) IdData(id string) {
 
 // PageData 分页数据返回对象
 func (response *Response) PageData(data interface{}, pagination result.Pagination) {
-	response.ctx.JSON(result.Ok.Code, result.PageResult{
+	response.ctx.JSON(http.StatusOK, result.PageResult{
 		Result:     result.Ok.WithData(data),
 		Pagination: pagination,
 	})

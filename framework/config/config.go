@@ -14,6 +14,11 @@ import (
 	"strings"
 )
 
+// swagger 配置对象
+type swagger struct {
+	Enable bool `json:"enable"` // 是否启用
+}
+
 // mysql 配置对象
 type mysql struct {
 	Host     string `json:"host"`     // 主机
@@ -51,9 +56,10 @@ type Config struct {
 
 // json 反射对象
 type jsonConfig struct {
-	Environment string `json:"environment"` // 当前环境
-	Debug       Config `json:"debug"`       // 开发环境
-	Release     Config `json:"release"`     // 正式环境
+	Environment string  `json:"environment"` // 当前环境
+	Swagger     swagger `json:"swagger"`     // swagger 配置对象
+	Debug       Config  `json:"debug"`       // 开发环境
+	Release     Config  `json:"release"`     // 正式环境
 }
 
 // Get 获取当前配置
@@ -91,6 +97,11 @@ func Sms() *sms {
 // IsDebug 是否在调试环境
 func IsDebug() bool {
 	return strings.ToLower(config.Environment) == "debug"
+}
+
+// Swagger 配置
+func Swagger() *swagger {
+	return &config.Swagger
 }
 
 // 加载当前配置

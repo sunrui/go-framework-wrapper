@@ -1,5 +1,8 @@
 {
   "environment": "debug",
+  "swagger": {
+    "enable": true
+  },
   "debug": {
     "mysql": {
       "host": "localhost",

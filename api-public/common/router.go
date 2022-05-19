@@ -19,6 +19,11 @@ func GetRouter() app.Router {
 		RouterPaths: []app.RouterPath{
 			{
 				HttpMethod:   http.MethodGet,
+				RelativePath: "/",
+				HandlerFunc:  getIndex,
+			},
+			{
+				HttpMethod:   http.MethodGet,
 				RelativePath: "/build",
 				HandlerFunc:  getBuild,
 			},

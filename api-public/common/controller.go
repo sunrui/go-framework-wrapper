@@ -15,6 +15,25 @@ import (
 
 var build = time.Now()
 
+// @Summary  获取 Index 测试
+// @Tags     通用
+// @Produce  json
+// @Param    enumstring  query     string                       false  "string enums"       Enums(A, B, C)
+// @Param    enumint     query     int                          false  "int enums"          Enums(1, 2, 3)
+// @Param    enumnumber  query     number                       false  "int enums"          Enums(1.1, 1.2, 1.3)
+// @Param    string      query     string                       false  "string valid"       minlength(5)  maxlength(10)
+// @Param    int         query     int                          false  "int valid"          mininum(1)    maxinum(10)
+// @Param    default     query     string                       false  "string default"     default(A)
+// @Param    enumstring  query     string                       false  "string enums"       Enums(A, B, C)  default(A)
+// @Param    example     query     string                       false  "string example"     example(string)
+// @Param    collection  query     []string                     false  "string collection"  collectionFormat(multi)
+// @Param    extensions  query     []string                     false  "string collection"  extensions(x-example=test,x-nullable)
+// @Success  200         {object}  result.Result{data=sms.Sms}  true
+// @Router   /public/common/ [get]
+func getIndex(ctx *gin.Context) {
+	response.New(ctx).Data("hello world")
+}
+
 // @Summary  编译时间
 // @Tags     通用
 // @Produce  json
@@ -27,17 +46,7 @@ func getBuild(ctx *gin.Context) {
 // @Summary  结果列表
 // @Tags     通用
 // @Produce  json
-// @Success  200  {object}  result.Result  true  {"status":"Ok","description":"成功"}
-// @Success  400  {object}  result.Result  true  {"status":"BadRequest","description":"语法错误"}
-// @Success  401  {object}  result.Result  true  {"status":"NoAuth","description":"没有登录"}
-// @Success  403  {object}  result.Result  true  {"status":"Forbidden","description":"没有权限"}
-// @Success  404  {object}  result.Result  true  {"status":"NotFound","description":"不存在"}
-// @Success  405  {object}  result.Result  true  {"status":"MethodNotAllowed","description":"请求方式不允许"}
-// @Success  409  {object}  result.Result  true  {"status":"Conflict","description":"请求冲突"}
-// @Success  429  {object}  result.Result  true  {"status":"RateLimit","description":"限流"}
-// @Success  500  {object}  result.Result  true  {"status":"InternalError","description":"内部错误"}
-// @Success  501  {object}  result.Result  true  {"status":"NotImplemented","description":"未实现"}
-// @Success  502  {object}  result.Result  true  {"status":"BadGateway","description":"网关错误"}
+// @Success  200  {object}  result.Result{data=result.Result}  true  {"status":"Ok","description":"成功"}
 // @Router   /public/common/result [get]
 func getResult(ctx *gin.Context) {
 	response.New(ctx).Data(result.All())
