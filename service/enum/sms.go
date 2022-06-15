@@ -10,6 +10,6 @@ package enum
 type SmsType string
 
 const (
-	Login         SmsType = "Login"         // 登录
-	ResetPassword SmsType = "ResetPassword" // 重置密码
+	SmsLogin         SmsType = "SmsLogin"         // 登录
+	SmsResetPassword SmsType = "SmsResetPassword" // 重置密码
 )

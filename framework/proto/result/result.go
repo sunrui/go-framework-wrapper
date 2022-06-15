@@ -12,9 +12,9 @@ import (
 
 // Result 结果对象
 type Result struct {
-	Code        string      `json:"code" enums:"Ok,BadRequest,NoAuth,Forbidden,NotFound,MethodNotAllowed,Conflict,RateLimit,InternalError,ThirdPartyError,NotImplemented" example:"Ok"` // 结果
-	Description string      `json:"description" example:"成功"`                                                                                                                           // 描述
-	Data        interface{} `json:"data,omitempty"`                                                                                                                                     // 数据
+	Code        string      `json:"code" enums:"Ok,BadRequest,NoAuth,Forbidden,NotFound,NoContent,MethodNotAllowed,Conflict,RateLimit,InternalError,ThirdPartyError,NotImplemented" example:"Ok"` // 结果
+	Description string      `json:"description" example:"成功"`                                                                                                                                     // 描述
+	Data        interface{} `json:"data,omitempty"`                                                                                                                                               // 数据
 }
 
 // Pagination 分页对象
@@ -76,6 +76,7 @@ var (
 	NoAuth           = newResult("NoAuth", "没有登录")
 	Forbidden        = newResult("Forbidden", "没有权限")
 	NotFound         = newResult("NotFound", "不存在")
+	NoContent        = newResult("NoContent", "没有数据")
 	MethodNotAllowed = newResult("MethodNotAllowed", "请求方式不允许")
 	Conflict         = newResult("Conflict", "请求冲突")
 	RateLimit        = newResult("RateLimit", "限流")
@@ -96,7 +97,7 @@ func newResult(code string, description string) Result {
 func All() []Result {
 	return []Result{
 		Ok,
-		BadRequest, NoAuth, Forbidden, NotFound, MethodNotAllowed, Conflict, RateLimit,
+		BadRequest, NoAuth, Forbidden, NotFound, NoContent, MethodNotAllowed, Conflict, RateLimit,
 		InternalError, ThirdPartyError, NotImplemented,
 	}
 }

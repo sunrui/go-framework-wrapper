@@ -6,6 +6,7 @@
 package main
 
 import (
+	"api-public/_sample"
 	"api-public/area"
 	"api-public/auth"
 	"api-public/common"
@@ -23,6 +24,7 @@ func main() {
 
 	// 注册路由
 	server.RouterGroup("/public", []app.Router{
+		_sample.GetRouter(),
 		common.GetRouter(),
 		area.GetRouter(),
 		sms.GetRouter(),

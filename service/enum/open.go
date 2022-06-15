@@ -10,7 +10,7 @@ package enum
 type ApprovalStatus string
 
 const (
-	Waiting ApprovalStatus = "Waiting" // 待审核
-	Refuse  ApprovalStatus = "Refuse"  // 审核拒绝
-	Success ApprovalStatus = "Success" // 审核成功
+	ApprovalWaiting ApprovalStatus = "ApprovalWaiting" // 待审核
+	ApprovalRefuse  ApprovalStatus = "ApprovalRefuse"  // 审核拒绝
+	ApprovalSuccess ApprovalStatus = "ApprovalSuccess" // 审核成功
 )

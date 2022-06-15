@@ -23,7 +23,7 @@ import (
 // @Accept   json
 // @Produce  json
 // @Param    "req"  body      postLoginByPhoneReq  true  "req"
-// @Success  200    {object}  postLoginByPhoneRes
+// @ApprovalSuccess  200    {object}  postLoginByPhoneRes
 // @Failure  400    {object}  result.Result
 // @Router   /auth/login/phone [post]
 func postLoginByPhone(ctx *gin.Context) {
@@ -38,7 +38,7 @@ func postLoginByPhone(ctx *gin.Context) {
 		// 短信缓存对象
 		smsCache := sms.Cache{
 			Phone:   req.Phone,
-			SmsType: enum.Login,
+			SmsType: enum.SmsLogin,
 		}
 
 		// 获取缓存数据
@@ -88,13 +88,13 @@ func postLoginByWechat(ctx *gin.Context) {
 // 获取令牌
 func getToken(ctx *gin.Context) {
 	// 获取用户令牌
-	token, err := token.GetToken(ctx)
+	t, err := token.GetToken(ctx)
 	if err != nil {
 		response.New(ctx).Data(result.NotFound)
 		return
 	}
 
-	response.New(ctx).Data(token)
+	response.New(ctx).Data(t)
 }
 
 // 登出
