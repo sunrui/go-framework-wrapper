@@ -23,8 +23,8 @@ import (
 // @Accept   json
 // @Produce  json
 // @Param    "req"  body      postLoginByPhoneReq  true  "req"
-// @Success  200  {object}  postLoginByPhoneRes
-// @Failure  400  {object}  result.Result
+// @Success  200    {object}  postLoginByPhoneRes
+// @Failure  400    {object}  result.Result
 // @Router   /auth/login/phone [post]
 func postLoginByPhone(ctx *gin.Context) {
 	var req postLoginByPhoneReq

@@ -9,6 +9,7 @@ package app
 import (
 	"fmt"
 	"framework/config"
+	"framework/doc"
 	"framework/proto/response"
 	"framework/proto/result"
 	"framework/utils"
@@ -17,6 +18,7 @@ import (
 	"net/http"
 	"path/filepath"
 	"runtime/debug"
+	"strings"
 	"time"
 )
 
@@ -51,15 +53,20 @@ func rateLimitMiddleware(fillInterval time.Duration, capacity, quantum int64) gi
 // swagger 文档中间件
 func redocMiddleware(ctx *gin.Context) {
 	path := ctx.Request.URL.Path
-	suffix := filepath.Base(path)
+
+	// 非 /doc 开头不是文档
+	if !strings.HasPrefix(path, "/doc/") {
+		return
+	}
 
 	// 过滤掉非法的 /doc/? 路径
-	if suffix != "doc.json" && (path != "/doc/" || suffix != "doc") {
+	suffix := filepath.Base(path)
+	if suffix != "doc" && suffix != "doc.json" && suffix != "redoc.min.js" {
 		ctx.Redirect(http.StatusFound, "/doc")
 		return
 	}
 
-	_, _ = ctx.Writer.Write(redoc(suffix))
+	_, _ = ctx.Writer.Write(doc.Redoc(suffix))
 }
 
 // 异常捕获中间件

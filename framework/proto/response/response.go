@@ -45,13 +45,7 @@ func (response *Response) Data(data interface{}) {
 
 // IdData 主键返回对象
 func (response *Response) IdData(id string) {
-	type idData struct {
-		Id string `json:"id"`
-	}
-
-	response.Data(idData{
-		Id: id,
-	})
+	response.Data(result.Ok.WithIdData(id))
 }
 
 // PageData 分页数据返回对象

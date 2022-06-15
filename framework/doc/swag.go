@@ -1,22 +1,32 @@
 /*
  * Copyright (c) 2022 honeysense.com All rights reserved.
  * Author: sunrui
- * Date: 2022/04/16 14:11:16
+ * Date: 2022-06-14 10:11:05
  */
 
-package app
+package doc
 
 import (
 	"bytes"
 	"framework/config"
 	"io/ioutil"
 	"os/exec"
+	"path/filepath"
+	"runtime"
 )
 
-// redoc 文档中间件
-func redoc(suffix string) []byte {
+// Redoc 文档中间件
+func Redoc(suffix string) []byte {
 	if suffix == "doc.json" {
 		data, _ := ioutil.ReadFile("docs/swagger.json")
+		return data
+	}
+
+	if suffix == "redoc.min.js" {
+		_, file, _, _ := runtime.Caller(0)
+		path := filepath.Dir(file)
+
+		data, _ := ioutil.ReadFile(path + "/redoc.min.js")
 		return data
 	}
 
@@ -34,11 +44,12 @@ func redoc(suffix string) []byte {
 			</style>
 		  </head>
 		  <body>
-			<redoc spec-url='swagger/doc.json'></redoc>
+			<Redoc spec-url='swagger/doc.json'></Redoc>
+			<script src="/doc/redoc.min.js"> </script>
   			<!--
-				<redoc spec-url='http://petstore.swagger.io/v2/swagger.json'></redoc>
+				<Redoc spec-url='http://petstore.swagger.io/v2/swagger.json'></Redoc>
+				<script src="https://rebilly.github.io/ReDoc/releases/latest/Redoc.min.js"> </script>
 			-->
-			<script src="https://rebilly.github.io/ReDoc/releases/latest/redoc.min.js"> </script>
 		  </body>
 		</html>
 	`)

@@ -1,7 +1,7 @@
 {
   "environment": "debug",
   "swagger": {
-    "enable": true
+    "enable": false
   },
   "debug": {
     "mysql": {
