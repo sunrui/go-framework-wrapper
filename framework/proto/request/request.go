@@ -6,6 +6,9 @@
 
 package request
 
+// validator 连接
+// https://github.com/go-playground/validator/
+
 // PageRequest 分页请求对象
 type PageRequest struct {
 	Page     int `json:"page" form:"page" validate:"required,gte=1,lte=9999"`       // 分页，从 1 开始

@@ -30,7 +30,7 @@ func ValidateParameter(ctx *gin.Context, req interface{}) {
 	}
 
 	// 强制解析
-	if err = ctx.MustBindWith(req, bindingType); err != nil {
+	if err = ctx.ShouldBindWith(req, bindingType); err != nil {
 		goto ERROR
 	}
 
