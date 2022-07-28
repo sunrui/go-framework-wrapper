@@ -10,11 +10,21 @@ import (
 	"encoding/json"
 )
 
+// MessageType 消息类型
+type MessageType int
+
+const (
+	MessageTypeToast  MessageType = iota // 消息提示
+	MessageTypeDialog                    // 消息弹窗
+	MessageTypeIgnore                    // 消息忽略
+)
+
 // Result 结果对象
 type Result struct {
-	Code        string      `json:"code" enums:"Ok,BadRequest,NoAuth,Forbidden,NotFound,NoContent,MethodNotAllowed,Conflict,RateLimit,InternalError,ThirdPartyError,NotImplemented" example:"Ok"` // 结果
-	Description string      `json:"description" example:"成功"`                                                                                                                                     // 描述
-	Data        interface{} `json:"data,omitempty"`                                                                                                                                               // 数据
+	Code        string      `json:"code" example:"Ok"`                      // 结果
+	Message     string      `json:"message" example:"成功"`                   // 消息
+	MessageType MessageType `json:"messageType" example:"MessageTypeToast"` // 消息类型
+	Data        interface{} `json:"data,omitempty"`                         // 数据
 }
 
 // Pagination 分页对象
@@ -33,7 +43,7 @@ type PageResult struct {
 
 // WithMessage 设置消息
 func (result Result) WithMessage(message string) Result {
-	result.Description = message
+	result.Message = message
 	return result
 }
 
@@ -71,25 +81,26 @@ func (result Result) String() string {
 
 // 通用返回对象码
 var (
-	Ok               = newResult("Ok", "成功")
-	BadRequest       = newResult("BadRequest", "语法错误")
-	NoAuth           = newResult("NoAuth", "没有登录")
-	Forbidden        = newResult("Forbidden", "没有权限")
-	NotFound         = newResult("NotFound", "不存在")
-	NoContent        = newResult("NoContent", "没有数据")
-	MethodNotAllowed = newResult("MethodNotAllowed", "请求方式不允许")
-	Conflict         = newResult("Conflict", "请求冲突")
-	RateLimit        = newResult("RateLimit", "限流")
-	InternalError    = newResult("InternalError", "内部错误")
-	ThirdPartyError  = newResult("ThirdPartyError", "第三方错误")
-	NotImplemented   = newResult("NotImplemented", "未实现")
+	Ok               = newResult("Ok", "成功", MessageTypeToast)
+	BadRequest       = newResult("BadRequest", "语法错误", MessageTypeDialog)
+	NoAuth           = newResult("NoAuth", "没有登录", MessageTypeIgnore)
+	Forbidden        = newResult("Forbidden", "没有权限", MessageTypeDialog)
+	NotFound         = newResult("NotFound", "不存在", MessageTypeDialog)
+	NoContent        = newResult("NoContent", "没有数据", MessageTypeDialog)
+	MethodNotAllowed = newResult("MethodNotAllowed", "请求方式不允许", MessageTypeDialog)
+	Conflict         = newResult("Conflict", "请求冲突", MessageTypeDialog)
+	RateLimit        = newResult("RateLimit", "限流", MessageTypeDialog)
+	InternalError    = newResult("InternalError", "内部错误", MessageTypeDialog)
+	ThirdPartyError  = newResult("ThirdPartyError", "第三方错误", MessageTypeDialog)
+	NotImplemented   = newResult("NotImplemented", "未实现", MessageTypeDialog)
 )
 
 // 创建结果对象
-func newResult(code string, description string) Result {
+func newResult(code string, message string, messageType MessageType) Result {
 	return Result{
 		Code:        code,
-		Description: description,
+		Message:     message,
+		MessageType: messageType,
 	}
 }
 
