@@ -11,25 +11,25 @@ import (
 )
 
 // MessageType 消息类型
-type MessageType int
+type MessageType string
 
 const (
-	MessageTypeToast  MessageType = iota // 消息提示
-	MessageTypeDialog                    // 消息弹窗
-	MessageTypeIgnore                    // 消息忽略
+	MessageTypeToast  MessageType = "Toast"  // 消息提示
+	MessageTypeDialog MessageType = "Dialog" // 消息弹窗
+	MessageTypeIgnore MessageType = "Ignore" // 消息忽略
 )
 
 // Result 结果对象
 type Result struct {
-	Code        string      `json:"code" example:"Ok"`                      // 结果
-	Message     string      `json:"message" example:"成功"`                   // 消息
-	MessageType MessageType `json:"messageType" example:"MessageTypeToast"` // 消息类型
-	Data        interface{} `json:"data,omitempty"`                         // 数据
+	Code        string      `json:"code" example:"Ok"`           // 结果
+	Message     string      `json:"message" example:"成功"`        // 消息
+	MessageType MessageType `json:"messageType" example:"Toast"` // 消息类型
+	Data        any         `json:"data,omitempty"`              // 数据
 }
 
 // Pagination 分页对象
 type Pagination struct {
-	Page      int   `json:"page"`      // 当前页，从 0 开始
+	Page      int   `json:"page"`      // 当前页，从 1 开始
 	PageSize  int   `json:"pageSize"`  // 每页大小
 	TotalPage int64 `json:"totalPage"` // 总页数
 	TotalSize int64 `json:"totalSize"` // 总大小
@@ -48,15 +48,15 @@ func (result Result) WithMessage(message string) Result {
 }
 
 // WithKeyPair 设置结果对象参数对
-func (result Result) WithKeyPair(key string, value interface{}) Result {
-	dataMap := make(map[string]interface{})
+func (result Result) WithKeyPair(key string, value any) Result {
+	dataMap := make(map[string]any)
 	dataMap[key] = value
 	result.Data = dataMap
 	return result
 }
 
 // WithData 设置结果对象数据
-func (result Result) WithData(data interface{}) Result {
+func (result Result) WithData(data any) Result {
 	result.Data = data
 	return result
 }

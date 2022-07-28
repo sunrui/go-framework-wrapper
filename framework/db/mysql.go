@@ -8,7 +8,7 @@ package db
 
 import (
 	"fmt"
-	"framework/config"
+	"framework/env"
 	"framework/utils"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -21,7 +21,7 @@ var Mysql *gorm.DB
 
 // 初始化
 func init() {
-	conf := config.Mysql()
+	conf := env.Mysql()
 	var err error
 
 	// 数据库连接

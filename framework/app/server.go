@@ -7,8 +7,10 @@
 package app
 
 import (
-	"framework/config"
+	"framework/env"
 	"github.com/gin-gonic/gin"
+	"io"
+	"os"
 	"strconv"
 )
 
@@ -20,6 +22,12 @@ type Server struct {
 // New 创建新的服务对象
 func New() *Server {
 	engine := gin.Default()
+
+	// 开启文件日志
+	if !env.IsDebug() {
+		file, _ := os.Create("app.log")
+		gin.DefaultWriter = io.MultiWriter(file)
+	}
 
 	// 注册中间件
 	registerMiddleware(engine)
@@ -58,7 +66,7 @@ func (server *Server) Run(port int) {
 // 初始化
 func init() {
 	// 如果非调式环境注册 release 模式
-	if !config.IsDebug() {
+	if !env.IsDebug() {
 		gin.SetMode(gin.ReleaseMode)
 	}
 }

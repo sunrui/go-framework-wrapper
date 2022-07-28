@@ -8,7 +8,6 @@ package app
 
 import (
 	"fmt"
-	"framework/config"
 	"framework/doc"
 	"framework/proto/response"
 	"framework/proto/result"
@@ -17,7 +16,6 @@ import (
 	"github.com/juju/ratelimit"
 	"net/http"
 	"path/filepath"
-	"runtime/debug"
 	"strings"
 	"time"
 )
@@ -79,15 +77,16 @@ func recoverMiddleware(ctx *gin.Context) {
 			if ok {
 				response.New(ctx).Data(res)
 			} else {
-				dataMap := make(map[string]interface{})
-				dataMap["stack"] = utils.GetStack(5)
+				// 堆栈信息
+				dataMap := make(map[string]any)
+				dataMap["stack"] = utils.DumpStack(5)
 				dataMap["error"] = fmt.Sprintf("%s", err)
-				response.New(ctx).Result(result.InternalError.WithData(dataMap))
-			}
 
-			// 为了更好的调试，在开发环境中输出系统错误。
-			if config.IsDebug() {
-				debug.PrintStack()
+				r := result.InternalError.WithData(dataMap)
+				response.New(ctx).Result(r)
+
+				// 将出错日志记录下来
+				utils.LogRecord(ctx, r)
 			}
 		}
 	}()

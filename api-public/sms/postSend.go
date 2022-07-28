@@ -17,8 +17,8 @@ import (
 
 // 发送验证码请求
 type postCodeReq struct {
-	Phone   string      `json:"phone" validate:"required,len=11,numeric"`                         // 手机号
-	SmsType sms.SmsType `json:"smsType" validate:"required,oneof=SmsTypeLogin," enums:"asc,desc"` // 验证码类型
+	Phone   string      `json:"phone" validate:"required,len=11,numeric"`                  // 手机号
+	SmsType sms.SmsType `json:"smsType" validate:"required,oneof=Login," enums:"asc,desc"` // 验证码类型
 }
 
 // 发送验证码

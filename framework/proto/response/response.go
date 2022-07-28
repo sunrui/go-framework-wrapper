@@ -24,31 +24,27 @@ func New(ctx *gin.Context) *Response {
 	}
 }
 
-// Ok 操作成功返回对象
-func (response *Response) Ok() {
-	response.ctx.JSON(http.StatusOK, result.Ok)
-	response.ctx.Abort()
+// Data 数据返回对象
+func (response *Response) Data(data any) {
+	response.ctx.JSON(http.StatusOK, data)
 }
 
-// Data 数据返回对象
-func (response *Response) Data(data interface{}) {
-	response.ctx.JSON(http.StatusOK, data)
-	response.ctx.Abort()
+// Ok 操作成功返回对象
+func (response *Response) Ok() {
+	response.Data(result.Ok)
 }
 
 // Id 主键返回对象
 func (response *Response) Id(id string) {
-	response.Result(result.Ok.WithIdData(id))
+	response.Data(result.Ok.WithIdData(id))
 }
 
 // Result 数据返回对象
 func (response *Response) Result(result result.Result) {
-	response.ctx.JSON(http.StatusOK, result)
-	response.ctx.Abort()
+	response.Data(result)
 }
 
 // PageResult 数据返回对象
-func (response *Response) PageResult(result result.PageResult) {
-	response.ctx.JSON(http.StatusOK, result)
-	response.ctx.Abort()
+func (response *Response) PageResult(pageResult result.PageResult) {
+	response.Data(pageResult)
 }

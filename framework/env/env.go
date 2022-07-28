@@ -4,7 +4,7 @@
  * Date: 2022/01/09 14:18:09
  */
 
-package config
+package env
 
 import (
 	"encoding/json"
@@ -112,7 +112,7 @@ func init() {
 	_, file, _, _ := runtime.Caller(0)
 	path := filepath.Dir(file)
 
-	if stream, err = ioutil.ReadFile(path + "/config.json"); err != nil {
+	if stream, err = ioutil.ReadFile(path + "/env.json"); err != nil {
 		panic(err.Error())
 	}
 

@@ -26,6 +26,11 @@ type getSampleReq struct {
 }
 
 func getSample(ctx *gin.Context) {
+	//i := 5
+	//k := 0
+	//j := i / k
+	//println(j)
+
 	// 分页请求对象
 	var req getSampleReq
 
@@ -58,7 +63,7 @@ ERROR:
 		Validate string `json:"validate"` // 较验值
 	}
 
-	dataMap := make(map[string]interface{})
+	dataMap := make(map[string]any)
 
 	// 解析内容出错
 	if errors.As(err, &validationErrors) {

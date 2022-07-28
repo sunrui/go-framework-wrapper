@@ -7,7 +7,7 @@
 package token
 
 import (
-	"framework/config"
+	"framework/env"
 	"framework/proto/result"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
@@ -26,7 +26,7 @@ type jwtClaims struct {
 }
 
 // jwt 密钥
-var jwtSecret = config.Jwt().Secret
+var jwtSecret = env.Jwt().Secret
 
 // 令牌 key 名称
 const tokenKey = "token"
@@ -47,7 +47,7 @@ func encode(token Token) (string, error) {
 
 // 验证 jwt 字符串
 func decode(token string) (*Token, error) {
-	tokenClaims, err := jwt.ParseWithClaims(token, &jwtClaims{}, func(token *jwt.Token) (interface{}, error) {
+	tokenClaims, err := jwt.ParseWithClaims(token, &jwtClaims{}, func(token *jwt.Token) (any, error) {
 		return jwtSecret, nil
 	})
 

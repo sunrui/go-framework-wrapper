@@ -10,7 +10,7 @@ package open
 type ApprovalStatus string
 
 const (
-	ApprovalStatusWaiting ApprovalStatus = "ApprovalStatusWaiting" // 待审核
-	ApprovalStatusRefuse  ApprovalStatus = "ApprovalStatusRefuse"  // 审核拒绝
-	ApprovalStatusSuccess ApprovalStatus = "ApprovalStatusSuccess" // 审核成功
+	ApprovalStatusWaiting ApprovalStatus = "Waiting" // 待审核
+	ApprovalStatusRefuse  ApprovalStatus = "Refuse"  // 审核拒绝
+	ApprovalStatusSuccess ApprovalStatus = "Success" // 审核成功
 )

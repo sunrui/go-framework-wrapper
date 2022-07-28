@@ -9,7 +9,7 @@ package db
 import (
 	"encoding/json"
 	"fmt"
-	"framework/config"
+	"framework/env"
 	"github.com/garyburd/redigo/redis"
 	"reflect"
 	"time"
@@ -24,7 +24,7 @@ var Redis *redisPool
 
 // 初始化
 func init() {
-	conf := config.Redis()
+	conf := env.Redis()
 	const timeout = 10 * time.Second
 
 	// 建立连接池
@@ -53,7 +53,7 @@ func init() {
 }
 
 // Set 设置对象
-func (redisPool *redisPool) Set(key string, value interface{}, second time.Duration) {
+func (redisPool *redisPool) Set(key string, value any, second time.Duration) {
 	pool := redisPool.pool.Get()
 	defer func() {
 		_ = pool.Close()
@@ -96,7 +96,7 @@ func (redisPool *redisPool) Get(key string) *string {
 }
 
 // GetJson 获取对象
-func (redisPool *redisPool) GetJson(key string, dst interface{}) bool {
+func (redisPool *redisPool) GetJson(key string, dst any) bool {
 	pool := redisPool.pool.Get()
 	defer func() {
 		_ = pool.Close()
@@ -149,7 +149,7 @@ func (redisPool *redisPool) Del(key string) {
 }
 
 // HashSet 设置 hash 对象
-func (redisPool *redisPool) HashSet(hash string, key string, value interface{}) {
+func (redisPool *redisPool) HashSet(hash string, key string, value any) {
 	pool := redisPool.pool.Get()
 	defer func() {
 		_ = pool.Close()
@@ -192,7 +192,7 @@ func (redisPool *redisPool) HashGet(hash string, key string) *string {
 }
 
 // HashGetJson 获取 hash 对象
-func (redisPool *redisPool) HashGetJson(hash string, key string, dst interface{}) bool {
+func (redisPool *redisPool) HashGetJson(hash string, key string, dst any) bool {
 	pool := redisPool.pool.Get()
 	defer func() {
 		_ = pool.Close()

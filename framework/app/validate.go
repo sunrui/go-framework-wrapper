@@ -18,7 +18,7 @@ import (
 )
 
 // ValidateParameter 请求参数过滤
-func ValidateParameter(ctx *gin.Context, req interface{}) {
+func ValidateParameter(ctx *gin.Context, req any) {
 	var validationErrors validator.ValidationErrors
 	var bindingType binding.Binding
 	var err error
@@ -48,8 +48,6 @@ ERROR:
 		Validate string `json:"validate"` // 较验值
 	}
 
-	dataMap := make(map[string]interface{})
-
 	// 解析内容出错
 	if errors.As(err, &validationErrors) {
 		var parameter []ParamError
@@ -67,10 +65,8 @@ ERROR:
 			})
 		}
 
-		dataMap["parameter"] = parameter
+		panic(result.BadRequest.WithData(parameter))
 	} else {
-		dataMap["error"] = fmt.Sprintf("%s", err)
+		panic(result.BadRequest.WithData(fmt.Sprintf("%s", err)))
 	}
-
-	panic(result.BadRequest.WithData(dataMap))
 }
