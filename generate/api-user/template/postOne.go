@@ -44,5 +44,5 @@ func postOne(ctx *gin.Context) {
 	one.Save()
 
 	// 返回结果
-	response.New(ctx).IdData(one.Id)
+	response.New(ctx).Id(one.Id)
 }

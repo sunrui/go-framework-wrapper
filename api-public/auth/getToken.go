@@ -18,7 +18,7 @@ func getToken(ctx *gin.Context) {
 	// 获取用户令牌
 	t, err := token.GetToken(ctx)
 	if err != nil {
-		response.New(ctx).Data(result.NotFound)
+		response.New(ctx).Result(result.NotFound)
 		return
 	}
 

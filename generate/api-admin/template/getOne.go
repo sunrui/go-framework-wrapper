@@ -30,7 +30,7 @@ func getOne(ctx *gin.Context) {
 
 	// 未找到结果
 	if one == nil {
-		response.New(ctx).Data(result.NoContent)
+		response.New(ctx).Result(result.NoContent)
 		return
 	}
 

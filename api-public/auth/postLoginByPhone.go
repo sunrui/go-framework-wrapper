@@ -53,7 +53,7 @@ func postLoginByPhone(ctx *gin.Context) {
 
 		// 获取缓存数据
 		if !smsCache.Exists() {
-			response.New(ctx).Data(result.NotFound.WithData(req))
+			response.New(ctx).Result(result.NotFound.WithData(req))
 			return
 		}
 

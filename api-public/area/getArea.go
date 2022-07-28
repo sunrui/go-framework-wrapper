@@ -18,13 +18,13 @@ import (
 func getArea(ctx *gin.Context) {
 	cityId, err := strconv.Atoi(ctx.Param("cityId"))
 	if err != nil {
-		response.New(ctx).Data(result.BadRequest.WithKeyPair("cityId", ctx.Param("cityId")))
+		response.New(ctx).Result(result.BadRequest.WithKeyPair("cityId", ctx.Param("cityId")))
 		return
 	}
 
 	areas := area.GetArea(cityId)
 	if areas == nil {
-		response.New(ctx).Data(result.NotFound.WithKeyPair("cityId", cityId))
+		response.New(ctx).Result(result.NotFound.WithKeyPair("cityId", cityId))
 		return
 	}
 

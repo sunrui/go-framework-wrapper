@@ -31,7 +31,7 @@ func postSend(ctx *gin.Context) {
 	// 获取当天发送条数，判断是否超出最大条数限制
 	count := sms.CountByPhoneAndDate(req.Phone, sms.GetNowDate())
 	if count >= 5 {
-		response.New(ctx).Data(result.RateLimit)
+		response.New(ctx).Result(result.RateLimit)
 		return
 	}
 
@@ -71,7 +71,7 @@ func postSend(ctx *gin.Context) {
 
 	// 发送验证码失败
 	if err != nil {
-		response.New(ctx).Data(result.InternalError.WithData(err))
+		response.New(ctx).Result(result.InternalError.WithData(err))
 		return
 	}
 

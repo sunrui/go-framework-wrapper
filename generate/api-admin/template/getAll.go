@@ -36,12 +36,12 @@ func getAll(ctx *gin.Context) {
 
 	// 未找到结果
 	if len(array) == 0 {
-		response.New(ctx).Data(result.NoContent)
+		response.New(ctx).Result(result.NoContent)
 		return
 	}
 
 	// 返回结果
-	response.New(ctx).Data(result.PageResult{
+	response.New(ctx).PageResult(result.PageResult{
 		Result:     result.Ok.WithData(array),
 		Pagination: pagination,
 	})

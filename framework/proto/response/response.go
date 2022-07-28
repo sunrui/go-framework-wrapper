@@ -32,27 +32,23 @@ func (response *Response) Ok() {
 
 // Data 数据返回对象
 func (response *Response) Data(data interface{}) {
-	// 判断是否为 Result 对象
-	_, ok := data.(result.Result)
-	if ok {
-		response.ctx.JSON(http.StatusOK, data)
-	} else {
-		response.ctx.JSON(http.StatusOK, result.Ok.WithData(data))
-	}
-
+	response.ctx.JSON(http.StatusOK, data)
 	response.ctx.Abort()
 }
 
-// IdData 主键返回对象
-func (response *Response) IdData(id string) {
-	response.Data(result.Ok.WithIdData(id))
+// Id 主键返回对象
+func (response *Response) Id(id string) {
+	response.Result(result.Ok.WithIdData(id))
 }
 
-// PageData 分页数据返回对象
-func (response *Response) PageData(data interface{}, pagination result.Pagination) {
-	response.ctx.JSON(http.StatusOK, result.PageResult{
-		Result:     result.Ok.WithData(data),
-		Pagination: pagination,
-	})
+// Result 数据返回对象
+func (response *Response) Result(result result.Result) {
+	response.ctx.JSON(http.StatusOK, result)
+	response.ctx.Abort()
+}
+
+// PageResult 数据返回对象
+func (response *Response) PageResult(result result.PageResult) {
+	response.ctx.JSON(http.StatusOK, result)
 	response.ctx.Abort()
 }

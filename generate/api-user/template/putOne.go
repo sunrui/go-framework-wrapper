@@ -49,7 +49,7 @@ func putOne(ctx *gin.Context) {
 
 	success := template.UpdateByIdAndUserId(id, userId, one)
 	if !success {
-		response.New(ctx).Data(result.NotFound.WithIdData(id))
+		response.New(ctx).Result(result.NotFound.WithIdData(id))
 		return
 	}
 

@@ -32,7 +32,7 @@ func deleteOne(ctx *gin.Context) {
 	// 删除
 	success := template.DeleteByIdAndUserId(id, userId)
 	if !success {
-		response.New(ctx).Data(result.NotFound.WithIdData(id))
+		response.New(ctx).Result(result.NotFound.WithIdData(id))
 		return
 	}
 

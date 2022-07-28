@@ -17,7 +17,7 @@ import (
 func postLogout(ctx *gin.Context) {
 	_, err := ctx.Cookie("token")
 	if err != nil {
-		response.New(ctx).Data(result.NotFound.WithData(err.Error()))
+		response.New(ctx).Result(result.NotFound.WithData(err.Error()))
 		return
 	}
 

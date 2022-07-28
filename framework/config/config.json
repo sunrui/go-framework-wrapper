@@ -9,7 +9,7 @@
       "port": 3306,
       "database": "medium",
       "user": "root",
-      "password": ""
+      "password": "root"
     },
     "redis": {
       "host": "localhost",

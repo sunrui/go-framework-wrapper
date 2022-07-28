@@ -24,12 +24,12 @@ import (
 
 // 异常 404 中间件
 func notFoundMiddleware(ctx *gin.Context) {
-	response.New(ctx).Data(result.NotFound.WithKeyPair("uri", ctx.Request.URL.RequestURI()))
+	response.New(ctx).Result(result.NotFound.WithKeyPair("uri", ctx.Request.URL.RequestURI()))
 }
 
 // 异常 405 中间件
 func methodNotAllowedMiddleware(ctx *gin.Context) {
-	response.New(ctx).Data(result.MethodNotAllowed.WithKeyPair("uri", ctx.Request.URL.RequestURI()))
+	response.New(ctx).Result(result.MethodNotAllowed.WithKeyPair("uri", ctx.Request.URL.RequestURI()))
 }
 
 // 流量限制中间件
@@ -42,7 +42,7 @@ func rateLimitMiddleware(fillInterval time.Duration, capacity, quantum int64) gi
 
 	return func(ctx *gin.Context) {
 		if bucket.TakeAvailable(1) < 1 {
-			response.New(ctx).Data(result.RateLimit)
+			response.New(ctx).Result(result.RateLimit)
 			return
 		}
 
@@ -82,7 +82,7 @@ func recoverMiddleware(ctx *gin.Context) {
 				dataMap := make(map[string]interface{})
 				dataMap["stack"] = utils.GetStack(5)
 				dataMap["error"] = fmt.Sprintf("%s", err)
-				response.New(ctx).Data(result.InternalError.WithData(dataMap))
+				response.New(ctx).Result(result.InternalError.WithData(dataMap))
 			}
 
 			// 为了更好的调试，在开发环境中输出系统错误。
