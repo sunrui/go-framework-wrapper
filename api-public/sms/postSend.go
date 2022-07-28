@@ -1,7 +1,7 @@
 /*
- * Copyright (c) 2022 honeysense.com All rights reserved.
+ * Copyright (c) 2022 honeysense All rights reserved.
  * Author: sunrui
- * Date: 2022-04-25 22:14:48
+ * Date: 2022/01/03 17:51:03
  */
 
 package sms
@@ -14,6 +14,12 @@ import (
 	"github.com/gin-gonic/gin"
 	"service/core/sms"
 )
+
+// 发送验证码请求
+type postCodeReq struct {
+	Phone   string      `json:"phone" validate:"required,len=11,numeric"`                         // 手机号
+	SmsType sms.SmsType `json:"smsType" validate:"required,oneof=SmsTypeLogin," enums:"asc,desc"` // 验证码类型
+}
 
 // 发送验证码
 func postSend(ctx *gin.Context) {
@@ -77,34 +83,5 @@ func postSend(ctx *gin.Context) {
 	cache.SaveCode(randomCode)
 
 	// 发送成功
-	response.New(ctx).Ok()
-}
-
-// 较验验证码
-func postVerify(ctx *gin.Context) {
-	var req postVerifyReq
-
-	// 较验参数
-	app.ValidateParameter(ctx, &req)
-
-	// 缓存对象
-	cache := sms.Cache{
-		Phone:   req.Phone,
-		SmsType: req.SmsType,
-	}
-
-	// 获取缓存数据
-	if !cache.Exists() {
-		response.New(ctx).Data(result.NotFound)
-		return
-	}
-
-	// 较验验证码
-	if !cache.Verify(req.Code) {
-		response.New(ctx).Data(result.NotFound)
-		return
-	}
-
-	// 较验成功
 	response.New(ctx).Ok()
 }

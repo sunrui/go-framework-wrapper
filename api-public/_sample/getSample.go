@@ -10,6 +10,7 @@ import (
 	"errors"
 	"fmt"
 	"framework/app"
+	"framework/proto/request"
 	"framework/proto/response"
 	"framework/proto/result"
 	"github.com/gin-gonic/gin"
@@ -18,6 +19,11 @@ import (
 	"net/http"
 	"strings"
 )
+
+type getSampleReq struct {
+	request.PageRequest
+	Name string `json:"name" validate:"required"` // 名称
+}
 
 func getSample(ctx *gin.Context) {
 	// 分页请求对象
@@ -83,9 +89,5 @@ ERROR:
 
 	println(req.PageSize)
 
-	response.New(ctx).Data("hello world")
-}
-
-func putSample(ctx *gin.Context) {
 	response.New(ctx).Data("hello world")
 }

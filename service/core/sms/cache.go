@@ -9,7 +9,6 @@ package sms
 import (
 	"fmt"
 	"framework/db"
-	"service/enum"
 )
 
 // 缓存数据
@@ -20,8 +19,8 @@ type codeCache struct {
 
 // Cache 缓存对象
 type Cache struct {
-	Phone   string       `json:"phone"`   // 手机号
-	SmsType enum.SmsType `json:"SmsType"` // 验证码类型
+	Phone   string  `json:"phone"`   // 手机号
+	SmsType SmsType `json:"SmsType"` // 验证码类型
 }
 
 // 获取主键

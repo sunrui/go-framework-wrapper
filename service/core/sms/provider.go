@@ -8,11 +8,10 @@ package sms
 
 import (
 	"fmt"
-	"service/enum"
 )
 
 // Send 短信发送
-func Send(phone string, smsType enum.SmsType, sixNumber string) (channel string, reqId string, err error) {
+func Send(phone string, smsType SmsType, sixNumber string) (channel string, reqId string, err error) {
 	echo := fmt.Sprintf("Send - %s, %s, %s", phone, smsType, sixNumber)
 	fmt.Println(echo)
 

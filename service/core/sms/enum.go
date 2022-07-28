@@ -4,12 +4,12 @@
  * Date: 2022-04-25 22:23:45
  */
 
-package enum
+package sms
 
 // SmsType 验证码类型
 type SmsType string
 
 const (
-	SmsLogin         SmsType = "SmsLogin"         // 登录
-	SmsResetPassword SmsType = "SmsResetPassword" // 重置密码
+	SmsTypeLogin         SmsType = "SmsTypeLogin"         // 登录
+	SmsTypeResetPassword SmsType = "SmsTypeResetPassword" // 重置密码
 )

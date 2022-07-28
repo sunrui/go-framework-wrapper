@@ -1,10 +1,15 @@
 /*
  * Copyright (c) 2022 honeysense All rights reserved.
  * Author: sunrui
- * Date: 2022/01/31 21:47:31
+ * Date: 2022/01/31 21:00:31
  */
 
 package open
+
+import (
+	"framework/app"
+	"github.com/gin-gonic/gin"
+)
 
 // 提交入驻
 type postOpenReq struct {
@@ -18,4 +23,12 @@ type postOpenReq struct {
 // 提交入驻结果
 type postOpenRes struct {
 	OpenId string `json:"openId"` // 入驻 id
+}
+
+// 提交入驻
+func postOpen(ctx *gin.Context) {
+	var req postOpenReq
+
+	// 较验参数
+	app.ValidateParameter(ctx, &req)
 }

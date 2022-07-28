@@ -15,8 +15,18 @@ import (
 	"github.com/gin-gonic/gin"
 	"service/core/sms"
 	"service/core/user"
-	"service/enum"
 )
+
+// 手机号码登录请求
+type postLoginByPhoneReq struct {
+	Phone string `json:"phone" validate:"required,len=11"` // 手机号
+	Code  string `json:"code" validate:"required,len=6"`   // 验证码
+}
+
+// 手机号码登录结果
+type postLoginByPhoneRes struct {
+	UserId string `json:"userId"` // 用户 id
+}
 
 // @Summary  登录 - 手机
 // @Tags     认证
@@ -38,7 +48,7 @@ func postLoginByPhone(ctx *gin.Context) {
 		// 短信缓存对象
 		smsCache := sms.Cache{
 			Phone:   req.Phone,
-			SmsType: enum.SmsLogin,
+			SmsType: sms.SmsTypeLogin,
 		}
 
 		// 获取缓存数据
@@ -75,37 +85,4 @@ func postLoginByPhone(ctx *gin.Context) {
 	response.New(ctx).Data(postLoginByPhoneRes{
 		UserId: userOne.Id,
 	})
-}
-
-// 微信登录
-func postLoginByWechat(ctx *gin.Context) {
-	var req postLoginByPhoneReq
-
-	// 较验参数
-	app.ValidateParameter(ctx, &req)
-}
-
-// 获取令牌
-func getToken(ctx *gin.Context) {
-	// 获取用户令牌
-	t, err := token.GetToken(ctx)
-	if err != nil {
-		response.New(ctx).Data(result.NotFound)
-		return
-	}
-
-	response.New(ctx).Data(t)
-}
-
-// 登出
-func postLogout(ctx *gin.Context) {
-	_, err := ctx.Cookie("token")
-	if err != nil {
-		response.New(ctx).Data(result.NotFound.WithData(err.Error()))
-		return
-	}
-
-	// 移除令牌
-	token.Remove(ctx)
-	response.New(ctx).Ok()
 }

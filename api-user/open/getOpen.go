@@ -7,7 +7,6 @@
 package open
 
 import (
-	"framework/app"
 	"framework/proto/response"
 	"framework/proto/token"
 	"github.com/gin-gonic/gin"
@@ -22,12 +21,4 @@ func getOpen(ctx *gin.Context) {
 	// 获取当前用户下的入驻
 	opens := open.GetOpen(userId)
 	response.New(ctx).Data(opens)
-}
-
-// 提交入驻
-func postOpen(ctx *gin.Context) {
-	var req postOpenReq
-
-	// 较验参数
-	app.ValidateParameter(ctx, &req)
 }
