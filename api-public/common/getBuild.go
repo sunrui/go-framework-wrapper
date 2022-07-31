@@ -8,6 +8,7 @@ package common
 
 import (
 	"framework/proto/response"
+	"framework/proto/result"
 	"github.com/gin-gonic/gin"
 	"time"
 )
@@ -20,5 +21,5 @@ var build = time.Now()
 // @Success  200  {object}  result.Result{data=string}  true  {"status":"Ok","description":"成功"}
 // @Router   /public/common/build [get]
 func getBuild(ctx *gin.Context) {
-	response.New(ctx).Data(build.Format("2006-01-02 15:04:05"))
+	response.Result(ctx, result.Ok.WithData(build.Format("2006-01-02 15:04:05")))
 }

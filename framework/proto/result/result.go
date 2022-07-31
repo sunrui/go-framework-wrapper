@@ -19,14 +19,6 @@ const (
 	MessageTypeIgnore MessageType = "Ignore" // 消息忽略
 )
 
-// Result 结果对象
-type Result struct {
-	Code        string      `json:"code" example:"Ok"`           // 结果
-	Message     string      `json:"message" example:"成功"`        // 消息
-	MessageType MessageType `json:"messageType" example:"Toast"` // 消息类型
-	Data        any         `json:"data,omitempty"`              // 数据
-}
-
 // Pagination 分页对象
 type Pagination struct {
 	Page      int   `json:"page"`      // 当前页，从 1 开始
@@ -35,10 +27,13 @@ type Pagination struct {
 	TotalSize int64 `json:"totalSize"` // 总大小
 }
 
-// PageResult 结果对象
-type PageResult struct {
-	Result                // 结果对象
-	Pagination Pagination `json:"pagination"` // 分页对象
+// Result 结果对象
+type Result struct {
+	Code        string      `json:"code" example:"Ok"`           // 结果
+	Message     string      `json:"message" example:"成功"`        // 消息
+	MessageType MessageType `json:"messageType" example:"Toast"` // 消息类型
+	Data        any         `json:"data,omitempty"`              // 数据
+	Pagination  *Pagination `json:"pagination,omitempty"`        // 分页对象
 }
 
 // WithMessage 设置消息
@@ -73,6 +68,13 @@ func (result Result) WithIdData(id string) Result {
 	return result
 }
 
+// WithPageData 设置结果对象数据
+func (result Result) WithPageData(data any, pagination Pagination) Result {
+	result.Data = data
+	result.Pagination = &pagination
+	return result
+}
+
 // 重写返回结果对象，使用 json 反序列化
 func (result Result) String() string {
 	marshal, _ := json.Marshal(result)
@@ -82,11 +84,12 @@ func (result Result) String() string {
 // 通用返回对象码
 var (
 	Ok                     = newResult("Ok", "成功", MessageTypeToast)
+	NoAuth                 = newResult("NoAuth", "没有登录", MessageTypeIgnore)
 	ParameterBindError     = newResult("ParameterBindError", "参数绑定错误", MessageTypeDialog)
 	ParameterValidateError = newResult("ParameterValidateError", "参数较验错误", MessageTypeDialog)
-	NoAuth                 = newResult("NoAuth", "没有登录", MessageTypeIgnore)
 	Forbidden              = newResult("Forbidden", "没有权限", MessageTypeDialog)
 	NotFound               = newResult("NotFound", "不存在", MessageTypeDialog)
+	NoMatch                = newResult("NoMatch", "不匹配", MessageTypeDialog)
 	NoContent              = newResult("NoContent", "没有数据", MessageTypeDialog)
 	MethodNotAllowed       = newResult("MethodNotAllowed", "请求方式不允许", MessageTypeDialog)
 	Conflict               = newResult("Conflict", "请求冲突", MessageTypeDialog)

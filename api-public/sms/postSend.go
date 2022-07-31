@@ -32,7 +32,7 @@ func postSend(ctx *gin.Context) {
 	// 获取当天发送条数，判断是否超出最大条数限制
 	count := sms.CountByPhoneAndDate(req.Phone, sms.GetNowDate())
 	if count >= config.Sms().MaxSendPerDay {
-		response.New(ctx).Result(result.RateLimit)
+		response.Result(ctx, result.RateLimit)
 		return
 	}
 
@@ -72,7 +72,7 @@ func postSend(ctx *gin.Context) {
 
 	// 发送验证码失败
 	if err != nil {
-		response.New(ctx).Result(result.InternalError.WithData(err))
+		response.Result(ctx, result.InternalError.WithData(err))
 		return
 	}
 
@@ -84,5 +84,5 @@ func postSend(ctx *gin.Context) {
 	cache.SaveCode(randomCode)
 
 	// 发送成功
-	response.New(ctx).Ok()
+	response.Result(ctx, result.Ok)
 }

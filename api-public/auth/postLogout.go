@@ -17,11 +17,12 @@ import (
 func postLogout(ctx *gin.Context) {
 	_, err := ctx.Cookie("token")
 	if err != nil {
-		response.New(ctx).Result(result.NotFound.WithData(err.Error()))
+		response.Result(ctx, result.NotFound.WithData(err.Error()))
 		return
 	}
 
 	// 移除令牌
 	token.Remove(ctx)
-	response.New(ctx).Ok()
+
+	response.Result(ctx, result.Ok)
 }

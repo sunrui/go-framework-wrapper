@@ -8,6 +8,7 @@ package area
 
 import (
 	"framework/proto/response"
+	"framework/proto/result"
 	"github.com/gin-gonic/gin"
 	"service/core/area"
 )
@@ -15,5 +16,5 @@ import (
 // 获取国家
 func getCountry(ctx *gin.Context) {
 	country := area.GetCountry()
-	response.New(ctx).Data(country)
+	response.Result(ctx, result.Ok.WithData(country))
 }

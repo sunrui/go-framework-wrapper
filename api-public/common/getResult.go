@@ -18,5 +18,5 @@ import (
 // @Success  200  {object}  result.Result{data=result.Result}  true  {"status":"Ok","description":"成功"}
 // @Router   /public/common/result [get]
 func getResult(ctx *gin.Context) {
-	response.New(ctx).Data(result.All())
+	response.Result(ctx, result.Ok.WithData(result.All()))
 }

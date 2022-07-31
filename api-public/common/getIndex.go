@@ -8,6 +8,7 @@ package common
 
 import (
 	"framework/proto/response"
+	"framework/proto/result"
 	"github.com/gin-gonic/gin"
 )
 
@@ -27,5 +28,5 @@ import (
 // @Success  200         {object}  result.Result{data=sms.Sms}  true
 // @Router   /public/common/ [get]
 func getIndex(ctx *gin.Context) {
-	response.New(ctx).Data("hello world")
+	response.Result(ctx, result.Ok.WithData("hello world"))
 }

@@ -36,16 +36,16 @@ func postVerify(ctx *gin.Context) {
 
 	// 获取缓存数据
 	if !cache.Exists() {
-		response.New(ctx).Result(result.NotFound)
+		response.Result(ctx, result.NotFound)
 		return
 	}
 
 	// 较验验证码
 	if !cache.Verify(req.Code) {
-		response.New(ctx).Result(result.NotFound)
+		response.Result(ctx, result.NotFound)
 		return
 	}
 
 	// 较验成功
-	response.New(ctx).Ok()
+	response.Result(ctx, result.Ok)
 }

@@ -45,7 +45,7 @@ func getAll(ctx *gin.Context) {
 	}
 
 	// 返回结果
-	response.New(ctx).PageResult(result.PageResult{
+	response.New(ctx).WithPageData(result{
 		Result:     result.Ok.WithData(array),
 		Pagination: pagination,
 	})

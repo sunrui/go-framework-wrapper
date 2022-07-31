@@ -53,13 +53,13 @@ func postLoginByPhone(ctx *gin.Context) {
 
 		// 获取缓存数据
 		if !smsCache.Exists() {
-			response.New(ctx).Result(result.NotFound.WithData(req))
+			response.Result(ctx, result.NotFound.WithData(req))
 			return
 		}
 
 		// 较验验证码
 		if !smsCache.Verify(req.Code) {
-			response.New(ctx).Data("common.NotMatch")
+			response.Result(ctx, result.NoMatch.WithMessage("验证码不匹配"))
 			return
 		}
 
@@ -82,7 +82,7 @@ func postLoginByPhone(ctx *gin.Context) {
 
 	token.Write(ctx, userOne.Id)
 
-	response.New(ctx).Data(postLoginByPhoneRes{
+	response.Result(ctx, result.Ok.WithData(postLoginByPhoneRes{
 		UserId: userOne.Id,
-	})
+	}))
 }
