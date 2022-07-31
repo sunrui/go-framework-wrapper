@@ -42,6 +42,12 @@ func (result Result) WithMessage(message string) Result {
 	return result
 }
 
+// WithMessageType 设置消息类型
+func (result Result) WithMessageType(messageType MessageType) Result {
+	result.MessageType = messageType
+	return result
+}
+
 // WithKeyPair 设置结果对象参数对
 func (result Result) WithKeyPair(key string, value any) Result {
 	dataMap := make(map[string]any)
