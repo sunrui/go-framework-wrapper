@@ -13,6 +13,12 @@ import (
 	"runtime"
 )
 
+// rateLimit 限流对象
+type rateLimit struct {
+	Quantum  int64 `json:"quantum"`  // 间隔时间（秒）
+	Capacity int64 `json:"capacity"` // 令牌桶容量
+}
+
 // swagger 配置对象
 type swagger struct {
 	Enable bool `json:"enable"` // 是否启用
@@ -46,19 +52,26 @@ type sms struct {
 	MagicCode     string `json:"magicCode"`     // 短信魔术码
 	MaxAge        int    `json:"maxAge"`        // 过期时间（秒）
 	MaxVerifyTime int    `json:"maxVerifyTime"` // 最多较验次数
+	MaxSendPerDay int64  `json:"maxSendPerDay"` // 每日最多发送次数
 }
 
 // 配置对象
 type config struct {
-	Swagger swagger `json:"swagger"` // swagger 配置对象
-	Mysql   mysql   `json:"mysql"`   // Mysql 配置对象
-	Redis   redis   `json:"redis"`   // Redis 配置对象
-	Jwt     jwt     `json:"jwt"`     // Jwt 配置对象
-	Sms     sms     `json:"sms"`     // Sms 配置对象
+	RateLimit rateLimit `json:"rateLimit"` // RateLimit 限流对象
+	Swagger   swagger   `json:"swagger"`   // Swagger 配置对象
+	Mysql     mysql     `json:"mysql"`     // Mysql 配置对象
+	Redis     redis     `json:"redis"`     // Redis 配置对象
+	Jwt       jwt       `json:"jwt"`       // Jwt 配置对象
+	Sms       sms       `json:"sms"`       // Sms 配置对象
 }
 
 // 当前配置
 var conf config
+
+// RateLimit 配置
+func RateLimit() *rateLimit {
+	return &conf.RateLimit
+}
 
 // Swagger 配置
 func Swagger() *swagger {

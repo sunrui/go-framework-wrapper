@@ -8,6 +8,7 @@ package app
 
 import (
 	"fmt"
+	"framework/config"
 	"framework/doc"
 	"framework/proto/response"
 	"framework/proto/result"
@@ -110,7 +111,7 @@ func registerMiddleware(engine *gin.Engine) {
 	engine.NoMethod(methodNotAllowedMiddleware)
 
 	// 注册限流中间件
-	engine.Use(rateLimitMiddleware(time.Second, 200, 1))
+	engine.Use(rateLimitMiddleware(time.Second, config.RateLimit().Capacity, config.RateLimit().Quantum))
 
 	// 注册文档中间件
 	engine.GET("/doc/*any", redocMiddleware)

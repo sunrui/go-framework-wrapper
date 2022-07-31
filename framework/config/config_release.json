@@ -1,4 +1,8 @@
 {
+  "rateLimit": {
+    "quantum": 10,
+    "capacity": 5000
+  },
   "swagger": {
     "enable": false
   },
@@ -23,6 +27,7 @@
   "sms": {
     "magicCode": "",
     "maxAge": 900,
-    "maxVerifyTime": 5
+    "maxVerifyTime": 5,
+    "maxSendPerDay": 5
   }
 }

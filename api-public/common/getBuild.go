@@ -9,7 +9,10 @@ package common
 import (
 	"framework/proto/response"
 	"github.com/gin-gonic/gin"
+	"time"
 )
+
+var build = time.Now()
 
 // @Summary  编译时间
 // @Tags     通用

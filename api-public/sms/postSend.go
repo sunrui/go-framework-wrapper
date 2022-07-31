@@ -9,6 +9,7 @@ package sms
 import (
 	"encoding/json"
 	"framework/app"
+	"framework/config"
 	"framework/proto/response"
 	"framework/proto/result"
 	"github.com/gin-gonic/gin"
@@ -30,7 +31,7 @@ func postSend(ctx *gin.Context) {
 
 	// 获取当天发送条数，判断是否超出最大条数限制
 	count := sms.CountByPhoneAndDate(req.Phone, sms.GetNowDate())
-	if count >= 5 {
+	if count >= config.Sms().MaxSendPerDay {
 		response.New(ctx).Result(result.RateLimit)
 		return
 	}
