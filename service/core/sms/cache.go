@@ -8,8 +8,16 @@ package sms
 
 import (
 	"fmt"
+	"framework/config"
 	"framework/db"
+	"time"
 )
+
+// 过期时间
+var maxAge = time.Duration(config.Sms().MaxAge) * time.Second
+
+// 最多较验次数
+var maxVerifyTime = config.Sms().MaxVerifyTime
 
 // 缓存数据
 type codeCache struct {
@@ -49,12 +57,12 @@ func (cache *Cache) SaveCode(randomCode string) {
 	db.Redis.Set(cache.getKey(), codeCache{
 		Code:        randomCode,
 		VerifyTimes: 0,
-	}, 15*60)
+	}, maxAge)
 }
 
 // Save 设置新缓存验证码
 func (cache *Cache) Save(codeCache codeCache) {
-	db.Redis.Set(cache.getKey(), codeCache, 15*60)
+	db.Redis.Set(cache.getKey(), codeCache, maxAge)
 }
 
 // Del 移除缓存验证码
@@ -75,8 +83,8 @@ func (cache *Cache) Verify(code string) bool {
 		// 增加缓存引用记数
 		value.VerifyTimes += 1
 
-		// 如果已经较验出错 5 次，移除现有验证码
-		if value.VerifyTimes == 5 {
+		// 如果已经较验出错 maxVerifyTime 次，移除现有验证码
+		if value.VerifyTimes == maxVerifyTime {
 			cache.Del()
 		} else {
 			// 更新出错较验次数

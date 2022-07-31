@@ -7,7 +7,7 @@
 package token
 
 import (
-	"framework/env"
+	"framework/config"
 	"framework/proto/result"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
@@ -19,40 +19,40 @@ type Token struct {
 	UserId string `json:"userId"`
 }
 
-// jwt 对象
-type jwtClaims struct {
+// claims 对象
+type claims struct {
 	jwt.StandardClaims
 	Token
 }
 
-// jwt 密钥
-var jwtSecret = env.Jwt().Secret
+// 密钥
+var secret = config.Jwt().Secret
 
-// 令牌 key 名称
-const tokenKey = "token"
+// 过期时间
+var maxAge = config.Jwt().MaxAge
 
-// 令牌过期时间默认 30 天
-const tokenMaxAge = 30 * 24 * 60 * 60
+// 令牌名称
+const name = "token"
 
 // 生成 jwt 字符串
 func encode(token Token) (string, error) {
-	claims := jwtClaims{
+	claims := claims{
 		jwt.StandardClaims{},
 		token,
 	}
 
 	tokenClaims := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	return tokenClaims.SignedString(jwtSecret)
+	return tokenClaims.SignedString(secret)
 }
 
 // 验证 jwt 字符串
 func decode(token string) (*Token, error) {
-	tokenClaims, err := jwt.ParseWithClaims(token, &jwtClaims{}, func(token *jwt.Token) (any, error) {
-		return jwtSecret, nil
+	tokenClaims, err := jwt.ParseWithClaims(token, &claims{}, func(token *jwt.Token) (any, error) {
+		return secret, nil
 	})
 
 	if tokenClaims != nil {
-		if claims, ok := tokenClaims.Claims.(*jwtClaims); ok && tokenClaims.Valid {
+		if claims, ok := tokenClaims.Claims.(*claims); ok && tokenClaims.Valid {
 			return &claims.Token, nil
 		}
 	}
@@ -71,7 +71,7 @@ func Write(ctx *gin.Context, userId string) {
 	}
 
 	// 写入令牌，默认 30 天
-	ctx.SetCookie(tokenKey, tokenString, tokenMaxAge, "/", "", false, true)
+	ctx.SetCookie(name, tokenString, maxAge, "/", "", false, true)
 }
 
 // GetUserId 获取当前用户 id
@@ -105,7 +105,7 @@ func GetToken(ctx *gin.Context) (*Token, error) {
 
 	// 从 cookie 中获取令牌
 	if tokenString = getHeaderToken(); tokenString == "" {
-		if tokenString, err = ctx.Cookie(tokenKey); err != nil {
+		if tokenString, err = ctx.Cookie(name); err != nil {
 			return nil, err
 		}
 	}
@@ -115,5 +115,5 @@ func GetToken(ctx *gin.Context) (*Token, error) {
 
 // Remove 移除令牌
 func Remove(ctx *gin.Context) {
-	ctx.SetCookie("token", "", -1, "/", "localhost", false, true)
+	ctx.SetCookie(name, "", -1, "/", "localhost", false, true)
 }

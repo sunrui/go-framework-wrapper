@@ -9,7 +9,7 @@ package db
 import (
 	"encoding/json"
 	"fmt"
-	"framework/env"
+	"framework/config"
 	"github.com/garyburd/redigo/redis"
 	"reflect"
 	"time"
@@ -24,8 +24,7 @@ var Redis *redisPool
 
 // 初始化
 func init() {
-	conf := env.Redis()
-	const timeout = 10 * time.Second
+	conf := config.Redis()
 
 	// 建立连接池
 	Redis = &redisPool{
@@ -36,6 +35,8 @@ func init() {
 			Wait:        true,
 			Dial: func() (redis.Conn, error) {
 				address := fmt.Sprintf("%s:%d", conf.Host, conf.Port)
+				timeout := time.Duration(10) * time.Second
+
 				return redis.Dial("tcp", address,
 					redis.DialPassword(conf.Password),
 					redis.DialDatabase(conf.Database),

@@ -1,0 +1,28 @@
+{
+  "swagger": {
+    "enable": false
+  },
+  "mysql": {
+    "host": "localhost",
+    "port": 3306,
+    "database": "medium",
+    "user": "root",
+    "password": "root"
+  },
+  "redis": {
+    "host": "localhost",
+    "port": 6379,
+    "password": "",
+    "database": 0,
+    "timeout": 10
+  },
+  "jwt": {
+    "secret": "mzkxOdrGmjgtrjFeOC00NkNFLuezruItNzmzmuYwrdI5OuIw",
+    "maxAge": 2592000
+  },
+  "sms": {
+    "magicCode": "123456",
+    "maxAge": 900,
+    "maxVerifyTime": 5
+  }
+}

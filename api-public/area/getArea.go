@@ -18,7 +18,7 @@ import (
 func getArea(ctx *gin.Context) {
 	cityId, err := strconv.Atoi(ctx.Param("cityId"))
 	if err != nil {
-		response.New(ctx).Result(result.BadRequest.WithKeyPair("cityId", ctx.Param("cityId")))
+		response.New(ctx).Result(result.ParameterBindError.WithKeyPair("cityId", ctx.Param("cityId")))
 		return
 	}
 

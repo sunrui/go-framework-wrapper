@@ -8,7 +8,7 @@ package doc
 
 import (
 	"bytes"
-	"framework/env"
+	"framework/config"
 	"io/ioutil"
 	"os/exec"
 	"path/filepath"
@@ -77,7 +77,7 @@ func commandExec(name string, arg ...string) {
 // 执行 swag 更新文档
 func init() {
 	// 读取 swagger 配置
-	swagger := env.Swagger()
+	swagger := config.Swagger()
 	if swagger.Enable {
 		commandExec("swag", "init", "--parseDependency")
 		commandExec("swag", "fmt")

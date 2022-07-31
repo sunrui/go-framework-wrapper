@@ -4,14 +4,13 @@
  * Date: 2022/01/09 14:18:09
  */
 
-package env
+package config
 
 import (
 	"encoding/json"
 	"io/ioutil"
 	"path/filepath"
 	"runtime"
-	"strings"
 )
 
 // swagger 配置对象
@@ -39,69 +38,51 @@ type redis struct {
 // jwt 配置对象
 type jwt struct {
 	Secret []byte `json:"secret"` // 密钥
+	MaxAge int    `json:"maxAge"` // 过期时间（秒）
 }
 
 // sms 配置对象
 type sms struct {
-	MagicCode string `json:"magicCode"` // 短信魔术码
+	MagicCode     string `json:"magicCode"`     // 短信魔术码
+	MaxAge        int    `json:"maxAge"`        // 过期时间（秒）
+	MaxVerifyTime int    `json:"maxVerifyTime"` // 最多较验次数
 }
 
-// Config 配置对象
-type Config struct {
-	Mysql mysql `json:"mysql"` // Mysql 配置对象
-	Redis redis `json:"redis"` // Redis 配置对象
-	Jwt   jwt   `json:"jwt"`   // Jwt 配置对象
-	Sms   sms   `json:"sms"`   // Sms 配置对象
-}
-
-// json 反射对象
-type jsonConfig struct {
-	Environment string  `json:"environment"` // 当前环境
-	Swagger     swagger `json:"swagger"`     // swagger 配置对象
-	Debug       Config  `json:"debug"`       // 开发环境
-	Release     Config  `json:"release"`     // 正式环境
-}
-
-// Get 获取当前配置
-func (jsonConfig jsonConfig) current() *Config {
-	if IsDebug() {
-		return &config.Debug
-	} else {
-		return &config.Release
-	}
+// 配置对象
+type config struct {
+	Swagger swagger `json:"swagger"` // swagger 配置对象
+	Mysql   mysql   `json:"mysql"`   // Mysql 配置对象
+	Redis   redis   `json:"redis"`   // Redis 配置对象
+	Jwt     jwt     `json:"jwt"`     // Jwt 配置对象
+	Sms     sms     `json:"sms"`     // Sms 配置对象
 }
 
 // 当前配置
-var config *jsonConfig
+var conf config
+
+// Swagger 配置
+func Swagger() *swagger {
+	return &conf.Swagger
+}
 
 // Mysql 配置
 func Mysql() *mysql {
-	return &config.current().Mysql
+	return &conf.Mysql
 }
 
 // Redis 配置
 func Redis() *redis {
-	return &config.current().Redis
+	return &conf.Redis
 }
 
 // Jwt 配置
 func Jwt() *jwt {
-	return &config.current().Jwt
+	return &conf.Jwt
 }
 
 // Sms 配置
 func Sms() *sms {
-	return &config.current().Sms
-}
-
-// IsDebug 是否在调试环境
-func IsDebug() bool {
-	return strings.ToLower(config.Environment) == "debug"
-}
-
-// Swagger 配置
-func Swagger() *swagger {
-	return &config.Swagger
+	return &conf.Sms
 }
 
 // 加载当前配置
@@ -112,12 +93,19 @@ func init() {
 	_, file, _, _ := runtime.Caller(0)
 	path := filepath.Dir(file)
 
-	if stream, err = ioutil.ReadFile(path + "/env.json"); err != nil {
+	var jsonFile string
+	if IsDebug() {
+		jsonFile = "config_debug.json"
+	} else {
+		jsonFile = "config_release.json"
+	}
+
+	if stream, err = ioutil.ReadFile(path + "/" + jsonFile); err != nil {
 		panic(err.Error())
 	}
 
 	// 反射配置文件
-	if err = json.Unmarshal(stream, &config); err != nil {
+	if err = json.Unmarshal(stream, &conf); err != nil {
 		panic(err.Error())
 	}
 }

@@ -11,8 +11,8 @@ import (
 )
 
 // Send 短信发送
-func Send(phone string, smsType SmsType, sixNumber string) (channel string, reqId string, err error) {
-	echo := fmt.Sprintf("Send - %s, %s, %s", phone, smsType, sixNumber)
+func Send(phone string, smsType SmsType, code string) (channel string, reqId string, err error) {
+	echo := fmt.Sprintf("Send - %s, %s, %s", phone, smsType, code)
 	fmt.Println(echo)
 
 	channel = "aliyun"

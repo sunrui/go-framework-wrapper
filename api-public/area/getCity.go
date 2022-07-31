@@ -18,7 +18,7 @@ import (
 func getCity(ctx *gin.Context) {
 	provinceId, err := strconv.Atoi(ctx.Param("provinceId"))
 	if err != nil {
-		response.New(ctx).Result(result.BadRequest.WithKeyPair("provinceId", ctx.Param("provinceId")))
+		response.New(ctx).Result(result.ParameterBindError.WithKeyPair("provinceId", ctx.Param("provinceId")))
 		return
 	}
 

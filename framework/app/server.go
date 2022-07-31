@@ -7,7 +7,7 @@
 package app
 
 import (
-	"framework/env"
+	"framework/config"
 	"github.com/gin-gonic/gin"
 	"io"
 	"os"
@@ -24,7 +24,7 @@ func New() *Server {
 	engine := gin.Default()
 
 	// 开启文件日志
-	if !env.IsDebug() {
+	if !config.IsDebug() {
 		file, _ := os.Create("app.log")
 		gin.DefaultWriter = io.MultiWriter(file)
 	}
@@ -66,7 +66,7 @@ func (server *Server) Run(port int) {
 // 初始化
 func init() {
 	// 如果非调式环境注册 release 模式
-	if !env.IsDebug() {
+	if !config.IsDebug() {
 		gin.SetMode(gin.ReleaseMode)
 	}
 }
