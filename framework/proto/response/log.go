@@ -19,6 +19,19 @@ import (
 
 // 记录出错日志
 func logResult(ctx *gin.Context, r result.Result) {
+	// 等级
+	var level string
+	if r.Code == result.Ok.Code {
+		level = "TRACE"
+	} else {
+		level = "ERROR"
+	}
+
+	// 判断是否需要输出
+	if level == "TRACE" && level != config.Log().Level {
+		return
+	}
+
 	// 协议
 	var http = func(ctx *gin.Context) string {
 		if ctx.Request.TLS != nil {
@@ -28,19 +41,10 @@ func logResult(ctx *gin.Context, r result.Result) {
 		}
 	}
 
-	// 等级
-	var level = func(r result.Result) string {
-		if r.Code == result.Ok.Code {
-			return "TRACE"
-		} else {
-			return "ERROR"
-		}
-	}
-
 	var buffer string
 
 	// 时间 - 等级 - IP
-	buffer += " - " + level(r) + " - " + ctx.ClientIP()
+	buffer += " - " + level + " - " + ctx.ClientIP()
 
 	// userId
 	if t, err := token.GetToken(ctx); err == nil {

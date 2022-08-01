@@ -1,4 +1,8 @@
 {
+  "log": {
+    "enable": true,
+    "level": "TRACE"
+  },
   "rateLimit": {
     "quantum": 1,
     "capacity": 5

@@ -1,4 +1,8 @@
 {
+  "log": {
+    "enable": true,
+    "level": "ERROR"
+  },
   "rateLimit": {
     "quantum": 10,
     "capacity": 5000

@@ -13,7 +13,13 @@ import (
 	"runtime"
 )
 
-// rateLimit 限流对象
+// log 配置相关
+type log struct {
+	Enable bool   `json:"enable"` // 开关
+	Level  string `json:"level"`  // 等级
+}
+
+// rateLimit 配置对象
 type rateLimit struct {
 	Quantum  int64 `json:"quantum"`  // 间隔时间（秒）
 	Capacity int64 `json:"capacity"` // 令牌桶容量
@@ -57,7 +63,8 @@ type sms struct {
 
 // 配置对象
 type config struct {
-	RateLimit rateLimit `json:"rateLimit"` // RateLimit 限流对象
+	Log       log       `json:"log"`       // Log 配置对象
+	RateLimit rateLimit `json:"rateLimit"` // RateLimit 配置对象
 	Swagger   swagger   `json:"swagger"`   // Swagger 配置对象
 	Mysql     mysql     `json:"mysql"`     // Mysql 配置对象
 	Redis     redis     `json:"redis"`     // Redis 配置对象
@@ -67,6 +74,11 @@ type config struct {
 
 // 当前配置
 var conf config
+
+// Log 配置
+func Log() *log {
+	return &conf.Log
+}
 
 // RateLimit 配置
 func RateLimit() *rateLimit {

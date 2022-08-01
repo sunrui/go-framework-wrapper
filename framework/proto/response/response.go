@@ -7,6 +7,7 @@
 package response
 
 import (
+	"framework/config"
 	"framework/proto/result"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -18,7 +19,9 @@ func Reply(ctx *gin.Context, result result.Result) {
 	ctx.JSON(http.StatusOK, result)
 
 	// 异步记录出错日志
-	go func() {
-		logResult(ctx, result)
-	}()
+	if config.Log().Enable {
+		go func() {
+			logResult(ctx, result)
+		}()
+	}
 }
