@@ -73,8 +73,8 @@ func Write(ctx *gin.Context, userId string) {
 	}
 }
 
-// GetUserId 获取当前用户 id
-func GetUserId(ctx *gin.Context) string {
+// MustGetUserId 获取当前用户 id
+func MustGetUserId(ctx *gin.Context) string {
 	if token, err := GetToken(ctx); err != nil {
 		panic(result.NoAuth)
 	} else {

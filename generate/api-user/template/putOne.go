@@ -39,7 +39,7 @@ func putOne(ctx *gin.Context) result.Result {
 	id := ctx.Param("id")
 
 	// 获取当前 userId
-	userId := token.GetUserId(ctx)
+	userId := token.MustGetUserId(ctx)
 
 	// 更新
 	one := template.Template{

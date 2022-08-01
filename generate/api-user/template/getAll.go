@@ -29,7 +29,7 @@ func getAll(ctx *gin.Context) result.Result {
 	var req request.PageRequest
 
 	// 获取当前 userId
-	userId := token.GetUserId(ctx)
+	userId := token.MustGetUserId(ctx)
 
 	// 较验参数
 	app.ValidateParameter(ctx, &req)

@@ -157,7 +157,7 @@ func UpdateByIdAndUserId(id string, userId string, template Template) bool {
 	return true
 }
 
-// UpdateById 根据 id 删除
+// DeleteById 根据 id 删除
 func DeleteById(id string) bool {
 	var one Template
 

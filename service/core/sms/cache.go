@@ -52,10 +52,10 @@ func (cache *Cache) Exists() bool {
 	return db.Redis.Exists(cache.getKey())
 }
 
-// Save 设置新缓存验证码
-func (cache *Cache) SaveCode(randomCode string) {
+// SaveCode 设置新缓存验证码
+func (cache *Cache) SaveCode(code string) {
 	db.Redis.Set(cache.getKey(), codeCache{
-		Code:        randomCode,
+		Code:        code,
 		VerifyTimes: 0,
 	}, maxAge)
 }

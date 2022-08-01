@@ -16,7 +16,7 @@ import (
 // 获取指定用户下所有入驻
 func getOpen(ctx *gin.Context) result.Result {
 	// 获取当前用户 id
-	userId := token.GetUserId(ctx)
+	userId := token.MustGetUserId(ctx)
 
 	// 获取当前用户下的入驻
 	opens := open.GetOpen(userId)

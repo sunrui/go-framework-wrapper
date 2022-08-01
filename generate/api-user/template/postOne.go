@@ -34,7 +34,7 @@ func postOne(ctx *gin.Context) result.Result {
 	app.ValidateParameter(ctx, &req)
 
 	// 获取当前 userId
-	userId := token.GetUserId(ctx)
+	userId := token.MustGetUserId(ctx)
 
 	// 保存
 	one := template.Template{

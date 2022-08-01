@@ -26,7 +26,7 @@ func deleteOne(ctx *gin.Context) result.Result {
 	id := ctx.Param("id")
 
 	// 获取当前 userId
-	userId := token.GetUserId(ctx)
+	userId := token.MustGetUserId(ctx)
 
 	// 删除
 	if ok := template.DeleteByIdAndUserId(id, userId); !ok {

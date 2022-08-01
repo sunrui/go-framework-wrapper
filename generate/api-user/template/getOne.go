@@ -26,7 +26,7 @@ func getOne(ctx *gin.Context) result.Result {
 	id := ctx.Param("id")
 
 	// 获取当前 userId
-	userId := token.GetUserId(ctx)
+	userId := token.MustGetUserId(ctx)
 
 	// 根据 id、userId 查询
 	if one := template.FindByIdAndUserId(id, userId); one == nil {

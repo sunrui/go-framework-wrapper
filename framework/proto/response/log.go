@@ -9,6 +9,7 @@ package response
 import (
 	"framework/config"
 	"framework/proto/result"
+	"framework/proto/token"
 	"github.com/gin-gonic/gin"
 	"io"
 	"log"
@@ -19,7 +20,7 @@ import (
 // 记录出错日志
 func logResult(ctx *gin.Context, r result.Result) {
 	// 协议
-	var protocol = func(ctx *gin.Context) string {
+	var http = func(ctx *gin.Context) string {
 		if ctx.Request.TLS != nil {
 			return "https://"
 		} else {
@@ -39,8 +40,18 @@ func logResult(ctx *gin.Context, r result.Result) {
 	var buffer string
 
 	// 时间 - 等级 - IP
-	buffer += " - " + level(r) + " - " + ctx.ClientIP() + "\n\n"
-	buffer += ctx.Request.Method + " " + protocol(ctx) + ctx.Request.Host + ctx.Request.RequestURI + " " + ctx.Request.Proto + "\n"
+	buffer += " - " + level(r) + " - " + ctx.ClientIP()
+
+	// userId
+	if t, err := token.GetToken(ctx); err == nil {
+		buffer += " - " + t.UserId
+	}
+
+	// 换行
+	buffer += "\n\n"
+
+	// method http://host:port?query protocol
+	buffer += ctx.Request.Method + " " + http(ctx) + ctx.Request.Host + ctx.Request.RequestURI + " " + ctx.Request.Proto + "\n"
 
 	// header
 	for key, value := range ctx.Request.Header {
