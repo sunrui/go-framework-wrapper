@@ -7,7 +7,6 @@
 package sms
 
 import (
-	"encoding/json"
 	"framework/app"
 	"framework/config"
 	"framework/proto/result"
@@ -17,8 +16,8 @@ import (
 
 // 发送验证码请求
 type postCodeReq struct {
-	Phone   string      `json:"phone" validate:"required,len=11,numeric"`                  // 手机号
-	SmsType sms.SmsType `json:"smsType" validate:"required,oneof=Login," enums:"asc,desc"` // 验证码类型
+	Phone   string   `json:"phone" validate:"required,len=11,numeric"`                  // 手机号
+	SmsType sms.Type `json:"smsType" validate:"required,oneof=Login," enums:"asc,desc"` // 验证码类型
 }
 
 // 发送验证码
@@ -38,23 +37,7 @@ func postSend(ctx *gin.Context) result.Result {
 	randomCode := sms.RandomCode()
 
 	// 调用服务发送验证码
-	channel, reqId, err := sms.Send(req.Phone, req.SmsType, randomCode)
-	var comment string
-	if err != nil {
-		comment = err.Error()
-	} else {
-		// 备注对象
-		type _comment struct {
-			Chanel string `json:"chanel"`
-			ReqId  string `json:"reqId"`
-		}
-		marshal, _ := json.Marshal(_comment{
-			Chanel: channel,
-			ReqId:  reqId,
-		})
-
-		comment = string(marshal)
-	}
+	err := sms.Send(req.Phone, req.SmsType, randomCode)
 
 	// 存储发送记录
 	history := sms.Sms{
@@ -64,7 +47,7 @@ func postSend(ctx *gin.Context) result.Result {
 		Ip:        ctx.ClientIP(),
 		UserAgent: ctx.Request.UserAgent(),
 		Success:   err == nil,
-		Comment:   comment,
+		Comment:   err.Error(),
 	}
 	history.Save()
 

@@ -15,9 +15,9 @@ import (
 
 // 较验验证码请求
 type postVerifyReq struct {
-	Phone   string      `json:"phone" validate:"required,len=11,numeric"` // 手机号
-	SmsType sms.SmsType `json:"smsType" validate:"required,oneof=Login"`  // 验证码类型
-	Code    string      `json:"code" validate:"required,len=6,numeric"`   // 验证码
+	Phone   string   `json:"phone" validate:"required,len=11,numeric"` // 手机号
+	SmsType sms.Type `json:"smsType" validate:"required,oneof=Login"`  // 验证码类型
+	Code    string   `json:"code" validate:"required,len=6,numeric"`   // 验证码
 }
 
 // 较验验证码

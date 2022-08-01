@@ -25,11 +25,9 @@ func deleteOne(ctx *gin.Context) result.Result {
 	id := ctx.Param("id")
 
 	// 删除
-	success := template.DeleteById(id)
-	if !success {
+	if ok := template.DeleteById(id); !ok {
 		return result.NotFound.WithIdData(id)
+	} else {
+		return result.Ok
 	}
-
-	// 返回结果
-	return result.Ok
 }

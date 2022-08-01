@@ -100,25 +100,23 @@ func Sms() *sms {
 
 // 加载当前配置
 func init() {
-	var stream []byte
-	var err error
+	var configFile = func() string {
+		_, file, _, _ := runtime.Caller(0)
+		path := filepath.Dir(file)
 
-	_, file, _, _ := runtime.Caller(0)
-	path := filepath.Dir(file)
+		var jsonFile string
+		if IsDebug() {
+			jsonFile = "config_debug.json"
+		} else {
+			jsonFile = "config_release.json"
+		}
 
-	var jsonFile string
-	if IsDebug() {
-		jsonFile = "config_debug.json"
-	} else {
-		jsonFile = "config_release.json"
+		return path + "/" + jsonFile
 	}
 
-	if stream, err = ioutil.ReadFile(path + "/" + jsonFile); err != nil {
+	if stream, err := ioutil.ReadFile(configFile()); err != nil {
 		panic(err.Error())
-	}
-
-	// 反射配置文件
-	if err = json.Unmarshal(stream, &conf); err != nil {
+	} else if err = json.Unmarshal(stream, &conf); err != nil {
 		panic(err.Error())
 	}
 }

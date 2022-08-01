@@ -25,13 +25,9 @@ func getOne(ctx *gin.Context) result.Result {
 	id := ctx.Param("id")
 
 	// 根据 id 查询
-	one := template.FindById(id)
-
-	// 未找到结果
-	if one == nil {
+	if one := template.FindById(id); one == nil {
 		return result.NoContent
+	} else {
+		return result.Ok
 	}
-
-	// 返回结果
-	return result.Ok
 }

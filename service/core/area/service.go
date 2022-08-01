@@ -74,9 +74,9 @@ func GetArea(cityId int) []Area {
 	// 不存在的城市默认返回 nil
 	if city == nil {
 		return nil
+	} else {
+		return city.Areas
 	}
-
-	return city.Areas
 }
 
 // 加载当前配置
@@ -84,14 +84,9 @@ func init() {
 	_, file, _, _ := runtime.Caller(0)
 	path := filepath.Dir(file)
 
-	stream, err := ioutil.ReadFile(path + "/area.json")
-	if err != nil {
+	if stream, err := ioutil.ReadFile(path + "/area.json"); err != nil {
 		panic(err.Error())
-	}
-
-	// 反射配置文件
-	err = json.Unmarshal(stream, &country)
-	if err != nil {
+	} else if err = json.Unmarshal(stream, &country); err != nil {
 		panic(err.Error())
 	}
 }

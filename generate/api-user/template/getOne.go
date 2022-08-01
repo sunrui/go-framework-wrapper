@@ -29,13 +29,9 @@ func getOne(ctx *gin.Context) result.Result {
 	userId := token.GetUserId(ctx)
 
 	// 根据 id、userId 查询
-	one := template.FindByIdAndUserId(id, userId)
-
-	// 未找到结果
-	if one == nil {
+	if one := template.FindByIdAndUserId(id, userId); one == nil {
 		return result.NoContent
+	} else {
+		return result.Ok
 	}
-
-	// 返回结果
-	return result.Ok
 }

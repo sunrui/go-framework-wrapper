@@ -21,12 +21,14 @@ func CreateUuid() string {
 	return id
 }
 
+// 字黄
+const dictionary = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
 // CreateNanoid 创建唯一 nanoid
 func CreateNanoid() string {
-	id, err := gonanoid.Generate("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", 12)
-	if err != nil {
+	if id, err := gonanoid.Generate(dictionary, 12); err != nil {
 		panic(err.Error())
+	} else {
+		return id
 	}
-
-	return id
 }

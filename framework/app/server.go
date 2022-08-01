@@ -9,8 +9,6 @@ package app
 import (
 	"framework/config"
 	"github.com/gin-gonic/gin"
-	"io"
-	"os"
 	"strconv"
 )
 
@@ -22,12 +20,6 @@ type Server struct {
 // New 创建新的服务对象
 func New() *Server {
 	engine := gin.Default()
-
-	// 开启文件日志
-	if !config.IsDebug() {
-		file, _ := os.Create("app.log")
-		gin.DefaultWriter = io.MultiWriter(file)
-	}
 
 	// 注册中间件
 	registerMiddleware(engine)
@@ -42,7 +34,7 @@ func (server *Server) Middleware(handlerFunc gin.HandlerFunc) {
 	server.engine.Use(handlerFunc)
 }
 
-// RouterGroup 路由对象
+// Router 路由对象
 func (server *Server) Router(router RouterGroup) {
 	registerRouter(server.engine, router)
 }
@@ -57,8 +49,7 @@ func (server *Server) RouterGroup(groupName string, routers []RouterGroup) {
 
 // Run 启动服务
 func (server *Server) Run(port int) {
-	err := server.engine.Run(":" + strconv.Itoa(port))
-	if err != nil {
+	if err := server.engine.Run(":" + strconv.Itoa(port)); err != nil {
 		panic(err.Error())
 	}
 }

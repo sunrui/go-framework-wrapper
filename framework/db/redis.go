@@ -62,16 +62,14 @@ func (redisPool *redisPool) Set(key string, value any, second time.Duration) {
 
 	// 判断存储的是否为对象
 	if reflect.TypeOf(value).Kind() == reflect.Struct {
-		marshal, err := json.Marshal(value)
-		if err != nil {
+		if marshal, err := json.Marshal(value); err != nil {
 			panic(err.Error())
+		} else {
+			value = string(marshal)
 		}
-
-		value = string(marshal)
 	}
 
-	_, err := pool.Do("SET", key, value, "EX", fmt.Sprintf("%d", second))
-	if err != nil {
+	if _, err := pool.Do("SET", key, value, "EX", fmt.Sprintf("%d", second)); err != nil {
 		panic(err.Error())
 	}
 }
@@ -83,17 +81,14 @@ func (redisPool *redisPool) Get(key string) *string {
 		_ = pool.Close()
 	}()
 
-	reply, err := pool.Do("GET", key)
-	if err != nil {
+	if reply, err := pool.Do("GET", key); err != nil {
 		panic(err.Error())
-	}
-
-	if reply == nil {
+	} else if reply == nil {
 		return nil
+	} else {
+		replyString := fmt.Sprintf("%s", reply)
+		return &replyString
 	}
-
-	replyString := fmt.Sprintf("%s", reply)
-	return &replyString
 }
 
 // GetJson 获取对象
@@ -103,22 +98,15 @@ func (redisPool *redisPool) GetJson(key string, dst any) bool {
 		_ = pool.Close()
 	}()
 
-	reply, err := pool.Do("GET", key)
-	if err != nil {
+	if reply, err := pool.Do("GET", key); err != nil {
 		panic(err.Error())
-	}
-
-	if reply == nil {
+	} else if reply == nil {
 		return false
-	}
-
-	// json 反序列化
-	err = json.Unmarshal(reply.([]uint8), dst)
-	if err != nil {
+	} else if err = json.Unmarshal(reply.([]uint8), dst); err != nil {
 		panic(err.Error())
+	} else {
+		return true
 	}
-
-	return true
 }
 
 // Exists 是否存在对象
@@ -128,12 +116,11 @@ func (redisPool *redisPool) Exists(key string) bool {
 		_ = pool.Close()
 	}()
 
-	ret, err := pool.Do("EXISTS", key)
-	if err != nil {
+	if ret, err := pool.Do("EXISTS", key); err != nil {
 		panic(err.Error())
+	} else {
+		return ret.(int64) == 1
 	}
-
-	return ret.(int64) == 1
 }
 
 // Del 删除对象
@@ -143,8 +130,7 @@ func (redisPool *redisPool) Del(key string) {
 		_ = pool.Close()
 	}()
 
-	_, err := pool.Do("DEL", key)
-	if err != nil {
+	if _, err := pool.Do("DEL", key); err != nil {
 		panic(err.Error())
 	}
 }
@@ -158,16 +144,14 @@ func (redisPool *redisPool) HashSet(hash string, key string, value any) {
 
 	// 判断存储的是否为对象
 	if reflect.TypeOf(value).Kind() == reflect.Struct {
-		marshal, err := json.Marshal(value)
-		if err != nil {
+		if marshal, err := json.Marshal(value); err != nil {
 			panic(err.Error())
+		} else {
+			value = string(marshal)
 		}
-
-		value = string(marshal)
 	}
 
-	_, err := pool.Do("HSET", hash, key, value)
-	if err != nil {
+	if _, err := pool.Do("HSET", hash, key, value); err != nil {
 		panic(err.Error())
 	}
 }
@@ -179,17 +163,14 @@ func (redisPool *redisPool) HashGet(hash string, key string) *string {
 		_ = pool.Close()
 	}()
 
-	reply, err := pool.Do("HGET", hash, key)
-	if err != nil {
+	if reply, err := pool.Do("HGET", hash, key); err != nil {
 		panic(err.Error())
-	}
-
-	if reply == nil {
+	} else if reply == nil {
 		return nil
+	} else {
+		replyString := fmt.Sprintf("%s", reply)
+		return &replyString
 	}
-
-	replyString := fmt.Sprintf("%s", reply)
-	return &replyString
 }
 
 // HashGetJson 获取 hash 对象
@@ -199,20 +180,13 @@ func (redisPool *redisPool) HashGetJson(hash string, key string, dst any) bool {
 		_ = pool.Close()
 	}()
 
-	reply, err := pool.Do("HGET", hash, key)
-	if err != nil {
+	if reply, err := pool.Do("HGET", hash, key); err != nil {
 		panic(err.Error())
-	}
-
-	if reply == nil {
+	} else if reply == nil {
 		return false
-	}
-
-	// json 反序列化
-	err = json.Unmarshal(reply.([]uint8), dst)
-	if err != nil {
+	} else if err = json.Unmarshal(reply.([]uint8), dst); err != nil {
 		panic(err.Error())
+	} else {
+		return true
 	}
-
-	return true
 }

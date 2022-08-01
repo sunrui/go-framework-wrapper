@@ -47,7 +47,7 @@ func postLoginByPhone(ctx *gin.Context) result.Result {
 		// 短信缓存对象
 		smsCache := sms.Cache{
 			Phone:   req.Phone,
-			SmsType: sms.SmsTypeLogin,
+			SmsType: sms.TypeLogin,
 		}
 
 		// 获取缓存数据

@@ -6,10 +6,10 @@
 
 package sms
 
-// SmsType 验证码类型
-type SmsType string
+// Type 验证码类型
+type Type string
 
 const (
-	SmsTypeLogin         SmsType = "Login"         // 登录
-	SmsTypeResetPassword SmsType = "ResetPassword" // 重置密码
+	TypeLogin         Type = "Login"         // 登录
+	TypeResetPassword Type = "ResetPassword" // 重置密码
 )

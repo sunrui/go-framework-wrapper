@@ -27,8 +27,8 @@ type codeCache struct {
 
 // Cache 缓存对象
 type Cache struct {
-	Phone   string  `json:"phone"`   // 手机号
-	SmsType SmsType `json:"SmsType"` // 验证码类型
+	Phone   string `json:"phone"` // 手机号
+	SmsType Type   `json:"Type"`  // 验证码类型
 }
 
 // 获取主键
@@ -40,11 +40,11 @@ func (cache *Cache) getKey() string {
 func (cache *Cache) getValue() *codeCache {
 	var codeCache codeCache
 
-	if success := db.Redis.GetJson(cache.getKey(), &codeCache); success {
+	if ok := db.Redis.GetJson(cache.getKey(), &codeCache); ok {
 		return &codeCache
+	} else {
+		return nil
 	}
-
-	return nil
 }
 
 // Exists 获取缓存是否存在

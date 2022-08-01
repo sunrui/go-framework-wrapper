@@ -29,11 +29,9 @@ func deleteOne(ctx *gin.Context) result.Result {
 	userId := token.GetUserId(ctx)
 
 	// 删除
-	success := template.DeleteByIdAndUserId(id, userId)
-	if !success {
+	if ok := template.DeleteByIdAndUserId(id, userId); !ok {
 		return result.NotFound.WithIdData(id)
+	} else {
+		return result.Ok
 	}
-
-	// 返回结果
-	return result.Ok
 }

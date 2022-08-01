@@ -24,11 +24,13 @@ import (
 // 异常 404 中间件
 func notFoundMiddleware(ctx *gin.Context) {
 	response.Reply(ctx, result.NotFound.WithKeyPair("uri", ctx.Request.URL.RequestURI()))
+	ctx.Abort()
 }
 
 // 异常 405 中间件
 func methodNotAllowedMiddleware(ctx *gin.Context) {
 	response.Reply(ctx, result.MethodNotAllowed.WithKeyPair("uri", ctx.Request.URL.RequestURI()))
+	ctx.Abort()
 }
 
 // 流量限制中间件
@@ -42,6 +44,7 @@ func rateLimitMiddleware(fillInterval time.Duration, capacity, quantum int64) gi
 	return func(ctx *gin.Context) {
 		if bucket.TakeAvailable(1) < 1 {
 			response.Reply(ctx, result.RateLimit)
+			ctx.Abort()
 			return
 		}
 
@@ -74,8 +77,7 @@ func recoverMiddleware(ctx *gin.Context) {
 	defer func() {
 		if err := recover(); err != nil {
 			// 判断是否抛出了 Result 对象
-			res, ok := err.(result.Result)
-			if ok {
+			if res, ok := err.(result.Result); ok {
 				response.Reply(ctx, res)
 			} else {
 				// 堆栈信息
@@ -85,9 +87,7 @@ func recoverMiddleware(ctx *gin.Context) {
 
 				r := result.InternalError.WithData(dataMap)
 				response.Reply(ctx, r)
-
-				// 将出错日志记录下来
-				utils.LogResult(ctx, r)
+				ctx.Abort()
 			}
 		}
 	}()

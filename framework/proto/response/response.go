@@ -12,7 +12,13 @@ import (
 	"net/http"
 )
 
-// Reply 数据返回对象
+// Reply 数据回复对象
 func Reply(ctx *gin.Context, result result.Result) {
+	// 返回客户端
 	ctx.JSON(http.StatusOK, result)
+
+	// 异步记录出错日志
+	go func() {
+		logResult(ctx, result)
+	}()
 }

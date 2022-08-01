@@ -15,10 +15,9 @@ import (
 // 获取令牌
 func getToken(ctx *gin.Context) result.Result {
 	// 获取用户令牌
-	t, err := token.GetToken(ctx)
-	if err != nil {
+	if t, err := token.GetToken(ctx); err != nil {
 		return result.NotFound
+	} else {
+		return result.Ok.WithData(t)
 	}
-
-	return result.Ok.WithData(t)
 }

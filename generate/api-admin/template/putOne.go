@@ -43,11 +43,9 @@ func putOne(ctx *gin.Context) result.Result {
 	}
 
 	// 更新
-	success := template.UpdateById(id, one)
-	if !success {
+	if ok := template.UpdateById(id, one); !ok {
 		return result.NotFound.WithIdData(id)
+	} else {
+		return result.Ok
 	}
-
-	// 返回结果
-	return result.Ok
 }

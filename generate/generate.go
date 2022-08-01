@@ -18,7 +18,6 @@ import (
 
 // 生成模板
 func runGenerate(model, modelName string, author string) error {
-	var err error
 	// 获取当前项目根目录
 	pwd, _ := os.Getwd()
 
@@ -36,8 +35,7 @@ func runGenerate(model, modelName string, author string) error {
 		_ = os.RemoveAll(dst)
 
 		// 拷贝项目
-		err = utils.CopyDirectory(src, dst)
-		if err != nil {
+		if err := utils.CopyDirectory(src, dst); err != nil {
 			return err
 		}
 
@@ -72,8 +70,7 @@ func runGenerate(model, modelName string, author string) error {
 				fileContent = strings.ReplaceAll(fileContent, "$author", author)
 				fileContent = strings.ReplaceAll(fileContent, "$today.format(\"yyyy-MM-dd HH:mm:ss\")", time.Now().Format("2006-01-02 15:04:05"))
 
-				err = ioutil.WriteFile(fileName, []byte(fileContent), os.ModeDevice)
-				if err != nil {
+				if err = ioutil.WriteFile(fileName, []byte(fileContent), os.ModeDevice); err != nil {
 					return err
 				}
 

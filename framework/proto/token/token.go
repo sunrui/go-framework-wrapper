@@ -63,25 +63,23 @@ func decode(token string) (*Token, error) {
 // Write 写入 cookie 令牌
 func Write(ctx *gin.Context, userId string) {
 	// 生成用户令牌
-	tokenString, err := encode(Token{
+	if token, err := encode(Token{
 		UserId: userId,
-	})
-	if err != nil {
-		return
+	}); err != nil {
+		panic(err.Error())
+	} else {
+		// 写入令牌，默认 30 天
+		ctx.SetCookie(name, token, maxAge, "/", "", false, true)
 	}
-
-	// 写入令牌，默认 30 天
-	ctx.SetCookie(name, tokenString, maxAge, "/", "", false, true)
 }
 
 // GetUserId 获取当前用户 id
 func GetUserId(ctx *gin.Context) string {
-	token, err := GetToken(ctx)
-	if err != nil {
+	if token, err := GetToken(ctx); err != nil {
 		panic(result.NoAuth)
+	} else {
+		return token.UserId
 	}
-
-	return token.UserId
 }
 
 // GetToken 获取当前用户令牌
@@ -90,7 +88,7 @@ func GetToken(ctx *gin.Context) (*Token, error) {
 	var err error
 
 	// 从 header 中获取令牌
-	getHeaderToken := func() string {
+	headerToken := func() string {
 		if tokenString = ctx.GetHeader("Authorization"); tokenString == "" {
 			return ""
 		}
@@ -104,7 +102,7 @@ func GetToken(ctx *gin.Context) (*Token, error) {
 	}
 
 	// 从 cookie 中获取令牌
-	if tokenString = getHeaderToken(); tokenString == "" {
+	if tokenString = headerToken(); tokenString == "" {
 		if tokenString, err = ctx.Cookie(name); err != nil {
 			return nil, err
 		}

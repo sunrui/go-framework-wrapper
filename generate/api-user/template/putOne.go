@@ -46,11 +46,9 @@ func putOne(ctx *gin.Context) result.Result {
 		Name: req.Name,
 	}
 
-	success := template.UpdateByIdAndUserId(id, userId, one)
-	if !success {
+	if ok := template.UpdateByIdAndUserId(id, userId, one); !ok {
 		return result.NotFound.WithIdData(id)
+	} else {
+		return result.Ok
 	}
-
-	// 返回结果
-	return result.Ok
 }
