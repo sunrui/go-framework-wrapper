@@ -1,24 +1,48 @@
 /*
  * Copyright (c) 2022 honeysense.com All rights reserved.
  * Author: sunrui
- * Date: 2022/08/01 20:50:01
+ * Date: 2022/08/02 00:41:02
  */
 
-package response
+package log
 
 import (
+	"bytes"
+	"fmt"
 	"framework/config"
 	"framework/proto/result"
 	"framework/proto/token"
 	"github.com/gin-gonic/gin"
 	"io"
+	"io/ioutil"
 	"log"
 	"os"
 	"time"
 )
 
-// 记录出错日志
-func logResult(ctx *gin.Context, r result.Result) {
+// 日志参考
+// https://github.com/siddontang/go/blob/master/log/handler.go
+// https://github.com/lestrrat-go/file-rotatelogs/blob/master/rotatelogs_test.go
+
+// 设置
+func Set(enable bool, level string) {
+	config.Log().Enable = enable
+	config.Log().Level = level
+}
+
+// CopyBody 复制 body
+func CopyBody(ctx *gin.Context) {
+	if data, err := ctx.GetRawData(); err != nil {
+		fmt.Println(err.Error())
+	} else if len(data) != 0 {
+		// 为了打印日志 boy，将 body 拷贝复本。
+		ctx.Request.Body = ioutil.NopCloser(bytes.NewBuffer(data))
+		ctx.Set("body", string(data))
+	}
+}
+
+// 结果
+func Result(ctx *gin.Context, r result.Result) {
 	// 等级
 	var level string
 	if r.Code == result.Ok.Code {
