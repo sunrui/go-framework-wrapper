@@ -7,22 +7,17 @@
 package auth
 
 import (
-	"framework/proto/response"
 	"framework/proto/result"
 	"framework/proto/token"
 	"github.com/gin-gonic/gin"
 )
 
 // 登出
-func postLogout(ctx *gin.Context) {
+func postLogout(ctx *gin.Context) result.Result {
 	_, err := ctx.Cookie("token")
-	if err != nil {
-		response.Result(ctx, result.NotFound.WithData(err.Error()))
-		return
+	if err == nil {
+		token.Remove(ctx)
 	}
 
-	// 移除令牌
-	token.Remove(ctx)
-
-	response.Result(ctx, result.Ok)
+	return result.Ok
 }

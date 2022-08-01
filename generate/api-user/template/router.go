@@ -12,31 +12,31 @@ import (
 )
 
 // GetRouter 获取路由对象
-func GetRouter() app.Router {
-	return app.Router{
+func GetRouter() app.RouterGroup {
+	return app.RouterGroup{
 		GroupName:  "/api-user/template",
 		Middleware: nil,
-		RouterPaths: []app.RouterPath{
+		RouterPaths: []app.Router{
 			{
 				HttpMethod:   http.MethodGet,
 				RelativePath: "/:id",
-				HandlerFunc:  getOne,
+				RouterFunc:   getOne,
 			}, {
 				HttpMethod:   http.MethodGet,
 				RelativePath: "/",
-				HandlerFunc:  getAll,
+				RouterFunc:   getAll,
 			}, {
 				HttpMethod:   http.MethodPost,
 				RelativePath: "/",
-				HandlerFunc:  postOne,
+				RouterFunc:   postOne,
 			}, {
 				HttpMethod:   http.MethodPut,
 				RelativePath: "/:id",
-				HandlerFunc:  putOne,
+				RouterFunc:   putOne,
 			}, {
 				HttpMethod:   http.MethodDelete,
 				RelativePath: "/:id",
-				HandlerFunc:  deleteOne,
+				RouterFunc:   deleteOne,
 			},
 		},
 	}

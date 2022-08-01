@@ -12,27 +12,27 @@ import (
 )
 
 // GetRouter 获取路由对象
-func GetRouter() app.Router {
-	return app.Router{
+func GetRouter() app.RouterGroup {
+	return app.RouterGroup{
 		GroupName:  "/auth",
 		Middleware: nil,
-		RouterPaths: []app.RouterPath{
+		RouterPaths: []app.Router{
 			{
 				HttpMethod:   http.MethodPost,
 				RelativePath: "/login/phone",
-				HandlerFunc:  postLoginByPhone,
+				RouterFunc:   postLoginByPhone,
 			}, {
 				HttpMethod:   http.MethodPost,
 				RelativePath: "/login/wechat",
-				HandlerFunc:  postLoginByWechat,
+				RouterFunc:   postLoginByWechat,
 			}, {
 				HttpMethod:   http.MethodGet,
 				RelativePath: "/token",
-				HandlerFunc:  getToken,
+				RouterFunc:   getToken,
 			}, {
 				HttpMethod:   http.MethodPost,
 				RelativePath: "/logout",
-				HandlerFunc:  postLogout,
+				RouterFunc:   postLogout,
 			},
 		},
 	}

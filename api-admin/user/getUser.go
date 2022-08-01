@@ -8,11 +8,14 @@ package user
 
 import (
 	"fmt"
+	"framework/proto/result"
 	"github.com/gin-gonic/gin"
 )
 
 // 获取当前用户
-func getUser(ctx *gin.Context) {
+func getUser(ctx *gin.Context) result.Result {
 	id := ctx.Param("id")
 	fmt.Println(id)
+
+	return result.Ok
 }

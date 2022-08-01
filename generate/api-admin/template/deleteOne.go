@@ -7,7 +7,6 @@
 package template
 
 import (
-	"framework/proto/response"
 	"framework/proto/result"
 	"generate/service/core/template"
 	"github.com/gin-gonic/gin"
@@ -21,17 +20,16 @@ import (
 // @Success  200  {object}  result.Result  true
 // @Failure  400  {object}  result.Result  true  "{"code":"NotFound","message":"不存在"}"
 // @Router   /api-admin/template/ [put]
-func deleteOne(ctx *gin.Context) {
+func deleteOne(ctx *gin.Context) result.Result {
 	// 获取 id
 	id := ctx.Param("id")
 
 	// 删除
 	success := template.DeleteById(id)
 	if !success {
-		response.New(ctx).Result(result.NotFound.WithIdData(id))
-		return
+		return result.NotFound.WithIdData(id)
 	}
 
 	// 返回结果
-	response.New(ctx).Ok()
+	return result.Ok
 }

@@ -42,13 +42,13 @@ func (server *Server) Middleware(handlerFunc gin.HandlerFunc) {
 	server.engine.Use(handlerFunc)
 }
 
-// Router 路由对象
-func (server *Server) Router(router Router) {
+// RouterGroup 路由对象
+func (server *Server) Router(router RouterGroup) {
 	registerRouter(server.engine, router)
 }
 
 // RouterGroup 路由对象组
-func (server *Server) RouterGroup(groupName string, routers []Router) {
+func (server *Server) RouterGroup(groupName string, routers []RouterGroup) {
 	for _, router := range routers {
 		router.GroupName = groupName + router.GroupName
 		registerRouter(server.engine, router)

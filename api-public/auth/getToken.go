@@ -7,20 +7,18 @@
 package auth
 
 import (
-	"framework/proto/response"
 	"framework/proto/result"
 	"framework/proto/token"
 	"github.com/gin-gonic/gin"
 )
 
 // 获取令牌
-func getToken(ctx *gin.Context) {
+func getToken(ctx *gin.Context) result.Result {
 	// 获取用户令牌
 	t, err := token.GetToken(ctx)
 	if err != nil {
-		response.Result(ctx, result.NotFound)
-		return
+		return result.NotFound
 	}
 
-	response.Result(ctx, result.Ok.WithData(t))
+	return result.Ok.WithData(t)
 }

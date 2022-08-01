@@ -8,7 +8,7 @@ package template
 
 import (
 	"framework/app"
-	"framework/proto/response"
+	"framework/proto/result"
 	"framework/proto/token"
 	"generate/service/core/template"
 	"github.com/gin-gonic/gin"
@@ -25,8 +25,8 @@ type postOneReq struct {
 // @Produce  json
 // @Param    json  body      postOneReq  true  "json"
 // @Success  200   {object}  result.Result    true
-// @Router   /api-user/template [post]
-func postOne(ctx *gin.Context) {
+// @RouterGroup   /api-user/template [post]
+func postOne(ctx *gin.Context) result.Result {
 	// 创建请求对象
 	var req postOneReq
 
@@ -44,5 +44,5 @@ func postOne(ctx *gin.Context) {
 	one.Save()
 
 	// 返回结果
-	response.New(ctx).Id(one.Id)
+	return result.Ok
 }

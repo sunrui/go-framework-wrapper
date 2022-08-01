@@ -8,13 +8,15 @@ package user
 
 import (
 	"fmt"
+	"framework/proto/result"
 	"github.com/gin-gonic/gin"
 )
 
 // 获取当前用户
-func getUser(ctx *gin.Context) {
+func getUser(ctx *gin.Context) result.Result {
 	id := ctx.Param("id")
 	fmt.Println(id)
 
-	//common-gin.Response(ctx, exception.Result.WithData(example-example-api-user))
+	// 返回结果
+	return result.Ok
 }

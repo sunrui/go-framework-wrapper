@@ -12,19 +12,19 @@ import (
 )
 
 // GetRouter 获取路由对象
-func GetRouter() app.Router {
-	return app.Router{
+func GetRouter() app.RouterGroup {
+	return app.RouterGroup{
 		GroupName:  "/sms",
 		Middleware: nil,
-		RouterPaths: []app.RouterPath{
+		RouterPaths: []app.Router{
 			{
 				HttpMethod:   http.MethodPost,
 				RelativePath: "/send",
-				HandlerFunc:  postSend,
+				RouterFunc:   postSend,
 			}, {
 				HttpMethod:   http.MethodPost,
 				RelativePath: "/verify",
-				HandlerFunc:  postVerify,
+				RouterFunc:   postVerify,
 			},
 		},
 	}

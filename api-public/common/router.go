@@ -12,25 +12,25 @@ import (
 )
 
 // GetRouter 获取路由对象
-func GetRouter() app.Router {
-	return app.Router{
+func GetRouter() app.RouterGroup {
+	return app.RouterGroup{
 		GroupName:  "/common",
 		Middleware: nil,
-		RouterPaths: []app.RouterPath{
+		RouterPaths: []app.Router{
 			{
 				HttpMethod:   http.MethodGet,
 				RelativePath: "/",
-				HandlerFunc:  getIndex,
+				RouterFunc:   getIndex,
 			},
 			{
 				HttpMethod:   http.MethodGet,
 				RelativePath: "/build",
-				HandlerFunc:  getBuild,
+				RouterFunc:   getBuild,
 			},
 			{
 				HttpMethod:   http.MethodGet,
 				RelativePath: "/result",
-				HandlerFunc:  getResult,
+				RouterFunc:   getResult,
 			},
 		},
 	}

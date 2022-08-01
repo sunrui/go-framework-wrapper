@@ -8,7 +8,6 @@ package template
 
 import (
 	"framework/app"
-	"framework/proto/response"
 	"framework/proto/result"
 	"framework/proto/token"
 	"generate/service/core/template"
@@ -28,8 +27,8 @@ type putOneReq struct {
 // @Param    json  body      putOneReq  true  "json"
 // @Success  200   {object}  result.Result   true
 // @Failure  400   {object}  result.Result   true  "{"code":"NotFound","message":"不存在"}"
-// @Router   /api-user/template/:id [put]
-func putOne(ctx *gin.Context) {
+// @RouterGroup   /api-user/template/:id [put]
+func putOne(ctx *gin.Context) result.Result {
 	// 更新请求对象
 	var req putOneReq
 
@@ -49,10 +48,9 @@ func putOne(ctx *gin.Context) {
 
 	success := template.UpdateByIdAndUserId(id, userId, one)
 	if !success {
-		response.New(ctx).Result(result.NotFound.WithIdData(id))
-		return
+		return result.NotFound.WithIdData(id)
 	}
 
 	// 返回结果
-	response.New(ctx).Ok()
+	return result.Ok
 }

@@ -7,44 +7,56 @@
 package app
 
 import (
+	"framework/proto/response"
+	"framework/proto/result"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
-// RouterPath 路由路径
-type RouterPath struct {
-	HttpMethod   string          // 方法类型 GET、POST、PUT、DELETE
-	RelativePath string          // 路径
-	HandlerFunc  gin.HandlerFunc // 回调
+type RouterFunc func(ctx *gin.Context) result.Result
+
+// Router 路由路径
+type Router struct {
+	HttpMethod   string     // 方法类型 GET、POST、PUT、DELETE
+	RelativePath string     // 路径
+	RouterFunc   RouterFunc // 回调
 }
 
-// Router 路由对象
-type Router struct {
+// RouterGroup 路由对象
+type RouterGroup struct {
 	GroupName   string          // 组名
 	Middleware  gin.HandlerFunc // 中间件
-	RouterPaths []RouterPath    // 路由路径
+	RouterPaths []Router        // 路由路径
 }
 
 // 注册路由
-func registerRouter(engine *gin.Engine, router Router) {
-	groupRouter := engine.Group(router.GroupName)
+func registerRouter(engine *gin.Engine, router RouterGroup) {
+	routerGroup := engine.Group(router.GroupName)
 
 	// 启用中间件
 	if router.Middleware != nil {
-		groupRouter.Use(router.Middleware)
+		routerGroup.Use(router.Middleware)
+	}
+
+	// gin 回调
+	var handlerFunc = func(routerFunc RouterFunc) gin.HandlerFunc {
+		return func(ctx *gin.Context) {
+			r := routerFunc(ctx)
+			response.Reply(ctx, r)
+		}
 	}
 
 	// 注册路由回调
 	for _, routerPath := range router.RouterPaths {
 		switch routerPath.HttpMethod {
 		case http.MethodGet:
-			groupRouter.GET(routerPath.RelativePath, routerPath.HandlerFunc)
+			routerGroup.GET(routerPath.RelativePath, handlerFunc(routerPath.RouterFunc))
 		case http.MethodPost:
-			groupRouter.POST(routerPath.RelativePath, routerPath.HandlerFunc)
+			routerGroup.POST(routerPath.RelativePath, handlerFunc(routerPath.RouterFunc))
 		case http.MethodPut:
-			groupRouter.PUT(routerPath.RelativePath, routerPath.HandlerFunc)
+			routerGroup.PUT(routerPath.RelativePath, handlerFunc(routerPath.RouterFunc))
 		case http.MethodDelete:
-			groupRouter.DELETE(routerPath.RelativePath, routerPath.HandlerFunc)
+			routerGroup.DELETE(routerPath.RelativePath, handlerFunc(routerPath.RouterFunc))
 		default:
 			panic("http method not supported")
 		}

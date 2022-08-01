@@ -7,7 +7,6 @@
 package area
 
 import (
-	"framework/proto/response"
 	"framework/proto/result"
 	"github.com/gin-gonic/gin"
 	"service/core/area"
@@ -15,18 +14,16 @@ import (
 )
 
 // 获取地区
-func getArea(ctx *gin.Context) {
+func getArea(ctx *gin.Context) result.Result {
 	cityId, err := strconv.Atoi(ctx.Param("cityId"))
 	if err != nil {
-		response.Result(ctx, result.ParameterBindError.WithKeyPair("cityId", ctx.Param("cityId")))
-		return
+		return result.ParameterBindError.WithKeyPair("cityId", ctx.Param("cityId"))
 	}
 
 	areas := area.GetArea(cityId)
 	if areas == nil {
-		response.Result(ctx, result.NotFound.WithKeyPair("cityId", cityId))
-		return
+		return result.NotFound.WithKeyPair("cityId", cityId)
 	}
 
-	response.Result(ctx, result.Ok.WithData(areas))
+	return result.Ok.WithData(areas)
 }

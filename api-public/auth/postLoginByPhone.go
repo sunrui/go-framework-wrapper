@@ -9,7 +9,6 @@ package auth
 import (
 	"framework/app"
 	"framework/config"
-	"framework/proto/response"
 	"framework/proto/result"
 	"framework/proto/token"
 	"github.com/gin-gonic/gin"
@@ -35,8 +34,8 @@ type postLoginByPhoneRes struct {
 // @Param    "req"  body      postLoginByPhoneReq  true  "req"
 // @ApprovalSuccess  200    {object}  postLoginByPhoneRes
 // @Failure  400    {object}  result.Result
-// @Router   /auth/login/phone [post]
-func postLoginByPhone(ctx *gin.Context) {
+// @RouterGroup   /auth/login/phone [post]
+func postLoginByPhone(ctx *gin.Context) result.Result {
 	var req postLoginByPhoneReq
 
 	// 较验参数
@@ -53,14 +52,12 @@ func postLoginByPhone(ctx *gin.Context) {
 
 		// 获取缓存数据
 		if !smsCache.Exists() {
-			response.Result(ctx, result.NotFound.WithData(req))
-			return
+			return result.NotFound.WithData(req)
 		}
 
 		// 较验验证码
 		if !smsCache.Verify(req.Code) {
-			response.Result(ctx, result.NoMatch.WithMessage("验证码不匹配"))
-			return
+			return result.NoMatch.WithMessage("验证码不匹配")
 		}
 
 		// 移除验证码
@@ -82,7 +79,7 @@ func postLoginByPhone(ctx *gin.Context) {
 
 	token.Write(ctx, userOne.Id)
 
-	response.Result(ctx, result.Ok.WithData(postLoginByPhoneRes{
+	return result.Ok.WithData(postLoginByPhoneRes{
 		UserId: userOne.Id,
-	}))
+	})
 }

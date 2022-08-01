@@ -7,7 +7,6 @@
 package template
 
 import (
-	"framework/proto/response"
 	"framework/proto/result"
 	"framework/proto/token"
 	"generate/service/core/template"
@@ -22,7 +21,7 @@ import (
 // @Success  200  {object}  result.Result{data=Template}  true
 // @Failure  400  {object}  result.Result                 true  "{"code":"NoContent","message":"没有数据"}"
 // @Router   /api-user/template/:id [get]
-func getOne(ctx *gin.Context) {
+func getOne(ctx *gin.Context) result.Result {
 	// 获取 id
 	id := ctx.Param("id")
 
@@ -34,10 +33,9 @@ func getOne(ctx *gin.Context) {
 
 	// 未找到结果
 	if one == nil {
-		response.New(ctx).Result(result.NoContent)
-		return
+		return result.NoContent
 	}
 
 	// 返回结果
-	response.New(ctx).Data(one)
+	return result.Ok
 }

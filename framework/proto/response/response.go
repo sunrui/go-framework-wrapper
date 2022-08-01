@@ -12,7 +12,7 @@ import (
 	"net/http"
 )
 
-// Result 数据返回对象
-func Result(ctx *gin.Context, result result.Result) {
+// Reply 数据返回对象
+func Reply(ctx *gin.Context, result result.Result) {
 	ctx.JSON(http.StatusOK, result)
 }

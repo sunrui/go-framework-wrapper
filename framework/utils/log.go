@@ -12,8 +12,8 @@ import (
 	"log"
 )
 
-// LogRecord 日志记录
-func LogRecord(ctx *gin.Context, result result.Result) {
+// LogResult 日志记录
+func LogResult(ctx *gin.Context, result result.Result) {
 	log.Println(result)
 
 	// TODO  默认不打印到文件里

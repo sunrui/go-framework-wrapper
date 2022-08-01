@@ -13,20 +13,20 @@ import (
 )
 
 // GetRouter 获取路由对象
-func GetRouter() app.Router {
-	return app.Router{
+func GetRouter() app.RouterGroup {
+	return app.RouterGroup{
 		GroupName:  "/open",
 		Middleware: middleware.Auth,
-		RouterPaths: []app.RouterPath{
+		RouterPaths: []app.Router{
 			{
 				HttpMethod:   http.MethodGet,
 				RelativePath: "",
-				HandlerFunc:  getOpen,
+				RouterFunc:   getOpen,
 			},
 			{
 				HttpMethod:   http.MethodPost,
 				RelativePath: "",
-				HandlerFunc:  postOpen,
+				RouterFunc:   postOpen,
 			},
 		},
 	}

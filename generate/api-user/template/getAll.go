@@ -9,7 +9,6 @@ package template
 import (
 	"framework/app"
 	"framework/proto/request"
-	"framework/proto/response"
 	"framework/proto/result"
 	"framework/proto/token"
 	"generate/service/core/template"
@@ -24,8 +23,8 @@ import (
 // @Param    pageSize  query     int                                 true  "分页大小"
 // @Success  200       {object}  result.PageResult{data=[]Template}  true
 // @Failure  400       {object}  result.Result                       true  "{"code":"NoContent","message":"没有数据"}"
-// @Router   /api-user/template [get]
-func getAll(ctx *gin.Context) {
+// @RouterGroup   /api-user/template [get]
+func getAll(ctx *gin.Context) result.Result {
 	// 分页请求对象
 	var req request.PageRequest
 
@@ -40,13 +39,9 @@ func getAll(ctx *gin.Context) {
 
 	// 未找到结果
 	if len(array) == 0 {
-		response.New(ctx).Result(result.NoContent)
-		return
+		return result.NoContent
 	}
 
 	// 返回结果
-	response.New(ctx).WithPageData(result{
-		Result:     result.Ok.WithData(array),
-		Pagination: pagination,
-	})
+	return result.Ok.WithPageData(array, pagination)
 }

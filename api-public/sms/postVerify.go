@@ -8,7 +8,6 @@ package sms
 
 import (
 	"framework/app"
-	"framework/proto/response"
 	"framework/proto/result"
 	"github.com/gin-gonic/gin"
 	"service/core/sms"
@@ -22,7 +21,7 @@ type postVerifyReq struct {
 }
 
 // 较验验证码
-func postVerify(ctx *gin.Context) {
+func postVerify(ctx *gin.Context) result.Result {
 	var req postVerifyReq
 
 	// 较验参数
@@ -36,16 +35,14 @@ func postVerify(ctx *gin.Context) {
 
 	// 获取缓存数据
 	if !cache.Exists() {
-		response.Result(ctx, result.NotFound)
-		return
+		return result.NotFound
 	}
 
 	// 较验验证码
 	if !cache.Verify(req.Code) {
-		response.Result(ctx, result.NotFound)
-		return
+		return result.NotFound
 	}
 
 	// 较验成功
-	response.Result(ctx, result.Ok)
+	return result.Ok
 }

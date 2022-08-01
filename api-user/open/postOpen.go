@@ -8,6 +8,7 @@ package open
 
 import (
 	"framework/app"
+	"framework/proto/result"
 	"github.com/gin-gonic/gin"
 )
 
@@ -26,9 +27,11 @@ type postOpenRes struct {
 }
 
 // 提交入驻
-func postOpen(ctx *gin.Context) {
+func postOpen(ctx *gin.Context) result.Result {
 	var req postOpenReq
 
 	// 较验参数
 	app.ValidateParameter(ctx, &req)
+
+	return result.Ok
 }

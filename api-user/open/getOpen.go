@@ -7,18 +7,19 @@
 package open
 
 import (
-	"framework/proto/response"
+	"framework/proto/result"
 	"framework/proto/token"
 	"github.com/gin-gonic/gin"
 	"service/core/open"
 )
 
 // 获取指定用户下所有入驻
-func getOpen(ctx *gin.Context) {
+func getOpen(ctx *gin.Context) result.Result {
 	// 获取当前用户 id
 	userId := token.GetUserId(ctx)
 
 	// 获取当前用户下的入驻
 	opens := open.GetOpen(userId)
-	response.New(ctx).Data(opens)
+
+	return result.Ok.WithData(opens)
 }

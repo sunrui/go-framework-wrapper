@@ -10,7 +10,6 @@ import (
 	"encoding/json"
 	"framework/app"
 	"framework/config"
-	"framework/proto/response"
 	"framework/proto/result"
 	"github.com/gin-gonic/gin"
 	"service/core/sms"
@@ -23,7 +22,7 @@ type postCodeReq struct {
 }
 
 // 发送验证码
-func postSend(ctx *gin.Context) {
+func postSend(ctx *gin.Context) result.Result {
 	var req postCodeReq
 
 	// 较验参数
@@ -32,8 +31,7 @@ func postSend(ctx *gin.Context) {
 	// 获取当天发送条数，判断是否超出最大条数限制
 	count := sms.CountByPhoneAndDate(req.Phone, sms.GetNowDate())
 	if count >= config.Sms().MaxSendPerDay {
-		response.Result(ctx, result.RateLimit)
-		return
+		return result.RateLimit
 	}
 
 	// 创建 6 位验证码
@@ -72,8 +70,7 @@ func postSend(ctx *gin.Context) {
 
 	// 发送验证码失败
 	if err != nil {
-		response.Result(ctx, result.InternalError.WithData(err))
-		return
+		return result.InternalError.WithData(err)
 	}
 
 	// 将验证码缓存到 redis 中
@@ -84,5 +81,5 @@ func postSend(ctx *gin.Context) {
 	cache.SaveCode(randomCode)
 
 	// 发送成功
-	response.Result(ctx, result.Ok)
+	return result.Ok
 }

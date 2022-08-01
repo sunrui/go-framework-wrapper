@@ -22,7 +22,7 @@ func main() {
 	server := app.New()
 
 	// 注册路由
-	server.RouterGroup("/public", []app.Router{
+	server.RouterGroup("/public", []app.RouterGroup{
 		common.GetRouter(),
 		area.GetRouter(),
 		sms.GetRouter(),

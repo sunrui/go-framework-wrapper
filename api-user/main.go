@@ -20,7 +20,7 @@ func main() {
 	server := app.New()
 
 	// 注册路由
-	server.RouterGroup("/api-user", []app.Router{
+	server.RouterGroup("/api-user", []app.RouterGroup{
 		open.GetRouter(),
 		user.GetRouter(),
 	})

@@ -114,6 +114,7 @@ func GetToken(ctx *gin.Context) (*Token, error) {
 }
 
 // Remove 移除令牌
-func Remove(ctx *gin.Context) {
+func Remove(ctx *gin.Context) result.Result {
 	ctx.SetCookie(name, "", -1, "/", "localhost", false, true)
+	return result.Ok
 }

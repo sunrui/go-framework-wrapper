@@ -13,15 +13,15 @@ import (
 )
 
 // GetRouter 获取路由对象
-func GetRouter() app.Router {
-	return app.Router{
+func GetRouter() app.RouterGroup {
+	return app.RouterGroup{
 		GroupName:  "/api-user",
 		Middleware: middleware.Admin,
-		RouterPaths: []app.RouterPath{
+		RouterPaths: []app.Router{
 			{
 				HttpMethod:   http.MethodPost,
 				RelativePath: "/:id",
-				HandlerFunc:  getUser,
+				RouterFunc:   getUser,
 			},
 		},
 	}
