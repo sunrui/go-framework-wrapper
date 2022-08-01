@@ -7,6 +7,7 @@
 package response
 
 import (
+	"framework/config"
 	"framework/proto/result"
 	"github.com/gin-gonic/gin"
 	"io"
@@ -17,15 +18,54 @@ import (
 
 // 记录出错日志
 func logResult(ctx *gin.Context, r result.Result) {
+	// 协议
+	var protocol = func(ctx *gin.Context) string {
+		if ctx.Request.TLS != nil {
+			return "https://"
+		} else {
+			return "http://"
+		}
+	}
+
+	// 等级
 	var level = func(r result.Result) string {
 		if r.Code == result.Ok.Code {
-			return "INFO"
+			return "TRACE"
 		} else {
 			return "ERROR"
 		}
 	}
 
-	log.Print(" - " + level(r))
+	var buffer string
+
+	// 时间 - 等级 - IP
+	buffer += " - " + level(r) + " - " + ctx.ClientIP() + "\n\n"
+	buffer += ctx.Request.Method + " " + protocol(ctx) + ctx.Request.Host + ctx.Request.RequestURI + " " + ctx.Request.Proto + "\n"
+
+	// header
+	for key, value := range ctx.Request.Header {
+		buffer += key + ": " + value[0] + "\n"
+	}
+
+	// 空一行
+	buffer += "\n"
+
+	// body
+	body, exists := ctx.Get("body")
+	if exists {
+		buffer += body.(string) + "\n"
+	} else {
+		buffer += "<null>\n"
+	}
+
+	// 空一行
+	buffer += "\n"
+
+	// 结果
+	buffer += r.String(true) + "\n"
+
+	// 打印输出
+	log.Println(buffer)
 }
 
 // 初始化
@@ -42,8 +82,14 @@ func init() {
 
 	// 每次启动的时候建立新文件
 	var createFile = func() *os.File {
-		fileName := time.Now().Format("2006-01-02 15:04:05")
-		if file, err := os.Create(logPath + "/error - [" + fileName + "].log"); err != nil {
+		var fileName string
+		if config.IsDebug() {
+			fileName = time.Now().Format("2006-01-02")
+		} else {
+			fileName = time.Now().Format("2006-01-02 15:04:05")
+		}
+
+		if file, err := os.Create(logPath + "/access - " + fileName + ".log"); err != nil {
 			panic(err.Error())
 		} else {
 			return file

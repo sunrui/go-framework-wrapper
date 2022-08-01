@@ -7,6 +7,7 @@
 package app
 
 import (
+	"bytes"
 	"fmt"
 	"framework/config"
 	"framework/doc"
@@ -15,6 +16,7 @@ import (
 	"framework/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/juju/ratelimit"
+	"io/ioutil"
 	"net/http"
 	"path/filepath"
 	"strings"
@@ -97,6 +99,14 @@ func recoverMiddleware(ctx *gin.Context) {
 
 // body 中间件
 func bodyMiddleware(ctx *gin.Context) {
+	// 为了打印日志，将 body 拷贝复本。
+	if data, err := ctx.GetRawData(); err != nil {
+		fmt.Println(err.Error())
+	} else if len(data) != 0 {
+		ctx.Request.Body = ioutil.NopCloser(bytes.NewBuffer(data))
+		ctx.Set("body", string(data))
+	}
+
 	ctx.Writer.Header().Set("Content-Type", "application/json; charset=utf-8")
 	ctx.Next()
 }

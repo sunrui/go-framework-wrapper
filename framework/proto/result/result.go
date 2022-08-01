@@ -82,8 +82,14 @@ func (result Result) WithPageData(data any, pagination Pagination) Result {
 }
 
 // 重写返回结果对象，使用 json 反序列化
-func (result Result) String() string {
-	marshal, _ := json.Marshal(result)
+func (result Result) String(format bool) string {
+	var marshal []byte
+	if !format {
+		marshal, _ = json.Marshal(result)
+	} else {
+		marshal, _ = json.MarshalIndent(result, "", "\t")
+	}
+
 	return string(marshal)
 }
 
