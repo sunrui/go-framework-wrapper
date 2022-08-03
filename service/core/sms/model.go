@@ -6,9 +6,7 @@
 
 package sms
 
-import (
-	"framework/db"
-)
+import "framework/db"
 
 // Sms 验证码
 type Sms struct {
@@ -28,9 +26,4 @@ func init() {
 	if err := db.Mysql.AutoMigrate(&Sms{}); err != nil {
 		panic(err.Error())
 	}
-}
-
-// Save 存储
-func (sms *Sms) Save() {
-	db.Mysql.Save(sms)
 }

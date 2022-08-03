@@ -9,6 +9,7 @@ package sms
 import (
 	"framework/app"
 	"framework/config"
+	"framework/db"
 	"framework/proto/result"
 	"github.com/gin-gonic/gin"
 	"service/core/sms"
@@ -39,8 +40,8 @@ func postSend(ctx *gin.Context) result.Result {
 	// 调用服务发送验证码
 	err := sms.Send(req.Phone, req.SmsType, randomCode)
 
-	// 存储发送记录
-	history := sms.Sms{
+	// 保存发送记录
+	smsOne := sms.Sms{
 		Phone:     req.Phone,
 		SmsType:   req.SmsType,
 		Code:      randomCode,
@@ -49,7 +50,9 @@ func postSend(ctx *gin.Context) result.Result {
 		Success:   err == nil,
 		Comment:   err.Error(),
 	}
-	history.Save()
+	if tx := db.Mysql.Save(smsOne); tx.Error != nil {
+		panic(tx.Error.Error())
+	}
 
 	// 发送验证码失败
 	if err != nil {

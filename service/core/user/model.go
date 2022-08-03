@@ -16,11 +16,6 @@ type User struct {
 	UserAgent string `json:"userAgent" gorm:"comment:用户 ua"`                  // 用户 ua
 }
 
-// Save 存储
-func (user *User) Save() {
-	db.Mysql.Save(user)
-}
-
 // 初始化
 func init() {
 	// 创建表用户

@@ -9,6 +9,7 @@ package auth
 import (
 	"framework/app"
 	"framework/config"
+	"framework/db"
 	"framework/proto/result"
 	"framework/proto/token"
 	"github.com/gin-gonic/gin"
@@ -73,8 +74,10 @@ func postLoginByPhone(ctx *gin.Context) result.Result {
 			UserAgent: ctx.Request.UserAgent(),
 		}
 
-		// 创建新的用户
-		userOne.Save()
+		// 保存新的用户
+		if tx := db.Mysql.Save(userOne); tx.Error != nil {
+			panic(tx.Error.Error())
+		}
 	}
 
 	token.Write(ctx, userOne.Id)
