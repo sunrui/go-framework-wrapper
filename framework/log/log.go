@@ -20,10 +20,6 @@ import (
 	"time"
 )
 
-// 日志参考
-// https://github.com/siddontang/go/blob/master/log/handler.go
-// https://github.com/lestrrat-go/file-rotatelogs/blob/master/rotatelogs_test.go
-
 // 设置
 func Set(enable bool, level string) {
 	config.Log().Enable = enable

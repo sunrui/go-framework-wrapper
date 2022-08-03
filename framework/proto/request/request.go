@@ -6,7 +6,7 @@
 
 package request
 
-// validator 连接
+// validator 较验
 // https://github.com/go-playground/validator/
 
 // PageRequest 分页请求对象
