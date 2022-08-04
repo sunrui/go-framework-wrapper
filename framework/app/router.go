@@ -29,6 +29,14 @@ type RouterGroup struct {
 	RouterPaths []Router        // 路由路径
 }
 
+// gin 回调
+func handlerFunc(routerFunc RouterFunc) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		r := routerFunc(ctx)
+		response.Reply(ctx, r)
+	}
+}
+
 // 注册路由
 func registerRouter(engine *gin.Engine, router RouterGroup) {
 	routerGroup := engine.Group(router.GroupName)
@@ -36,14 +44,6 @@ func registerRouter(engine *gin.Engine, router RouterGroup) {
 	// 启用中间件
 	if router.Middleware != nil {
 		routerGroup.Use(router.Middleware)
-	}
-
-	// gin 回调
-	var handlerFunc = func(routerFunc RouterFunc) gin.HandlerFunc {
-		return func(ctx *gin.Context) {
-			r := routerFunc(ctx)
-			response.Reply(ctx, r)
-		}
 	}
 
 	// 注册路由回调
