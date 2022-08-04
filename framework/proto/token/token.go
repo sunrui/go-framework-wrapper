@@ -116,9 +116,9 @@ func RefreshIf(ctx *gin.Context) {
 	} else {
 		// 距离过期时间（毫秒）
 		expired := token.ExpiresAt - time.Now().Unix()
-
+		
 		// 根据过期时间距离自动刷新
-		if expired <= int64(config.Jwt().AutoRefresh)*1000 {
+		if expired <= int64(maxAge)*100-int64(config.Jwt().AutoRefresh)*1000 {
 			Write(ctx, token.Payload)
 		}
 	}
