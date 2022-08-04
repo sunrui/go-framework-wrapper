@@ -7,6 +7,7 @@
 package token
 
 import (
+	"errors"
 	"framework/config"
 	"framework/proto/result"
 	"github.com/gin-gonic/gin"
@@ -46,8 +47,8 @@ func encode(token Token) (string, error) {
 }
 
 // 验证 jwt 字符串
-func decode(token string) (*Token, error) {
-	tokenClaims, err := jwt.ParseWithClaims(token, &claims{}, func(token *jwt.Token) (any, error) {
+func decode(tokenString string) (*Token, error) {
+	tokenClaims, err := jwt.ParseWithClaims(tokenString, &claims{}, func(token *jwt.Token) (any, error) {
 		return secret, nil
 	})
 
@@ -87,26 +88,27 @@ func GetToken(ctx *gin.Context) (*Token, error) {
 	var tokenString string
 	var err error
 
-	// 从 header 中获取令牌
-	headerToken := func() string {
-		if tokenString = ctx.GetHeader("Authorization"); tokenString != "" {
-			prefix := "Bearer "
-			if strings.Index(tokenString, prefix) == 0 {
-				return tokenString[len(prefix):]
-			}
-		}
+	// 从 cookie 中获取令牌
+	if tokenString, err = ctx.Cookie(name); err == nil {
+		return decode(tokenString)
+	}
 
-		return ctx.GetHeader(name)
+	// 从 header 中获取令牌
+	if tokenString = ctx.GetHeader(name); tokenString != "" {
+		return decode(tokenString)
+	}
+
+	// 从 Authorization 中获取令牌
+	if tokenString = ctx.GetHeader("Authorization"); tokenString != "" {
+		prefix := "Bearer "
+		if strings.Index(tokenString, prefix) == 0 {
+			tokenString = tokenString[len(prefix):]
+			return decode(tokenString)
+		}
 	}
 
 	// 从 cookie 中获取令牌
-	if tokenString = headerToken(); tokenString == "" {
-		if tokenString, err = ctx.Cookie(name); err != nil {
-			return nil, err
-		}
-	}
-
-	return decode(tokenString)
+	return nil, errors.New("<null>")
 }
 
 // Remove 移除令牌

@@ -16,7 +16,7 @@ import (
 func getToken(ctx *gin.Context) result.Result {
 	// 获取用户令牌
 	if t, err := token.GetToken(ctx); err != nil {
-		return result.NotFound
+		return result.NoAuth
 	} else {
 		return result.Ok.WithData(t)
 	}
