@@ -7,17 +7,18 @@
 package user
 
 import (
-	"errors"
 	"framework/db"
-	"gorm.io/gorm"
 )
 
 // FindById 根据 id 获取用户
 func FindById(id string) *User {
 	var user User
 
-	query := db.Mysql.Find(&user, id)
-	if errors.Is(query.Error, gorm.ErrRecordNotFound) {
+	if tx := db.Mysql.Find(&user, id); tx.Error != nil {
+		panic(tx.Error.Error())
+	} else if tx.RowsAffected == 1 {
+		return &user
+	} else {
 		return nil
 	}
 
@@ -28,10 +29,11 @@ func FindById(id string) *User {
 func FindByPhone(phone string) *User {
 	var user User
 
-	query := db.Mysql.First(&user, "phone = ?", phone)
-	if errors.Is(query.Error, gorm.ErrRecordNotFound) {
+	if tx := db.Mysql.Find(&user, "phone = ?", phone); tx.Error != nil {
+		panic(tx.Error.Error())
+	} else if tx.RowsAffected == 1 {
+		return &user
+	} else {
 		return nil
 	}
-
-	return &user
 }

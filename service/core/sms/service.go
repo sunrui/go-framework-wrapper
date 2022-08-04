@@ -30,8 +30,8 @@ func RandomCode() string {
 func CountByPhoneAndDate(phone string, date string) int64 {
 	var count int64
 
-	if query := db.Mysql.Find(&Sms{}, "phone = ? AND DATE(created_at) = ?", phone, date).Count(&count); query.Error != nil {
-		panic(query.Error.Error())
+	if tx := db.Mysql.Find(&Sms{}, "phone = ? AND DATE(created_at) = ?", phone, date).Count(&count); tx.Error != nil {
+		panic(tx.Error.Error())
 	}
 
 	return count
