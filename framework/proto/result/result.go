@@ -8,6 +8,7 @@ package result
 
 import (
 	"encoding/json"
+	"framework/proto/request"
 )
 
 // MessageType 消息类型
@@ -29,11 +30,12 @@ type Pagination struct {
 
 // Result 结果对象
 type Result struct {
-	Code        string      `json:"code" example:"Ok"`           // 结果
-	Message     string      `json:"message" example:"成功"`        // 消息
-	MessageType MessageType `json:"messageType" example:"Toast"` // 消息类型
-	Data        any         `json:"data,omitempty"`              // 数据
-	Pagination  *Pagination `json:"pagination,omitempty"`        // 分页对象
+	Code        string           `json:"code" example:"Ok"`           // 结果
+	Message     string           `json:"message" example:"成功"`        // 消息
+	MessageType MessageType      `json:"messageType" example:"Toast"` // 消息类型
+	Data        any              `json:"data,omitempty"`              // 数据
+	Pagination  *Pagination      `json:"pagination,omitempty"`        // 分页对象
+	Request     *request.Request `json:"request,omitempty"`           // 请求对象
 }
 
 // WithMessage 设置消息

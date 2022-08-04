@@ -9,6 +9,7 @@ package response
 import (
 	"framework/config"
 	"framework/log"
+	"framework/proto/request"
 	"framework/proto/result"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -16,13 +17,19 @@ import (
 
 // Reply 回复
 func Reply(ctx *gin.Context, result result.Result) {
+	// 是否需要导出请求
+	if request.IsExport(ctx) {
+		req := request.GetRequest(ctx)
+		result.Request = &req
+	}
+
 	// 返回客户端
 	ctx.JSON(http.StatusOK, result)
 
 	// 异步记录日志
 	if config.Log().Enable {
 		go func() {
-			log.Result(ctx, result)
+			log.WriteResult(ctx, result)
 		}()
 	}
 }

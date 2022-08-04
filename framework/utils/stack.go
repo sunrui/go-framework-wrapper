@@ -15,7 +15,7 @@ import (
 
 // DumpStack 获取推栈层级
 func DumpStack(level int) []string {
-	var stacks = make([]string, 0)
+	stacks := make([]string, 0)
 
 	// 最大函数层级
 	pc := make([]uintptr, level)

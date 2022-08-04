@@ -10,7 +10,7 @@ import (
 	"fmt"
 	"framework/config"
 	"framework/doc"
-	"framework/log"
+	"framework/proto/request"
 	"framework/proto/response"
 	"framework/proto/result"
 	"framework/utils"
@@ -98,9 +98,9 @@ func recoverMiddleware(ctx *gin.Context) {
 
 // body 中间件
 func bodyMiddleware(ctx *gin.Context) {
-	// 日志处理
-	if config.Log().Enable {
-		log.CopyBody(ctx)
+	// 如果需要记录日志或请求被异出则拷贝 body 对象
+	if config.Log().Enable || request.IsExport(ctx) {
+		request.CopyBody(ctx)
 	}
 
 	ctx.Writer.Header().Set("Content-Type", "application/json; charset=utf-8")

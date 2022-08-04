@@ -7,14 +7,12 @@
 package log
 
 import (
-	"bytes"
-	"fmt"
 	"framework/config"
+	"framework/proto/request"
 	"framework/proto/result"
 	"framework/proto/token"
 	"github.com/gin-gonic/gin"
 	"io"
-	"io/ioutil"
 	"log"
 	"os"
 	"time"
@@ -26,19 +24,11 @@ func Set(enable bool, level string) {
 	config.Log().Level = level
 }
 
-// CopyBody 复制 body
-func CopyBody(ctx *gin.Context) {
-	if data, err := ctx.GetRawData(); err != nil {
-		fmt.Println(err.Error())
-	} else if len(data) != 0 {
-		// 为了打印日志 boy，将 body 拷贝复本。
-		ctx.Request.Body = ioutil.NopCloser(bytes.NewBuffer(data))
-		ctx.Set("body", string(data))
-	}
-}
-
 // 结果
-func Result(ctx *gin.Context, r result.Result) {
+func WriteResult(ctx *gin.Context, r result.Result) {
+	// 获取 request 对象
+	req := request.GetRequest(ctx)
+
 	// 等级
 	var level string
 	if r.Code == result.Ok.Code {
@@ -52,19 +42,10 @@ func Result(ctx *gin.Context, r result.Result) {
 		return
 	}
 
-	// 协议
-	var http = func(ctx *gin.Context) string {
-		if ctx.Request.TLS != nil {
-			return "https://"
-		} else {
-			return "http://"
-		}
-	}
-
 	var buffer string
 
 	// 时间 - 等级 - IP
-	buffer += " - " + level + " - " + ctx.ClientIP()
+	buffer += " - " + level + " - " + req.Ip
 
 	// userId
 	if t, err := token.GetToken(ctx); err == nil {
@@ -75,20 +56,19 @@ func Result(ctx *gin.Context, r result.Result) {
 	buffer += "\n\n"
 
 	// method http://host:port?query protocol
-	buffer += ctx.Request.Method + " " + http(ctx) + ctx.Request.Host + ctx.Request.RequestURI + " " + ctx.Request.Proto + "\n"
+	buffer += req.Method + " " + req.Uri + " " + req.Proto + "\n"
 
 	// header
-	for key, value := range ctx.Request.Header {
-		buffer += key + ": " + value[0] + "\n"
+	for _, header := range req.Headers {
+		buffer += header + "\n"
 	}
 
 	// 空一行
 	buffer += "\n"
 
 	// body
-	body, exists := ctx.Get("body")
-	if exists {
-		buffer += body.(string) + "\n"
+	if req.Body != nil {
+		buffer += *req.Body + "\n"
 	} else {
 		buffer += "<null>\n"
 	}
