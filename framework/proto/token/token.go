@@ -13,33 +13,36 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
 	"strings"
+	"time"
 )
 
-// Token 令牌对象
-type Token struct {
-	UserId string `json:"userId"`
+// Payload 对象
+type Payload struct {
+	UserId string `json:"userId"` // 用户 id
 }
 
-// claims 对象
-type claims struct {
+// Token 对象
+type Token struct {
 	jwt.StandardClaims
-	Token
+	Payload
 }
 
 // 密钥
 var secret = config.Jwt().Secret
 
-// 过期时间
+// 过期时间（秒）
 var maxAge = config.Jwt().MaxAge
 
 // 令牌名称
 const name = "token"
 
 // 生成 jwt 字符串
-func encode(token Token) (string, error) {
-	claims := claims{
-		jwt.StandardClaims{},
-		token,
+func encode(payload Payload) (string, error) {
+	claims := Token{
+		jwt.StandardClaims{
+			ExpiresAt: time.Now().Unix() + int64(maxAge)*1000,
+		},
+		payload,
 	}
 
 	tokenClaims := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
@@ -48,13 +51,13 @@ func encode(token Token) (string, error) {
 
 // 验证 jwt 字符串
 func decode(tokenString string) (*Token, error) {
-	tokenClaims, err := jwt.ParseWithClaims(tokenString, &claims{}, func(token *jwt.Token) (any, error) {
+	tokenClaims, err := jwt.ParseWithClaims(tokenString, &Token{}, func(token *jwt.Token) (any, error) {
 		return secret, nil
 	})
 
 	if tokenClaims != nil {
-		if claims, ok := tokenClaims.Claims.(*claims); ok && tokenClaims.Valid {
-			return &claims.Token, nil
+		if claims, ok := tokenClaims.Claims.(*Token); ok && tokenClaims.Valid {
+			return claims, nil
 		}
 	}
 
@@ -62,57 +65,66 @@ func decode(tokenString string) (*Token, error) {
 }
 
 // Write 写入 cookie 令牌
-func Write(ctx *gin.Context, userId string) {
-	// 生成用户令牌
-	if token, err := encode(Token{
-		UserId: userId,
-	}); err != nil {
+func Write(ctx *gin.Context, payload Payload) {
+	if token, err := encode(payload); err != nil {
 		panic(err.Error())
 	} else {
-		// 写入令牌，默认 30 天
 		ctx.SetCookie(name, token, maxAge, "/", "", false, true)
 	}
 }
 
 // MustGetUserId 获取当前用户 id
 func MustGetUserId(ctx *gin.Context) string {
-	if token, err := GetToken(ctx); err != nil {
+	if token, err := Get(ctx); err != nil {
 		panic(result.NoAuth)
 	} else {
 		return token.UserId
 	}
 }
 
-// GetToken 获取当前用户令牌
-func GetToken(ctx *gin.Context) (*Token, error) {
+// Get 获取当前用户令牌
+func Get(ctx *gin.Context) (*Token, error) {
 	var tokenString string
 	var err error
 
 	// 从 cookie 中获取令牌
-	if tokenString, err = ctx.Cookie(name); err == nil {
-		return decode(tokenString)
-	}
-
-	// 从 header 中获取令牌
-	if tokenString = ctx.GetHeader(name); tokenString != "" {
-		return decode(tokenString)
-	}
-
-	// 从 Authorization 中获取令牌
-	if tokenString = ctx.GetHeader("Authorization"); tokenString != "" {
-		prefix := "Bearer "
-		if strings.Index(tokenString, prefix) == 0 {
-			tokenString = tokenString[len(prefix):]
-			return decode(tokenString)
+	if tokenString, err = ctx.Cookie(name); err != nil {
+		// 从 header 中获取令牌
+		if tokenString = ctx.GetHeader(name); tokenString == "" {
+			// 从 Authorization 中获取令牌
+			if tokenString = ctx.GetHeader("Authorization"); tokenString != "" {
+				prefix := "Bearer "
+				if strings.Index(tokenString, prefix) == 0 {
+					tokenString = tokenString[len(prefix):]
+				}
+			}
 		}
 	}
 
-	// 从 cookie 中获取令牌
-	return nil, errors.New("<null>")
+	if tokenString == "" {
+		return nil, errors.New("<null>")
+	}
+
+	return decode(tokenString)
+}
+
+// RefreshIf 刷新令牌
+func RefreshIf(ctx *gin.Context) {
+	if token, err := Get(ctx); err != nil {
+		// 没有令牌不刷新
+		return
+	} else {
+		// 距离过期时间（毫秒）
+		expired := token.ExpiresAt - time.Now().Unix()
+
+		// 根据过期时间距离自动刷新
+		if expired <= int64(config.Jwt().AutoRefresh)*1000 {
+			Write(ctx, token.Payload)
+		}
+	}
 }
 
 // Remove 移除令牌
-func Remove(ctx *gin.Context) result.Result {
-	ctx.SetCookie(name, "", -1, "/", "localhost", false, true)
-	return result.Ok
+func Remove(ctx *gin.Context) {
+	ctx.SetCookie(name, "", -1, "/", "", false, true)
 }

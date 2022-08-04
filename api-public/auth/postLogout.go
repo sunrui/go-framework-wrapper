@@ -16,7 +16,8 @@ import (
 func postLogout(ctx *gin.Context) result.Result {
 	if _, err := ctx.Cookie("token"); err == nil {
 		token.Remove(ctx)
+		return result.Ok
 	}
 
-	return result.Ok
+	return result.NoAuth
 }

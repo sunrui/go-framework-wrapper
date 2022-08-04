@@ -13,6 +13,7 @@ import (
 	"framework/proto/request"
 	"framework/proto/response"
 	"framework/proto/result"
+	"framework/proto/token"
 	"framework/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/juju/ratelimit"
@@ -72,6 +73,11 @@ func redocMiddleware(ctx *gin.Context) {
 	_, _ = ctx.Writer.Write(doc.Redoc(suffix))
 }
 
+// 注册刷新令牌中间件
+func tokenMiddleware(ctx *gin.Context) {
+	token.RefreshIf(ctx)
+}
+
 // 异常捕获中间件
 func recoverMiddleware(ctx *gin.Context) {
 	// 捕获对象，全部抛出可以使用 panic 方法。
@@ -121,6 +127,9 @@ func registerMiddleware(engine *gin.Engine) {
 
 	// 注册文档中间件
 	engine.GET("/doc/*any", redocMiddleware)
+
+	// 注册刷新令牌中间件
+	engine.Use(tokenMiddleware)
 
 	// 注册异常中间件
 	engine.Use(recoverMiddleware)

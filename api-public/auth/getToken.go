@@ -15,7 +15,7 @@ import (
 // 获取令牌
 func getToken(ctx *gin.Context) result.Result {
 	// 获取用户令牌
-	if t, err := token.GetToken(ctx); err != nil {
+	if t, err := token.Get(ctx); err != nil {
 		return result.NoAuth
 	} else {
 		return result.Ok.WithData(t)

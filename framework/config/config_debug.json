@@ -26,7 +26,8 @@
   },
   "jwt": {
     "secret": "mzkxOdrGmjgtrjFeOC00NkNFLuezruItNzmzmuYwrdI5OuIw",
-    "maxAge": 2592000
+    "maxAge": 60,
+    "autoRefresh": 3600
   },
   "sms": {
     "magicCode": "123456",

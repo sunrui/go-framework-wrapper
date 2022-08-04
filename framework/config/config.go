@@ -49,8 +49,9 @@ type redis struct {
 
 // jwt 配置对象
 type jwt struct {
-	Secret []byte `json:"secret"` // 密钥
-	MaxAge int    `json:"maxAge"` // 过期时间（秒）
+	Secret      []byte `json:"secret"`      // 密钥
+	MaxAge      int    `json:"maxAge"`      // 过期时间（秒）
+	AutoRefresh int    `json:"autoRefresh"` // 自动续订（秒）
 }
 
 // sms 配置对象

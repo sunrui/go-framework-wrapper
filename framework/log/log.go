@@ -48,7 +48,7 @@ func WriteResult(ctx *gin.Context, r result.Result) {
 	buffer += " - " + level + " - " + req.Ip
 
 	// userId
-	if t, err := token.GetToken(ctx); err == nil {
+	if t, err := token.Get(ctx); err == nil {
 		buffer += " - " + t.UserId
 	}
 

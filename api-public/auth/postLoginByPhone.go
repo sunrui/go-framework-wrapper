@@ -80,7 +80,9 @@ func postLoginByPhone(ctx *gin.Context) result.Result {
 		}
 	}
 
-	token.Write(ctx, userOne.Id)
+	token.Write(ctx, token.Payload{
+		UserId: userOne.Id,
+	})
 
 	return result.Ok.WithData(postLoginByPhoneRes{
 		UserId: userOne.Id,
