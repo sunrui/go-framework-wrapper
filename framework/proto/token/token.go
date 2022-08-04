@@ -89,16 +89,14 @@ func GetToken(ctx *gin.Context) (*Token, error) {
 
 	// 从 header 中获取令牌
 	headerToken := func() string {
-		if tokenString = ctx.GetHeader("Authorization"); tokenString == "" {
-			return ""
+		if tokenString = ctx.GetHeader("Authorization"); tokenString != "" {
+			prefix := "Bearer "
+			if strings.Index(tokenString, prefix) == 0 {
+				return tokenString[len(prefix):]
+			}
 		}
 
-		prefix := "Bearer "
-		if strings.Index(tokenString, prefix) != 0 {
-			return ""
-		}
-
-		return tokenString[len(prefix):]
+		return ctx.GetHeader(name)
 	}
 
 	// 从 cookie 中获取令牌
