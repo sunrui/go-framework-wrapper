@@ -97,13 +97,7 @@ func init() {
 
 	// 每次启动的时候建立新文件
 	var createFile = func() *os.File {
-		var fileName string
-		if config.IsDebug() {
-			fileName = time.Now().Format("2006-01-02")
-		} else {
-			fileName = time.Now().Format("2006-01-02 15:04:05")
-		}
-
+		fileName := time.Now().Format("2006-01-02 15:04:05")
 		if file, err := os.Create(logPath + "/access - " + fileName + ".log"); err != nil {
 			panic(err.Error())
 		} else {
