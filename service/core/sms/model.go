@@ -16,7 +16,7 @@ type Sms struct {
 	Code      string `json:"code" gorm:"comment:验证码"`        // 验证码
 	Ip        string `json:"ip" gorm:"comment:ip 地址"`        // ip 地址
 	UserAgent string `json:"userAgent" gorm:"comment:用户 ua"` // 用户 ua
-	Success   bool   `json:"success" gorm:"comment:是否发送成功"`  // 是否发送成功
+	Success   bool   `json:"success" gorm:"comment:是否发送成功"`  // 是否成功
 	Comment   string `json:"comment" gorm:"comment:备注"`      // 备注
 }
 

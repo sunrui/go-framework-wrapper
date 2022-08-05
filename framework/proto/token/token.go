@@ -29,14 +29,14 @@ type Token struct {
 
 // 生成 jwt 字符串
 func encode(payload Payload) (string, error) {
-	claims := Token{
+	token := Token{
 		jwt.StandardClaims{
 			ExpiresAt: time.Now().Unix() + int64(config.Jwt().MaxAge)*1000,
 		},
 		payload,
 	}
 
-	tokenClaims := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	tokenClaims := jwt.NewWithClaims(jwt.SigningMethodHS256, token)
 	return tokenClaims.SignedString(config.Jwt().Secret)
 }
 

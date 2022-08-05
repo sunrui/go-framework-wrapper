@@ -8,7 +8,6 @@ package request
 
 import (
 	"bytes"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"io/ioutil"
 )
@@ -66,7 +65,7 @@ func GetRequest(ctx *gin.Context) Request {
 // CopyBody 复制 body
 func CopyBody(ctx *gin.Context) {
 	if data, err := ctx.GetRawData(); err != nil {
-		fmt.Println(err.Error())
+		panic(err.Error())
 	} else if len(data) != 0 {
 		ctx.Request.Body = ioutil.NopCloser(bytes.NewBuffer(data))
 		ctx.Set("body", string(data))

@@ -24,18 +24,19 @@ func Set(enable bool, level string) {
 	config.Log().Level = level
 }
 
-// 结果
+// 写入结果
 func WriteResult(ctx *gin.Context, r result.Result) {
 	// 获取 request 对象
 	req := request.GetRequest(ctx)
 
 	// 等级
-	var level string
-	if r.Code == result.Ok.Code {
-		level = "TRACE"
-	} else {
-		level = "ERROR"
-	}
+	var level = func() string {
+		if r.Code == result.Ok.Code {
+			return "TRACE"
+		} else {
+			return "ERROR"
+		}
+	}()
 
 	// 判断是否需要输出
 	if level == "TRACE" && level != config.Log().Level {
