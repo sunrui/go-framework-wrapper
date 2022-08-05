@@ -13,55 +13,9 @@ import (
 	"runtime"
 )
 
-// log 配置相关
-type log struct {
-	Enable bool   `json:"enable"` // 开关
-	Level  string `json:"level"`  // 等级
-}
-
-// rateLimit 配置对象
-type rateLimit struct {
-	Quantum  int64 `json:"quantum"`  // 间隔时间（秒）
-	Capacity int64 `json:"capacity"` // 令牌桶容量
-}
-
-// swagger 配置对象
-type swagger struct {
-	Enable bool `json:"enable"` // 是否启用
-}
-
-// mysql 配置对象
-type mysql struct {
-	Host     string `json:"host"`     // 主机
-	Port     int    `json:"port"`     // 端口
-	Database string `json:"database"` // 数据库
-	User     string `json:"user"`     // 用户名
-	Password string `json:"password"` // 密码
-}
-
-// redis 配置对象
-type redis struct {
-	Host     string `json:"host"`     // 主机
-	Port     int    `json:"port"`     // 端口
-	Password string `json:"password"` // 密码
-	Database int    `json:"database"` // 数据库
-	Timeout  int    `json:"timeout"`  // 超时时间（秒）
-}
-
-// jwt 配置对象
-type jwt struct {
-	Key         string `json:"key"`         // 主键
-	Secret      []byte `json:"secret"`      // 密钥
-	MaxAge      int    `json:"maxAge"`      // 过期时间（秒）
-	AutoRefresh int    `json:"autoRefresh"` // 自动续订（秒）
-}
-
-// sms 配置对象
-type sms struct {
-	MagicCode     string `json:"magicCode"`     // 短信魔术码
-	MaxAge        int    `json:"maxAge"`        // 过期时间（秒）
-	MaxVerifyTime int    `json:"maxVerifyTime"` // 最多较验次数
-	MaxSendPerDay int64  `json:"maxSendPerDay"` // 每日最多发送次数
+// IsDebug 是否为调试环境
+func IsDebug() bool {
+	return true
 }
 
 // 配置对象
@@ -77,41 +31,6 @@ type config struct {
 
 // 当前配置
 var conf config
-
-// Log 配置
-func Log() *log {
-	return &conf.Log
-}
-
-// RateLimit 配置
-func RateLimit() *rateLimit {
-	return &conf.RateLimit
-}
-
-// Swagger 配置
-func Swagger() *swagger {
-	return &conf.Swagger
-}
-
-// Mysql 配置
-func Mysql() *mysql {
-	return &conf.Mysql
-}
-
-// Redis 配置
-func Redis() *redis {
-	return &conf.Redis
-}
-
-// Jwt 配置
-func Jwt() *jwt {
-	return &conf.Jwt
-}
-
-// Sms 配置
-func Sms() *sms {
-	return &conf.Sms
-}
 
 // 加载当前配置
 func init() {

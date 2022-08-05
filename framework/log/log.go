@@ -18,10 +18,18 @@ import (
 	"time"
 )
 
+// 日志等级
+type Level string
+
+const (
+	LevelTrace Level = "TRACE" // trace
+	LevelError Level = "ERROR" // error
+)
+
 // 设置
-func Set(enable bool, level string) {
+func Set(enable bool, level Level) {
 	config.Log().Enable = enable
-	config.Log().Level = level
+	config.Log().Level = string(level)
 }
 
 // 写入结果
@@ -30,23 +38,23 @@ func WriteResult(ctx *gin.Context, r result.Result) {
 	req := request.GetRequest(ctx)
 
 	// 等级
-	var level = func() string {
+	var level = func() Level {
 		if r.Code == result.Ok.Code {
-			return "TRACE"
+			return LevelTrace
 		} else {
-			return "ERROR"
+			return LevelError
 		}
 	}()
 
 	// 判断是否需要输出
-	if level == "TRACE" && level != config.Log().Level {
+	if level == LevelTrace && string(level) != config.Log().Level {
 		return
 	}
 
 	var buffer string
 
 	// 时间 - 等级 - IP
-	buffer += " - " + level + " - " + req.Ip
+	buffer += " - " + string(level) + " - " + req.Ip
 
 	// userId
 	if t, err := token.Get(ctx); err == nil {
