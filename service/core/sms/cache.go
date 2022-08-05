@@ -13,9 +13,6 @@ import (
 	"time"
 )
 
-// 过期时间
-var maxAge = time.Duration(config.Sms().MaxAge)
-
 // 缓存数据
 type codeCache struct {
 	Code        string `json:"code"`        // 验证码
@@ -54,12 +51,12 @@ func (cache *Cache) SaveCode(code string) {
 	db.Redis.Set(cache.getKey(), codeCache{
 		Code:        code,
 		VerifyTimes: 0,
-	}, maxAge)
+	}, time.Duration(config.Sms().MaxAge))
 }
 
 // Save 设置新缓存验证码
 func (cache *Cache) Save(codeCache codeCache) {
-	db.Redis.Set(cache.getKey(), codeCache, maxAge)
+	db.Redis.Set(cache.getKey(), codeCache, time.Duration(config.Sms().MaxAge))
 }
 
 // Del 移除缓存验证码

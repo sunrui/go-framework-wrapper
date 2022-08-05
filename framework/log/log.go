@@ -99,9 +99,9 @@ func init() {
 	var createFile = func() *os.File {
 		var timeLayout = func() string {
 			if config.IsDebug() {
-				return time.Now().Format("2006-01-02")
+				return "2006-01-02"
 			} else {
-				return time.Now().Format("2006-01-02 15:04:05")
+				return "2006-01-02 15:04:05"
 			}
 		}()
 
