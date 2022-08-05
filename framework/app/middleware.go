@@ -76,6 +76,7 @@ func redocMiddleware(ctx *gin.Context) {
 // 注册刷新令牌中间件
 func tokenMiddleware(ctx *gin.Context) {
 	token.RefreshIf(ctx)
+	ctx.Next()
 }
 
 // 异常捕获中间件

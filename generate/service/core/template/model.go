@@ -22,8 +22,3 @@ func init() {
 		panic(err.Error())
 	}
 }
-
-// Save 保存
-func (template *Template) Save() {
-	db.Mysql.Save(template)
-}

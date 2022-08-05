@@ -31,8 +31,3 @@ func init() {
 		panic(err.Error())
 	}
 }
-
-// Save 存储
-func (openSettleIn *OpenSettleIn) Save() {
-	db.Mysql.Save(openSettleIn)
-}

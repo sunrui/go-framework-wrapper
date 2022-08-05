@@ -28,8 +28,3 @@ func init() {
 		panic(err.Error())
 	}
 }
-
-// Save 存储
-func (openApproval *OpenApproval) Save() {
-	db.Mysql.Save(openApproval)
-}

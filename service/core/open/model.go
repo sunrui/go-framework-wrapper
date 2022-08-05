@@ -24,8 +24,3 @@ func init() {
 		panic(err.Error())
 	}
 }
-
-// Save 存储
-func (open *Open) Save() {
-	db.Mysql.Save(open)
-}
