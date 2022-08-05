@@ -101,10 +101,7 @@ func Get(ctx *gin.Context) (*Token, error) {
 
 // RefreshIf 刷新令牌
 func RefreshIf(ctx *gin.Context) {
-	if token, err := Get(ctx); err != nil {
-		// 没有令牌不刷新
-		return
-	} else {
+	if token, err := Get(ctx); err == nil {
 		// 距离过期时间（毫秒）
 		expired := token.ExpiresAt - time.Now().Unix()
 

@@ -21,8 +21,8 @@ type codeCache struct {
 
 // Cache 缓存对象
 type Cache struct {
-	Phone   string `json:"phone"` // 手机号
-	SmsType Type   `json:"type"`  // 验证码类型
+	Phone   string `json:"phone"`   // 手机号
+	SmsType Type   `json:"smsType"` // 验证码类型
 }
 
 // 获取主键

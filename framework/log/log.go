@@ -87,10 +87,9 @@ func WriteResult(ctx *gin.Context, r result.Result) {
 // 初始化
 func init() {
 	const logPath = "log"
-	var err error
 
 	// 建立日志目录
-	if _, err = os.Stat(logPath); err != nil {
+	if _, err := os.Stat(logPath); err != nil {
 		if err = os.Mkdir(logPath, os.ModePerm); err != nil {
 			panic(err.Error())
 		}
