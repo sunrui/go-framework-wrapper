@@ -27,32 +27,23 @@ type Token struct {
 	Payload
 }
 
-// 密钥
-var secret = config.Jwt().Secret
-
-// 过期时间（秒）
-var maxAge = config.Jwt().MaxAge
-
-// 令牌名称
-const name = "token"
-
 // 生成 jwt 字符串
 func encode(payload Payload) (string, error) {
 	claims := Token{
 		jwt.StandardClaims{
-			ExpiresAt: time.Now().Unix() + int64(maxAge)*1000,
+			ExpiresAt: time.Now().Unix() + int64(config.Jwt().MaxAge)*1000,
 		},
 		payload,
 	}
 
 	tokenClaims := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	return tokenClaims.SignedString(secret)
+	return tokenClaims.SignedString(config.Jwt().Secret)
 }
 
 // 验证 jwt 字符串
 func decode(tokenString string) (*Token, error) {
 	tokenClaims, err := jwt.ParseWithClaims(tokenString, &Token{}, func(token *jwt.Token) (any, error) {
-		return secret, nil
+		return config.Jwt().Secret, nil
 	})
 
 	if tokenClaims != nil {
@@ -69,7 +60,7 @@ func Write(ctx *gin.Context, payload Payload) {
 	if token, err := encode(payload); err != nil {
 		panic(err.Error())
 	} else {
-		ctx.SetCookie(name, token, maxAge, "/", "", false, true)
+		ctx.SetCookie(config.Jwt().Key, token, config.Jwt().MaxAge, "/", "", false, true)
 	}
 }
 
@@ -88,9 +79,9 @@ func Get(ctx *gin.Context) (*Token, error) {
 	var err error
 
 	// 从 cookie 中获取令牌
-	if tokenString, err = ctx.Cookie(name); err != nil {
+	if tokenString, err = ctx.Cookie(config.Jwt().Key); err != nil {
 		// 从 header 中获取令牌
-		if tokenString = ctx.GetHeader(name); tokenString == "" {
+		if tokenString = ctx.GetHeader(config.Jwt().Key); tokenString == "" {
 			// 从 Authorization 中获取令牌
 			if tokenString = ctx.GetHeader("Authorization"); tokenString != "" {
 				prefix := "Bearer "
@@ -116,9 +107,9 @@ func RefreshIf(ctx *gin.Context) {
 	} else {
 		// 距离过期时间（毫秒）
 		expired := token.ExpiresAt - time.Now().Unix()
-		
+
 		// 根据过期时间距离自动刷新
-		if expired <= int64(maxAge)*100-int64(config.Jwt().AutoRefresh)*1000 {
+		if expired <= int64(config.Jwt().MaxAge)*100-int64(config.Jwt().AutoRefresh)*1000 {
 			Write(ctx, token.Payload)
 		}
 	}
@@ -126,5 +117,5 @@ func RefreshIf(ctx *gin.Context) {
 
 // Remove 移除令牌
 func Remove(ctx *gin.Context) {
-	ctx.SetCookie(name, "", -1, "/", "", false, true)
+	ctx.SetCookie(config.Jwt().Key, "", -1, "/", "", false, true)
 }

@@ -21,16 +21,15 @@ var Mysql *gorm.DB
 
 // 初始化
 func init() {
-	conf := config.Mysql()
 	var err error
 
 	// 数据库连接
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local",
-		conf.User,
-		conf.Password,
-		conf.Host,
-		conf.Port,
-		conf.Database)
+		config.Mysql().User,
+		config.Mysql().Password,
+		config.Mysql().Host,
+		config.Mysql().Port,
+		config.Mysql().Database)
 
 	if Mysql, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
 		NamingStrategy: schema.NamingStrategy{

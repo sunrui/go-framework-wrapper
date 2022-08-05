@@ -45,10 +45,12 @@ type redis struct {
 	Port     int    `json:"port"`     // 端口
 	Password string `json:"password"` // 密码
 	Database int    `json:"database"` // 数据库
+	Timeout  int    `json:"timeout"`  // 超时时间（秒）
 }
 
 // jwt 配置对象
 type jwt struct {
+	Key         string `json:"key"`         // 主键
 	Secret      []byte `json:"secret"`      // 密钥
 	MaxAge      int    `json:"maxAge"`      // 过期时间（秒）
 	AutoRefresh int    `json:"autoRefresh"` // 自动续订（秒）
@@ -125,9 +127,9 @@ func init() {
 		}
 
 		return path + "/" + jsonFile
-	}
+	}()
 
-	if stream, err := ioutil.ReadFile(configFile()); err != nil {
+	if stream, err := ioutil.ReadFile(configFile); err != nil {
 		panic(err.Error())
 	} else if err = json.Unmarshal(stream, &conf); err != nil {
 		panic(err.Error())

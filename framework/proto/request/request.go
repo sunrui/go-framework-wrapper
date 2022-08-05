@@ -25,8 +25,8 @@ type Request struct {
 
 // IsExport 是否导出
 func IsExport(ctx *gin.Context) bool {
-	const export = "export"
-	return ctx.Query("request") == export || ctx.GetHeader("request") == export
+	const key, value = "request", "export"
+	return ctx.Query(key) == value || ctx.GetHeader(key) == value
 }
 
 // GetRequest 获取请求对象

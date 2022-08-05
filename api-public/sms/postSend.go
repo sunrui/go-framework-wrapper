@@ -17,8 +17,8 @@ import (
 
 // 发送验证码请求
 type postCodeReq struct {
-	Phone   string   `json:"phone" validate:"required,len=11,numeric"`                  // 手机号
-	SmsType sms.Type `json:"smsType" validate:"required,oneof=Login," enums:"asc,desc"` // 验证码类型
+	Phone   string   `json:"phone" validate:"required,len=11,numeric"`              // 手机号
+	SmsType sms.Type `json:"smsType" validate:"required,oneof=Login" enums:"Login"` // 验证码类型
 }
 
 // 发送验证码
@@ -43,14 +43,21 @@ func postSend(ctx *gin.Context) result.Result {
 	// 保存发送记录
 	smsOne := sms.Sms{
 		Phone:     req.Phone,
-		SmsType:   req.SmsType,
+		Type:      req.SmsType,
 		Code:      randomCode,
 		Ip:        ctx.ClientIP(),
 		UserAgent: ctx.Request.UserAgent(),
 		Success:   err == nil,
-		Comment:   err.Error(),
+		Comment: func() string {
+			if err != nil {
+				return err.Error()
+			} else {
+				return ""
+			}
+		}(),
 	}
-	if tx := db.Mysql.Save(smsOne); tx.Error != nil {
+
+	if tx := db.Mysql.Save(&smsOne); tx.Error != nil {
 		panic(tx.Error.Error())
 	}
 

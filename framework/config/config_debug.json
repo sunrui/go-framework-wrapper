@@ -25,6 +25,7 @@
     "timeout": 10
   },
   "jwt": {
+    "key": "token",
     "secret": "mzkxOdrGmjgtrjFeOC00NkNFLuezruItNzmzmuYwrdI5OuIw",
     "maxAge": 1209600,
     "autoRefresh": 3600

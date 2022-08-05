@@ -14,10 +14,7 @@ import (
 )
 
 // 过期时间
-var maxAge = time.Duration(config.Sms().MaxAge) * time.Second
-
-// 最多较验次数
-var maxVerifyTime = config.Sms().MaxVerifyTime
+var maxAge = time.Duration(config.Sms().MaxAge)
 
 // 缓存数据
 type codeCache struct {
@@ -28,7 +25,7 @@ type codeCache struct {
 // Cache 缓存对象
 type Cache struct {
 	Phone   string `json:"phone"` // 手机号
-	SmsType Type   `json:"Type"`  // 验证码类型
+	SmsType Type   `json:"type"`  // 验证码类型
 }
 
 // 获取主键
@@ -84,7 +81,7 @@ func (cache *Cache) Verify(code string) bool {
 		value.VerifyTimes += 1
 
 		// 如果已经较验出错 maxVerifyTime 次，移除现有验证码
-		if value.VerifyTimes == maxVerifyTime {
+		if value.VerifyTimes == config.Sms().MaxVerifyTime {
 			cache.Del()
 		} else {
 			// 更新出错较验次数
