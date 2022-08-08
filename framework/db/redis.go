@@ -17,7 +17,7 @@ import (
 
 // Redis 数据库访问对象
 type redisPool struct {
-	pool *redis.Pool
+	redis.Pool
 }
 
 var Redis *redisPool
@@ -26,7 +26,7 @@ var Redis *redisPool
 func init() {
 	// 建立连接池
 	Redis = &redisPool{
-		pool: &redis.Pool{
+		redis.Pool{
 			MaxIdle:     5,
 			MaxActive:   100,
 			IdleTimeout: 1 * time.Hour,
@@ -46,14 +46,14 @@ func init() {
 	}
 
 	// 尝试数据库连接
-	if _, err := Redis.pool.Get().Do("PING"); err != nil {
+	if _, err := Redis.Get().Do("PING"); err != nil {
 		panic(err.Error())
 	}
 }
 
 // Set 设置对象
 func (redisPool *redisPool) Set(key string, value any, second time.Duration) {
-	pool := redisPool.pool.Get()
+	pool := redisPool.Get()
 	defer func() {
 		_ = pool.Close()
 	}()
@@ -72,9 +72,9 @@ func (redisPool *redisPool) Set(key string, value any, second time.Duration) {
 	}
 }
 
-// Get 获取字符串
-func (redisPool *redisPool) Get(key string) *string {
-	pool := redisPool.pool.Get()
+// GetString 获取字符串
+func (redisPool *redisPool) GetString(key string) *string {
+	pool := redisPool.Get()
 	defer func() {
 		_ = pool.Close()
 	}()
@@ -91,7 +91,7 @@ func (redisPool *redisPool) Get(key string) *string {
 
 // GetJson 获取对象
 func (redisPool *redisPool) GetJson(key string, dst any) bool {
-	pool := redisPool.pool.Get()
+	pool := redisPool.Get()
 	defer func() {
 		_ = pool.Close()
 	}()
@@ -109,7 +109,7 @@ func (redisPool *redisPool) GetJson(key string, dst any) bool {
 
 // Exists 是否存在对象
 func (redisPool *redisPool) Exists(key string) bool {
-	pool := redisPool.pool.Get()
+	pool := redisPool.Get()
 	defer func() {
 		_ = pool.Close()
 	}()
@@ -123,7 +123,7 @@ func (redisPool *redisPool) Exists(key string) bool {
 
 // Del 删除对象
 func (redisPool *redisPool) Del(key string) {
-	pool := redisPool.pool.Get()
+	pool := redisPool.Get()
 	defer func() {
 		_ = pool.Close()
 	}()
@@ -133,9 +133,9 @@ func (redisPool *redisPool) Del(key string) {
 	}
 }
 
-// HashSet 设置 hash 对象
-func (redisPool *redisPool) HashSet(hash string, key string, value any) {
-	pool := redisPool.pool.Get()
+// SetHash 设置 hash 对象
+func (redisPool *redisPool) SetHash(hash string, key string, value any) {
+	pool := redisPool.Get()
 	defer func() {
 		_ = pool.Close()
 	}()
@@ -154,9 +154,9 @@ func (redisPool *redisPool) HashSet(hash string, key string, value any) {
 	}
 }
 
-// HashGet 获取 hash 对象
-func (redisPool *redisPool) HashGet(hash string, key string) *string {
-	pool := redisPool.pool.Get()
+// GetHash 获取 hash 对象
+func (redisPool *redisPool) GetHash(hash string, key string) *string {
+	pool := redisPool.Get()
 	defer func() {
 		_ = pool.Close()
 	}()
@@ -171,9 +171,9 @@ func (redisPool *redisPool) HashGet(hash string, key string) *string {
 	}
 }
 
-// HashGetJson 获取 hash 对象
-func (redisPool *redisPool) HashGetJson(hash string, key string, dst any) bool {
-	pool := redisPool.pool.Get()
+// GetHashJson 获取 hash 对象
+func (redisPool *redisPool) GetHashJson(hash string, key string, dst any) bool {
+	pool := redisPool.Get()
 	defer func() {
 		_ = pool.Close()
 	}()
