@@ -8,7 +8,6 @@ package utils
 
 import (
 	"io"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 )
@@ -46,7 +45,7 @@ func CopyDirectory(src, dst string) error {
 
 	if fileInfo.IsDir() {
 		// src 是文件夹，那么定义 dst 也是文件夹
-		if list, err := ioutil.ReadDir(src); err == nil {
+		if list, err := os.ReadDir(src); err == nil {
 			// 递归每一个文件
 			for _, item := range list {
 				if err = CopyDirectory(filepath.Join(src, item.Name()), filepath.Join(dst, item.Name())); err != nil {

@@ -8,7 +8,7 @@ package config
 
 import (
 	"encoding/json"
-	"io/ioutil"
+	"os"
 	"path/filepath"
 	"runtime"
 )
@@ -134,7 +134,7 @@ func init() {
 		return path + "/" + jsonFile
 	}()
 
-	if stream, err := ioutil.ReadFile(configFile); err != nil {
+	if stream, err := os.ReadFile(configFile); err != nil {
 		panic(err.Error())
 	} else if err = json.Unmarshal(stream, &conf); err != nil {
 		panic(err.Error())

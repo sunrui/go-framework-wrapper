@@ -9,7 +9,7 @@ package request
 import (
 	"bytes"
 	"github.com/gin-gonic/gin"
-	"io/ioutil"
+	"io"
 )
 
 // Request 请求对象
@@ -67,7 +67,7 @@ func CopyBody(ctx *gin.Context) {
 	if data, err := ctx.GetRawData(); err != nil {
 		panic(err.Error())
 	} else if len(data) != 0 {
-		ctx.Request.Body = ioutil.NopCloser(bytes.NewBuffer(data))
+		ctx.Request.Body = io.NopCloser(bytes.NewBuffer(data))
 		ctx.Set("body", string(data))
 	}
 }

@@ -65,7 +65,7 @@ func redocMiddleware(ctx *gin.Context) {
 
 	// 过滤掉非法的 /doc/? 路径
 	suffix := filepath.Base(path)
-	if suffix != "doc" && suffix != "doc.json" && suffix != "redoc.min.js" {
+	if suffix != "doc" && suffix != "doc.json" && suffix != "redoc.js" {
 		ctx.Redirect(http.StatusFound, "/doc")
 		return
 	}

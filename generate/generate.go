@@ -8,7 +8,6 @@ package main
 
 import (
 	"framework/utils"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -50,12 +49,12 @@ func runGenerate(model, modelName string, author string) error {
 		_ = os.Rename(src, dst)
 
 		// 处理每一个文件
-		if list, err := ioutil.ReadDir(dst); err == nil {
+		if list, err := os.ReadDir(dst); err == nil {
 			// 递归每一个文件
 			for _, item := range list {
 				fileName := filepath.Join(dst, item.Name())
 
-				fileBytes, err := ioutil.ReadFile(fileName)
+				fileBytes, err := os.ReadFile(fileName)
 				if err != nil {
 					return err
 				}
@@ -70,7 +69,7 @@ func runGenerate(model, modelName string, author string) error {
 				fileContent = strings.ReplaceAll(fileContent, "$author", author)
 				fileContent = strings.ReplaceAll(fileContent, "$today.format(\"yyyy-MM-dd HH:mm:ss\")", time.Now().Format("2006-01-02 15:04:05"))
 
-				if err = ioutil.WriteFile(fileName, []byte(fileContent), os.ModeDevice); err != nil {
+				if err = os.WriteFile(fileName, []byte(fileContent), os.ModeDevice); err != nil {
 					return err
 				}
 

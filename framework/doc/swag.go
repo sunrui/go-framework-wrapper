@@ -9,7 +9,7 @@ package doc
 import (
 	"bytes"
 	"framework/config"
-	"io/ioutil"
+	"os"
 	"os/exec"
 	"path/filepath"
 	"runtime"
@@ -18,15 +18,15 @@ import (
 // Redoc 文档中间件
 func Redoc(suffix string) []byte {
 	if suffix == "doc.json" {
-		data, _ := ioutil.ReadFile("docs/swagger.json")
+		data, _ := os.ReadFile("docs/swagger.json")
 		return data
 	}
 
-	if suffix == "redoc.min.js" {
+	if suffix == "redoc.js" {
 		_, file, _, _ := runtime.Caller(0)
 		path := filepath.Dir(file)
 
-		data, _ := ioutil.ReadFile(path + "/redoc.min.js")
+		data, _ := os.ReadFile(path + "/redoc.js")
 		return data
 	}
 
@@ -44,12 +44,9 @@ func Redoc(suffix string) []byte {
 			</style>
 		  </head>
 		  <body>
+			<!--<Redoc spec-url='http://petstore.swagger.io/v2/swagger.json'></Redoc>-->
 			<Redoc spec-url='swagger/doc.json'></Redoc>
-			<script src="/doc/redoc.min.js"> </script>
-  			<!--
-				<Redoc spec-url='http://petstore.swagger.io/v2/swagger.json'></Redoc>
-				<script src="https://rebilly.github.io/ReDoc/releases/latest/Redoc.min.js"> </script>
-			-->
+			<script src="/doc/redoc.js"> </script>
 		  </body>
 		</html>
 	`)
