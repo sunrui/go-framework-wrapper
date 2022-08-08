@@ -17,8 +17,8 @@ import (
 
 // Reply 回复
 func Reply(ctx *gin.Context, result result.Result) {
-	// 是否需要导出请求
-	if request.IsExport(ctx) {
+	// 是否结果导出请求
+	if request.IsResultWithRequest(ctx) {
 		req := request.GetRequest(ctx)
 		result.Request = &req
 	}

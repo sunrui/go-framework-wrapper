@@ -106,7 +106,7 @@ func recoverMiddleware(ctx *gin.Context) {
 // body 中间件
 func bodyMiddleware(ctx *gin.Context) {
 	// 如果需要记录日志或请求被异出则拷贝 body 对象
-	if config.Log().Enable || request.IsExport(ctx) {
+	if config.Log().Enable || request.IsResultWithRequest(ctx) {
 		request.CopyBody(ctx)
 	}
 

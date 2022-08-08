@@ -22,9 +22,9 @@ type Request struct {
 	Body    *string  `json:"body"`    // 请求体
 }
 
-// IsExport 是否导出
-func IsExport(ctx *gin.Context) bool {
-	const key, value = "request", "export"
+// IsResultWithRequest 是否结果导出请求
+func IsResultWithRequest(ctx *gin.Context) bool {
+	const key, value = "result", "request"
 	return ctx.Query(key) == value || ctx.GetHeader(key) == value
 }
 
