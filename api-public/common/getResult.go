@@ -11,11 +11,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// @Summary  结果列表
-// @Tags     通用
-// @Produce  json
-// @Success  200  {object}  result.Result{data=result.Result}  true  {"status":"Ok","description":"成功"}
-// @Router   /public/common/result [get]
+// @Summary 结果列表
+// @Tags    通用
+// @Produce json
+// @Success 200 {object} result.Result{data=result.Result} true {"status":"Ok","description":"成功"}
+// @Router  /public/common/result [get]
 func getResult(ctx *gin.Context) result.Result {
 	return result.Ok.WithData(result.All())
 }
