@@ -106,7 +106,7 @@ func init() {
 	// 每次启动的时候建立新文件
 	var createFile = func() *os.File {
 		var timeLayout = func() string {
-			if config.IsDebug() {
+			if config.IsDev() {
 				return "2006-01-02"
 			} else {
 				return "2006-01-02 15:04:05"

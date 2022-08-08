@@ -13,11 +13,6 @@ import (
 	"runtime"
 )
 
-// IsDebug 是否为调试环境
-func IsDebug() bool {
-	return true
-}
-
 // log 配置对象
 type log struct {
 	Enable bool   `json:"enable"` // 开关
@@ -125,10 +120,10 @@ func init() {
 		path := filepath.Dir(file)
 
 		var jsonFile string
-		if IsDebug() {
-			jsonFile = "config_debug.json"
+		if IsDev() {
+			jsonFile = "config_dev.json"
 		} else {
-			jsonFile = "config_release.json"
+			jsonFile = "config_product.json"
 		}
 
 		return path + "/" + jsonFile
