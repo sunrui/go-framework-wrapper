@@ -26,5 +26,5 @@ func init() {
 	flag.Parse()
 
 	// 解析编译参数如 -build product
-	build = flag.String("build", "", "编译类型")
+	build = flag.String("build", "dev", "编译类型")
 }

@@ -8,7 +8,7 @@
     "capacity": 5000
   },
   "swagger": {
-    "enable": false
+    "enable": true
   },
   "mysql": {
     "host": "localhost",
