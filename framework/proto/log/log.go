@@ -26,8 +26,45 @@ const (
 	LevelError Level = "ERROR" // error
 )
 
+// 初始化日志
+func initLog() {
+	const logPath = "log"
+
+	// 建立日志目录
+	if _, err := os.Stat(logPath); err != nil {
+		if err = os.Mkdir(logPath, os.ModePerm); err != nil {
+			panic(err.Error())
+		}
+	}
+
+	// 每次启动的时候建立新文件
+	var createFile = func() *os.File {
+		var timeLayout = func() string {
+			if config.IsDev() {
+				return "2006-01-02"
+			} else {
+				return "2006-01-02 15:04:05"
+			}
+		}()
+
+		fileName := time.Now().Format(timeLayout)
+		if file, err := os.Create(logPath + "/access - " + fileName + ".log"); err != nil {
+			panic(err.Error())
+		} else {
+			return file
+		}
+	}
+
+	log.SetOutput(io.MultiWriter(createFile()))
+	log.SetFlags(log.Ldate | log.Ltime)
+}
+
 // Set 设置
 func Set(enable bool, level Level) {
+	if enable {
+		initLog()
+	}
+
 	config.Log().Enable = enable
 	config.Log().Level = string(level)
 }
@@ -94,33 +131,7 @@ func WriteResult(ctx *gin.Context, r result.Result) {
 
 // 初始化
 func init() {
-	const logPath = "log"
-
-	// 建立日志目录
-	if _, err := os.Stat(logPath); err != nil {
-		if err = os.Mkdir(logPath, os.ModePerm); err != nil {
-			panic(err.Error())
-		}
+	if config.Log().Enable {
+		initLog()
 	}
-
-	// 每次启动的时候建立新文件
-	var createFile = func() *os.File {
-		var timeLayout = func() string {
-			if config.IsDev() {
-				return "2006-01-02"
-			} else {
-				return "2006-01-02 15:04:05"
-			}
-		}()
-
-		fileName := time.Now().Format(timeLayout)
-		if file, err := os.Create(logPath + "/access - " + fileName + ".log"); err != nil {
-			panic(err.Error())
-		} else {
-			return file
-		}
-	}
-
-	log.SetOutput(io.MultiWriter(createFile()))
-	log.SetFlags(log.Ldate | log.Ltime)
 }
