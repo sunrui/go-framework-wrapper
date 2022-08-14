@@ -1,7 +1,7 @@
 {
   "log": {
-    "enable": true,
-    "level": "TRACE"
+    "enable": false,
+    "level": "ERROR"
   },
   "rateLimit": {
     "quantum": 1,
@@ -26,7 +26,7 @@
   },
   "jwt": {
     "key": "token",
-    "secret": "DD9596C0-91C1-4CFB-B320-C4456DC9F91F",
+    "secret": "mzkxOdrGmjgtrjFeOC00NkNFLuezruItNzmzmuYwrdI5OuIw",
     "maxAge": 1209600,
     "autoRefresh": 3600
   },

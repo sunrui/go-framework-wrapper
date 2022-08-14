@@ -8,7 +8,7 @@ package response
 
 import (
 	"framework/config"
-	"framework/log"
+	"framework/proto/log"
 	"framework/proto/request"
 	"framework/proto/result"
 	"github.com/gin-gonic/gin"

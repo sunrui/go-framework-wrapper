@@ -9,7 +9,7 @@ package app
 import (
 	"fmt"
 	"framework/config"
-	"framework/doc"
+	"framework/proto/doc"
 	"framework/proto/request"
 	"framework/proto/response"
 	"framework/proto/result"

@@ -9,7 +9,7 @@ package template
 import (
 	"framework/proto/result"
 	"framework/proto/token"
-	"generate/service/core/template"
+	"generate/service/template"
 	"github.com/gin-gonic/gin"
 )
 
