@@ -8,6 +8,7 @@ package config
 
 import (
 	"encoding/json"
+	"flag"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -78,43 +79,27 @@ type config struct {
 // 当前配置
 var conf config
 
-// Log 配置
-func Log() *log {
-	return &conf.Log
+// 当前环境
+var build *string
+
+// Get 获取当前配置
+func Get() *config {
+	return &conf
 }
 
-// RateLimit 配置
-func RateLimit() *rateLimit {
-	return &conf.RateLimit
+// IsDev 是否为开发环境
+func IsDev() bool {
+	return build != nil && *build != "product"
 }
 
-// Swagger 配置
-func Swagger() *swagger {
-	return &conf.Swagger
-}
-
-// Mysql 配置
-func Mysql() *mysql {
-	return &conf.Mysql
-}
-
-// Redis 配置
-func Redis() *redis {
-	return &conf.Redis
-}
-
-// Jwt 配置
-func Jwt() *jwt {
-	return &conf.Jwt
-}
-
-// Sms 配置
-func Sms() *sms {
-	return &conf.Sms
+// IsProduct 是否为生产环境
+func IsProduct() bool {
+	return !IsDev()
 }
 
 // 加载当前配置
 func init() {
+	// 配置文件
 	var configFile = func() string {
 		_, file, _, _ := runtime.Caller(0)
 		path := filepath.Dir(file)
@@ -129,9 +114,14 @@ func init() {
 		return path + "/" + jsonFile
 	}()
 
+	// 加载配置文件
 	if stream, err := os.ReadFile(configFile); err != nil {
 		panic(err.Error())
 	} else if err = json.Unmarshal(stream, &conf); err != nil {
 		panic(err.Error())
 	}
+
+	// 解析参数，如 -build product
+	flag.Parse()
+	build = flag.String("build", "dev", "编译类型")
 }

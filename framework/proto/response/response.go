@@ -27,7 +27,7 @@ func Reply(ctx *gin.Context, result result.Result) {
 	ctx.JSON(http.StatusOK, result)
 
 	// 异步记录日志
-	if config.Log().Enable {
+	if config.Get().Log.Enable {
 		go func() {
 			log.WriteResult(ctx, result)
 		}()

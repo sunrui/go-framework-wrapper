@@ -74,7 +74,7 @@ func commandExec(name string, arg ...string) {
 // 执行 swag 更新文档
 func init() {
 	// 读取 swagger 配置
-	if config.Swagger().Enable {
+	if config.Get().Swagger.Enable {
 		commandExec("swag", "init", "--parseDependency")
 		commandExec("swag", "fmt")
 	}

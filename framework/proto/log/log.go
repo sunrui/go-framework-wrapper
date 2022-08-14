@@ -65,8 +65,8 @@ func Set(enable bool, level Level) {
 		initLog()
 	}
 
-	config.Log().Enable = enable
-	config.Log().Level = string(level)
+	config.Get().Log.Enable = enable
+	config.Get().Log.Level = string(level)
 }
 
 // WriteResult 写入结果
@@ -84,7 +84,7 @@ func WriteResult(ctx *gin.Context, r result.Result) {
 	}()
 
 	// 判断是否需要输出
-	if level == LevelTrace && string(level) != config.Log().Level {
+	if level == LevelTrace && string(level) != config.Get().Log.Level {
 		return
 	}
 
@@ -131,7 +131,7 @@ func WriteResult(ctx *gin.Context, r result.Result) {
 
 // 初始化
 func init() {
-	if config.Log().Enable {
+	if config.Get().Log.Enable {
 		initLog()
 	}
 }

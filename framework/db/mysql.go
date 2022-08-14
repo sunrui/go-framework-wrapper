@@ -25,11 +25,11 @@ func init() {
 
 	// 数据库连接
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local",
-		config.Mysql().User,
-		config.Mysql().Password,
-		config.Mysql().Host,
-		config.Mysql().Port,
-		config.Mysql().Database)
+		config.Get().Mysql.User,
+		config.Get().Mysql.Password,
+		config.Get().Mysql.Host,
+		config.Get().Mysql.Port,
+		config.Get().Mysql.Database)
 
 	if Mysql, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
 		NamingStrategy: schema.NamingStrategy{

@@ -43,7 +43,7 @@ func postLoginByPhone(ctx *gin.Context) result.Result {
 	app.ValidateParameter(ctx, &req)
 
 	// 如果非魔术验证码
-	if config.Sms().MagicCode != "" && req.Code != config.Sms().MagicCode {
+	if config.Get().Sms.MagicCode != "" && req.Code != config.Get().Sms.MagicCode {
 		// 短信缓存对象
 		smsCache := sms.Cache{
 			Phone:   req.Phone,

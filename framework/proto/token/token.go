@@ -31,19 +31,19 @@ type Token struct {
 func encode(payload Payload) (string, error) {
 	token := Token{
 		jwt.StandardClaims{
-			ExpiresAt: time.Now().Unix() + int64(config.Jwt().MaxAge)*1000,
+			ExpiresAt: time.Now().Unix() + int64(config.Get().Jwt.MaxAge)*1000,
 		},
 		payload,
 	}
 
 	tokenClaims := jwt.NewWithClaims(jwt.SigningMethodHS256, token)
-	return tokenClaims.SignedString(config.Jwt().Secret)
+	return tokenClaims.SignedString(config.Get().Jwt.Secret)
 }
 
 // 验证 jwt 字符串
 func decode(tokenString string) (*Token, error) {
 	tokenClaims, err := jwt.ParseWithClaims(tokenString, &Token{}, func(token *jwt.Token) (any, error) {
-		return config.Jwt().Secret, nil
+		return config.Get().Jwt.Secret, nil
 	})
 
 	if tokenClaims != nil {
@@ -60,7 +60,7 @@ func Write(ctx *gin.Context, payload Payload) {
 	if token, err := encode(payload); err != nil {
 		panic(err.Error())
 	} else {
-		ctx.SetCookie(config.Jwt().Key, token, config.Jwt().MaxAge, "/", "", false, true)
+		ctx.SetCookie(config.Get().Jwt.Key, token, config.Get().Jwt.MaxAge, "/", "", false, true)
 	}
 }
 
@@ -79,9 +79,9 @@ func Get(ctx *gin.Context) (*Token, error) {
 	var err error
 
 	// 从 cookie 中获取令牌
-	if tokenString, err = ctx.Cookie(config.Jwt().Key); err != nil {
+	if tokenString, err = ctx.Cookie(config.Get().Jwt.Key); err != nil {
 		// 从 header 中获取令牌
-		if tokenString = ctx.GetHeader(config.Jwt().Key); tokenString == "" {
+		if tokenString = ctx.GetHeader(config.Get().Jwt.Key); tokenString == "" {
 			// 从 Authorization 中获取令牌
 			if tokenString = ctx.GetHeader("Authorization"); tokenString != "" {
 				prefix := "Bearer "
@@ -106,7 +106,7 @@ func RefreshIf(ctx *gin.Context) {
 		expired := token.ExpiresAt - time.Now().Unix()
 
 		// 根据过期时间距离自动刷新
-		if expired <= int64(config.Jwt().MaxAge)*100-int64(config.Jwt().AutoRefresh)*1000 {
+		if expired <= int64(config.Get().Jwt.MaxAge)*100-int64(config.Get().Jwt.AutoRefresh)*1000 {
 			Write(ctx, token.Payload)
 		}
 	}
@@ -114,5 +114,5 @@ func RefreshIf(ctx *gin.Context) {
 
 // Remove 移除令牌
 func Remove(ctx *gin.Context) {
-	ctx.SetCookie(config.Jwt().Key, "", -1, "/", "", false, true)
+	ctx.SetCookie(config.Get().Jwt.Key, "", -1, "/", "", false, true)
 }

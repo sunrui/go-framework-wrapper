@@ -32,12 +32,12 @@ func init() {
 			IdleTimeout: 1 * time.Hour,
 			Wait:        true,
 			Dial: func() (redis.Conn, error) {
-				address := fmt.Sprintf("%s:%d", config.Redis().Host, config.Redis().Port)
-				timeout := time.Duration(config.Redis().Timeout) * time.Second
+				address := fmt.Sprintf("%s:%d", config.Get().Redis.Host, config.Get().Redis.Port)
+				timeout := time.Duration(config.Get().Redis.Timeout) * time.Second
 
 				return redis.Dial("tcp", address,
-					redis.DialPassword(config.Redis().Password),
-					redis.DialDatabase(config.Redis().Database),
+					redis.DialPassword(config.Get().Redis.Password),
+					redis.DialDatabase(config.Get().Redis.Database),
 					redis.DialConnectTimeout(timeout),
 					redis.DialReadTimeout(timeout),
 					redis.DialWriteTimeout(timeout))

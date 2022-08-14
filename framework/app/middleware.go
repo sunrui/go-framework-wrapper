@@ -55,7 +55,7 @@ func rateLimitMiddleware(fillInterval time.Duration, capacity, quantum int64) gi
 }
 
 // swagger 文档中间件
-func redocMiddleware(ctx *gin.Context) {
+func docMiddleware(ctx *gin.Context) {
 	path := ctx.Request.URL.Path
 
 	// 非 /doc 开头不是文档
@@ -106,7 +106,7 @@ func recoverMiddleware(ctx *gin.Context) {
 // body 中间件
 func bodyMiddleware(ctx *gin.Context) {
 	// 如果需要记录日志或请求被异出则拷贝 body 对象
-	if config.Log().Enable || request.IsResultWithRequest(ctx) {
+	if config.Get().Log.Enable || request.IsResultWithRequest(ctx) {
 		request.CopyBody(ctx)
 	}
 
@@ -124,10 +124,10 @@ func registerMiddleware(engine *gin.Engine) {
 	engine.NoMethod(methodNotAllowedMiddleware)
 
 	// 注册限流中间件
-	engine.Use(rateLimitMiddleware(time.Second, config.RateLimit().Capacity, config.RateLimit().Quantum))
+	engine.Use(rateLimitMiddleware(time.Second, config.Get().RateLimit.Capacity, config.Get().RateLimit.Quantum))
 
 	// 注册文档中间件
-	engine.GET("/doc/*any", redocMiddleware)
+	engine.GET("/doc/*any", docMiddleware)
 
 	// 注册刷新令牌中间件
 	engine.Use(tokenMiddleware)
