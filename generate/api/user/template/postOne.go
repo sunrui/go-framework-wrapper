@@ -8,7 +8,9 @@ package template
 
 import (
 	"framework/app"
+	"framework/db"
 	"framework/proto/result"
+	"framework/proto/token"
 	"generate/service/template"
 	"github.com/gin-gonic/gin"
 )
@@ -24,7 +26,7 @@ type postOneReq struct {
 // @Produce  json
 // @Param    json  body      postOneReq  true  "json"
 // @Success  200   {object}  result.Result    true
-// @RouterGroup   /api-admin/template [post]
+// @RouterGroup   /api-user/template [post]
 func postOne(ctx *gin.Context) result.Result {
 	// 创建请求对象
 	var req postOneReq
@@ -33,15 +35,19 @@ func postOne(ctx *gin.Context) result.Result {
 	app.ValidateParameter(ctx, &req)
 
 	// 获取当前 userId
-	userId := "token.GetUserId(ctx)"
+	userId := token.MustGetUserId(ctx)
 
-	// 保存
+	// 生成新对象
 	one := template.Template{
 		UserId: userId,
 		Name:   req.Name,
 	}
-	one.Save()
+
+	// 保存
+	if tx := db.Mysql.Save(one); tx.Error != nil {
+		panic(tx.Error.Error())
+	}
 
 	// 返回结果
-	return result.Ok
+	return result.Ok.WithIdData(one.Id)
 }

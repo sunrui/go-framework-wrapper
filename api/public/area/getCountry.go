@@ -14,6 +14,5 @@ import (
 
 // 获取国家
 func getCountry(_ *gin.Context) result.Result {
-	country := area.GetCountry()
-	return result.Ok.WithData(country)
+	return result.Ok.WithData(area.GetCountry())
 }

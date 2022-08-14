@@ -21,9 +21,9 @@ func runGenerate(model, modelName string, author string) error {
 	pwd, _ := os.Getwd()
 
 	var projects = []string{
-		"api-admin",
-		"api-user",
-		"service/core",
+		"api/admin",
+		"api/user",
+		"service",
 	}
 
 	for _, project := range projects {
@@ -54,7 +54,8 @@ func runGenerate(model, modelName string, author string) error {
 			for _, item := range list {
 				fileName := filepath.Join(dst, item.Name())
 
-				fileBytes, err := os.ReadFile(fileName)
+				var fileBytes []byte
+				fileBytes, err = os.ReadFile(fileName)
 				if err != nil {
 					return err
 				}
@@ -64,7 +65,7 @@ func runGenerate(model, modelName string, author string) error {
 				fileContent = strings.ReplaceAll(fileContent, "Template", model)
 				fileContent = strings.ReplaceAll(fileContent, strings.ToLower("Template"), strings.ToLower(model))
 				fileContent = strings.ReplaceAll(fileContent, "模板", modelName)
-				fileContent = strings.ReplaceAll(fileContent, "generate/service/core", "service/core")
+				fileContent = strings.ReplaceAll(fileContent, "generate/service/", "service/")
 				fileContent = strings.ReplaceAll(fileContent, "$today.year", strconv.Itoa(time.Now().Year()))
 				fileContent = strings.ReplaceAll(fileContent, "$author", author)
 				fileContent = strings.ReplaceAll(fileContent, "$today.format(\"yyyy-MM-dd HH:mm:ss\")", time.Now().Format("2006-01-02 15:04:05"))

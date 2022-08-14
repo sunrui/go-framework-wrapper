@@ -17,8 +17,9 @@ import (
 func FindById(id string) *Template {
 	var template Template
 
-	query := db.Mysql.Find(&template, id)
-	if errors.Is(query.Error, gorm.ErrRecordNotFound) {
+	if tx := db.Mysql.Find(&template, id); tx.Error != nil {
+		panic(tx.Error.Error())
+	} else if errors.Is(tx.Error, gorm.ErrRecordNotFound) {
 		return nil
 	}
 
@@ -29,8 +30,9 @@ func FindById(id string) *Template {
 func FindByIdAndUserId(id string, userId string) *Template {
 	var template Template
 
-	query := db.Mysql.Find(&template, id)
-	if errors.Is(query.Error, gorm.ErrRecordNotFound) {
+	if tx := db.Mysql.Find(&template, id); tx.Error != nil {
+		panic(tx.Error.Error())
+	} else if errors.Is(tx.Error, gorm.ErrRecordNotFound) {
 		return nil
 	}
 
@@ -45,10 +47,11 @@ func FindByIdAndUserId(id string, userId string) *Template {
 func FindByUserId(userId string) *Template {
 	var template Template
 
-	query := db.Mysql.Where(Template{
+	if tx := db.Mysql.Where(Template{
 		UserId: userId,
-	}).Find(&template)
-	if errors.Is(query.Error, gorm.ErrRecordNotFound) {
+	}).Find(&template); tx.Error != nil {
+		panic(tx.Error.Error())
+	} else if errors.Is(tx.Error, gorm.ErrRecordNotFound) {
 		return nil
 	}
 
@@ -79,7 +82,10 @@ func FindAllByModel(where *Template, page int, pageSize int, asc bool) (template
 	}
 
 	// 查询结果
-	db.Mysql.Limit(pageSize).Offset((page - 1) * pageSize).Order(order).Where(where).Find(&template)
+	if tx := db.Mysql.Limit(pageSize).Offset((page - 1) * pageSize).
+		Order(order).Where(where).Find(&template); tx.Error != nil {
+		panic(tx.Error.Error())
+	}
 
 	// 总条数
 	totalSize := CountAllByModel(where)
@@ -107,19 +113,18 @@ func CountAllByUserId(userId string) int64 {
 	})
 }
 
-// CountAll 获取总条数
-func CountAll() int64 {
-	return CountAllByModel(nil)
-}
-
 // CountAllByModel 根据 Model 获取总条数
 func CountAllByModel(where *Template) int64 {
 	var totalSize int64
 
 	if where != nil {
-		db.Mysql.Where(where).Count(&totalSize)
+		if tx := db.Mysql.Where(where).Count(&totalSize); tx != nil {
+			panic(tx.Error.Error())
+		}
 	} else {
-		db.Mysql.Model(Template{}).Count(&totalSize)
+		if tx := db.Mysql.Model(Template{}).Count(&totalSize); tx != nil {
+			panic(tx.Error.Error())
+		}
 	}
 
 	return totalSize
@@ -129,13 +134,17 @@ func CountAllByModel(where *Template) int64 {
 func UpdateById(id string, template Template) bool {
 	var one Template
 
-	query := db.Mysql.Find(&one, id)
-	if errors.Is(query.Error, gorm.ErrRecordNotFound) {
+	if tx := db.Mysql.Find(&one, id); tx != nil {
+		panic(tx.Error.Error())
+	} else if errors.Is(tx.Error, gorm.ErrRecordNotFound) {
 		return false
 	}
 
 	template.Id = one.Id
-	db.Mysql.Save(template)
+	if tx := db.Mysql.Save(template); tx != nil {
+		panic(tx.Error.Error())
+	}
+
 	return true
 }
 
@@ -143,8 +152,9 @@ func UpdateById(id string, template Template) bool {
 func UpdateByIdAndUserId(id string, userId string, template Template) bool {
 	var one Template
 
-	query := db.Mysql.Find(&one, id)
-	if errors.Is(query.Error, gorm.ErrRecordNotFound) {
+	if tx := db.Mysql.Find(&one, id); tx != nil {
+		panic(tx.Error.Error())
+	} else if errors.Is(tx.Error, gorm.ErrRecordNotFound) {
 		return false
 	}
 
@@ -153,7 +163,11 @@ func UpdateByIdAndUserId(id string, userId string, template Template) bool {
 	}
 
 	template.Id = one.Id
-	db.Mysql.Save(template)
+	template.UserId = userId
+	if tx := db.Mysql.Save(template); tx.Error != nil {
+		panic(tx.Error.Error())
+	}
+
 	return true
 }
 
@@ -161,12 +175,16 @@ func UpdateByIdAndUserId(id string, userId string, template Template) bool {
 func DeleteById(id string) bool {
 	var one Template
 
-	query := db.Mysql.Find(&one, id)
-	if errors.Is(query.Error, gorm.ErrRecordNotFound) {
+	if tx := db.Mysql.Find(&one, id); tx.Error != nil {
+		panic(tx.Error.Error())
+	} else if errors.Is(tx.Error, gorm.ErrRecordNotFound) {
 		return false
 	}
 
-	db.Mysql.Delete(query)
+	if tx := db.Mysql.Delete(one); tx != nil {
+		panic(tx.Error.Error())
+	}
+
 	return true
 }
 
@@ -174,8 +192,9 @@ func DeleteById(id string) bool {
 func DeleteByIdAndUserId(id string, userId string) bool {
 	var one Template
 
-	query := db.Mysql.Find(&one, id)
-	if errors.Is(query.Error, gorm.ErrRecordNotFound) {
+	if tx := db.Mysql.Find(&one, id); tx.Error != nil {
+		panic(tx.Error.Error())
+	} else if errors.Is(tx.Error, gorm.ErrRecordNotFound) {
 		return false
 	}
 
@@ -183,6 +202,9 @@ func DeleteByIdAndUserId(id string, userId string) bool {
 		return false
 	}
 
-	db.Mysql.Delete(query)
+	if tx := db.Mysql.Delete(one); tx != nil {
+		panic(tx.Error.Error())
+	}
+
 	return true
 }

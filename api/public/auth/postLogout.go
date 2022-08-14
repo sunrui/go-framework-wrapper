@@ -14,10 +14,10 @@ import (
 
 // 登出
 func postLogout(ctx *gin.Context) result.Result {
-	if _, err := ctx.Cookie("token"); err == nil {
+	if _, err := ctx.Cookie("token"); err != nil {
+		return result.NoAuth
+	} else {
 		token.Remove(ctx)
 		return result.Ok
 	}
-
-	return result.NoAuth
 }

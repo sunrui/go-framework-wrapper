@@ -41,11 +41,12 @@ func putOne(ctx *gin.Context) result.Result {
 	// 获取当前 userId
 	userId := token.MustGetUserId(ctx)
 
-	// 更新
+	// 生成新对象
 	one := template.Template{
 		Name: req.Name,
 	}
 
+	// 更新
 	if ok := template.UpdateByIdAndUserId(id, userId, one); !ok {
 		return result.NotFound.WithIdData(id)
 	} else {

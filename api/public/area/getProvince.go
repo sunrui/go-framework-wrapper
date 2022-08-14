@@ -14,6 +14,5 @@ import (
 
 // 获取省
 func getProvince(_ *gin.Context) result.Result {
-	provinces := area.GetProvinces()
-	return result.Ok.WithData(provinces)
+	return result.Ok.WithData(area.GetProvinces())
 }

@@ -40,7 +40,7 @@ func postSend(ctx *gin.Context) result.Result {
 	// 调用服务发送验证码
 	err := sms.Send(req.Phone, req.SmsType, randomCode)
 
-	// 保存发送记录
+	// 生成新对象
 	smsOne := sms.Sms{
 		Phone:     req.Phone,
 		Type:      req.SmsType,
@@ -57,6 +57,7 @@ func postSend(ctx *gin.Context) result.Result {
 		}(),
 	}
 
+	// 保存发送记录
 	if tx := db.Mysql.Save(&smsOne); tx.Error != nil {
 		panic(tx.Error.Error())
 	}

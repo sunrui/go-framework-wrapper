@@ -15,15 +15,13 @@ import (
 
 // 获取市
 func getCity(ctx *gin.Context) result.Result {
-	provinceId, err := strconv.Atoi(ctx.Param("provinceId"))
-	if err != nil {
+	if provinceId, err := strconv.Atoi(ctx.Param("provinceId")); err != nil {
 		return result.ParameterBindError.WithKeyPair("provinceId", ctx.Param("provinceId"))
+	} else {
+		if cities := area.GetCity(provinceId); cities == nil {
+			return result.NotFound.WithKeyPair("provinceId", provinceId)
+		} else {
+			return result.Ok.WithData(cities)
+		}
 	}
-
-	cities := area.GetCity(provinceId)
-	if cities == nil {
-		return result.NotFound.WithKeyPair("provinceId", provinceId)
-	}
-
-	return result.Ok.WithData(cities)
 }

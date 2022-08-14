@@ -37,7 +37,7 @@ func putOne(ctx *gin.Context) result.Result {
 	// 获取 id
 	id := ctx.Param("id")
 
-	// 更新
+	// 生成新对象
 	one := template.Template{
 		Name: req.Name,
 	}

@@ -28,6 +28,6 @@ func getOne(ctx *gin.Context) result.Result {
 	if one := template.FindById(id); one == nil {
 		return result.NoContent
 	} else {
-		return result.Ok
+		return result.Ok.WithData(one)
 	}
 }
