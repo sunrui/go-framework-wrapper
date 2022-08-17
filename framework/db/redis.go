@@ -20,6 +20,7 @@ type redisPool struct {
 	redis.Pool
 }
 
+// Redis 对象
 var Redis *redisPool
 
 // 初始化
