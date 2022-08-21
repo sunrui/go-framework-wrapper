@@ -20,14 +20,16 @@ import (
 // ValidateParameter 请求参数过滤
 func ValidateParameter(ctx *gin.Context, req any) {
 	var validationErrors validator.ValidationErrors
-	var bindingType binding.Binding
 	var err error
 
-	if ctx.Request.Method == http.MethodGet {
-		bindingType = binding.Query
-	} else {
-		bindingType = binding.JSON
-	}
+	// 绑定类型
+	var bindingType = func() binding.Binding {
+		if ctx.Request.Method == http.MethodGet {
+			return binding.Query
+		} else {
+			return binding.JSON
+		}
+	}()
 
 	// 强制解析
 	if err = ctx.ShouldBindWith(req, bindingType); err != nil {
