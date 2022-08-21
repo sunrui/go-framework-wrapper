@@ -36,22 +36,19 @@ func methodNotAllowedMiddleware(ctx *gin.Context) {
 }
 
 // 流量限制中间件
-//
-// @fillInterval  间隔单位
-// @capacity      令牌桶容量
-// @quantum       每隔多久
-func rateLimitMiddleware(fillInterval time.Duration, capacity, quantum int64) gin.HandlerFunc {
-	bucket := ratelimit.NewBucketWithQuantum(fillInterval, capacity, quantum)
+func rateLimitMiddleware(ctx *gin.Context) {
+	bucket := ratelimit.NewBucketWithQuantum(time.Second, // 间隔单位
+		config.Get().RateLimit.Capacity, // 令牌桶容量
+		config.Get().RateLimit.Quantum,  // 每隔多久
+	)
 
-	return func(ctx *gin.Context) {
-		if bucket.TakeAvailable(1) < 1 {
-			response.Reply(ctx, result.RateLimit)
-			ctx.Abort()
-			return
-		}
-
-		ctx.Next()
+	if bucket.TakeAvailable(1) < 1 {
+		response.Reply(ctx, result.RateLimit)
+		ctx.Abort()
+		return
 	}
+
+	ctx.Next()
 }
 
 // swagger 文档中间件
@@ -124,7 +121,7 @@ func registerMiddleware(engine *gin.Engine) {
 	engine.NoMethod(methodNotAllowedMiddleware)
 
 	// 注册限流中间件
-	engine.Use(rateLimitMiddleware(time.Second, config.Get().RateLimit.Capacity, config.Get().RateLimit.Quantum))
+	engine.Use(rateLimitMiddleware)
 
 	// 注册文档中间件
 	engine.GET("/doc/*any", docMiddleware)
