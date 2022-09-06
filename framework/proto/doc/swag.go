@@ -75,7 +75,7 @@ func commandExec(name string, arg ...string) {
 func init() {
 	// 读取 swagger 配置
 	if config.Get().Swagger.Enable {
-		commandExec("swag", "init", "--parseDependency")
 		commandExec("swag", "fmt")
+		commandExec("swag", "init", "--parseDependency")
 	}
 }

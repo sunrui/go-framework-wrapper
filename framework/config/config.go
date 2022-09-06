@@ -77,28 +77,14 @@ type config struct {
 }
 
 // 当前配置
-var conf config
-
-// 当前环境
-var build *string
+var conf *config
 
 // Get 获取当前配置
 func Get() *config {
-	return &conf
-}
+	if conf != nil {
+		return conf
+	}
 
-// IsDev 是否为开发环境
-func IsDev() bool {
-	return build != nil && *build != "product"
-}
-
-// IsProduct 是否为生产环境
-func IsProduct() bool {
-	return !IsDev()
-}
-
-// 加载当前配置
-func init() {
 	// 配置文件
 	var configFile = func() string {
 		_, file, _, _ := runtime.Caller(0)
@@ -115,12 +101,31 @@ func init() {
 	}()
 
 	// 加载配置文件
+	conf = &config{}
 	if stream, err := os.ReadFile(configFile); err != nil {
 		panic(err.Error())
-	} else if err = json.Unmarshal(stream, &conf); err != nil {
+	} else if err = json.Unmarshal(stream, conf); err != nil {
 		panic(err.Error())
 	}
 
+	return conf
+}
+
+// 当前环境
+var build *string
+
+// IsDev 是否为开发环境
+func IsDev() bool {
+	return build != nil && *build != "product"
+}
+
+// IsProduct 是否为生产环境
+func IsProduct() bool {
+	return !IsDev()
+}
+
+// 初始化
+func init() {
 	// 解析参数，如 -build product
 	flag.Parse()
 	build = flag.String("build", "dev", "编译类型")
