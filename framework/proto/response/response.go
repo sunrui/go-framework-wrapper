@@ -18,7 +18,7 @@ import (
 // Reply 回复
 func Reply(ctx *gin.Context, result result.Result) {
 	// 是否结果导出请求
-	if request.IsResultWithRequest(ctx) {
+	if request.IsRequestDump(ctx) {
 		req := request.GetRequest(ctx)
 		result.Request = &req
 	}
