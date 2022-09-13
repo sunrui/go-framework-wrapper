@@ -10,11 +10,16 @@ import (
 	"framework/proto/result"
 	"framework/proto/token"
 	"github.com/gin-gonic/gin"
+	"service/user"
 )
 
 // Auth 授权中间件
 func Auth(ctx *gin.Context) {
-	if _, err := token.Get(ctx); err != nil {
+	if t, err := token.Get(ctx); err != nil {
 		panic(result.NoAuth)
+	} else {
+		if user.FindById(t.UserId) == nil {
+			panic(result.NoAuth)
+		}
 	}
 }

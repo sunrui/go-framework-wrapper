@@ -17,9 +17,11 @@ import (
 func FindById(id string) *Template {
 	var template Template
 
-	if tx := db.Mysql.Find(&template, id); tx.Error != nil {
+	if tx := db.Mysql.Find(&template, "id = ?", id); tx.Error != nil {
 		panic(tx.Error.Error())
-	} else if errors.Is(tx.Error, gorm.ErrRecordNotFound) {
+	} else if tx.RowsAffected == 1 {
+		return &template
+	} else {
 		return nil
 	}
 
@@ -30,13 +32,11 @@ func FindById(id string) *Template {
 func FindByIdAndUserId(id string, userId string) *Template {
 	var template Template
 
-	if tx := db.Mysql.Find(&template, id); tx.Error != nil {
+	if tx := db.Mysql.Find(&template, "id = ? And userId = ?", id, userId); tx.Error != nil {
 		panic(tx.Error.Error())
-	} else if errors.Is(tx.Error, gorm.ErrRecordNotFound) {
-		return nil
-	}
-
-	if template.UserId != userId {
+	} else if tx.RowsAffected == 1 {
+		return &template
+	} else {
 		return nil
 	}
 

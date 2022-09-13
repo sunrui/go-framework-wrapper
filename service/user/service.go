@@ -14,7 +14,7 @@ import (
 func FindById(id string) *User {
 	var user User
 
-	if tx := db.Mysql.Find(&user, id); tx.Error != nil {
+	if tx := db.Mysql.Find(&user, "id = ?", id); tx.Error != nil {
 		panic(tx.Error.Error())
 	} else if tx.RowsAffected == 1 {
 		return &user

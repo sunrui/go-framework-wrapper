@@ -10,6 +10,7 @@ import (
 	"framework/proto/result"
 	"framework/proto/token"
 	"github.com/gin-gonic/gin"
+	"service/user"
 )
 
 // 获取令牌
@@ -18,6 +19,10 @@ func getToken(ctx *gin.Context) result.Result {
 	if t, err := token.Get(ctx); err != nil {
 		return result.NoAuth
 	} else {
+		if user.FindById(t.UserId) == nil {
+			panic(result.NoAuth)
+		}
+
 		return result.Ok.WithData(t)
 	}
 }
