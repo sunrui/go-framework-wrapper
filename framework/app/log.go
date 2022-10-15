@@ -71,9 +71,9 @@ func SetLog(enable bool, level Level) {
 }
 
 // 获取日志内容
-func getLogBuffer(ctx *gin.Context, r result.Result) string {
+func getBuffer(ctx *gin.Context, r result.Result) string {
 	// 获取 request 对象
-	req := request.GetRequest(ctx)
+	req := request.Get(ctx)
 
 	// 等级
 	var level = func() Level {

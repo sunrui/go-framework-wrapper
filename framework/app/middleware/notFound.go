@@ -12,8 +12,8 @@ import (
 	"net/http"
 )
 
-// NotFoundMiddleware 异常 404 中间件
-func NotFoundMiddleware(ctx *gin.Context) {
+// NotFound 异常 404 中间件
+func NotFound(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, result.NotFound.WithKeyPair("uri", ctx.Request.URL.RequestURI()))
 	ctx.Abort()
 }

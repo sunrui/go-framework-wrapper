@@ -15,8 +15,8 @@ import (
 	"time"
 )
 
-// RateLimitMiddleware 流量限制中间件
-func RateLimitMiddleware(ctx *gin.Context) {
+// RateLimit 流量限制中间件
+func RateLimit(ctx *gin.Context) {
 	bucket := ratelimit.NewBucketWithQuantum(time.Second, // 间隔单位
 		config.Cur().RateLimit.Capacity, // 令牌桶容量
 		config.Cur().RateLimit.Quantum,  // 每隔多久

@@ -32,14 +32,14 @@ type Request struct {
 	Body    *string  `json:"body"`    // 请求体
 }
 
-// IsDebugRequest 是否结果导出请求
-func IsDebugRequest(ctx *gin.Context) bool {
+// IsDebug 是否结果导出请求
+func IsDebug(ctx *gin.Context) bool {
 	const key, value = "debug", "true"
 	return config.IsDev() || ctx.Query(key) == value || ctx.GetHeader(key) == value
 }
 
-// GetRequest 获取请求对象
-func GetRequest(ctx *gin.Context) Request {
+// Get 获取请求对象
+func Get(ctx *gin.Context) Request {
 	return Request{
 		Ip:     ctx.ClientIP(),
 		Proto:  ctx.Request.Proto,

@@ -102,11 +102,14 @@ func Get(ctx *gin.Context) (*Token, error) {
 // RefreshIf 刷新令牌
 func RefreshIf(ctx *gin.Context) {
 	if token, err := Get(ctx); err == nil {
-		// 距离过期时间（毫秒）
-		expired := token.ExpiresAt - time.Now().Unix()
+		// 当前距离过期时间（毫秒）
+		curExpired := token.ExpiresAt - time.Now().Unix()
 
-		// 根据过期时间距离自动刷新
-		if expired <= int64(config.Cur().Jwt.MaxAge)*100-int64(config.Cur().Jwt.AutoRefresh)*1000 {
+		// 设置距离过期时间（毫秒）
+		setExpired := int64((config.Cur().Jwt.MaxAge - config.Cur().Jwt.AutoRefresh) * 1000)
+
+		// 已经大于最小刷新时长
+		if curExpired >= setExpired {
 			Write(ctx, token.Payload)
 		}
 	}

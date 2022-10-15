@@ -11,8 +11,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// TokenMiddleware 注册刷新令牌中间件
-func TokenMiddleware(ctx *gin.Context) {
+// Token 注册刷新令牌中间件
+func Token(ctx *gin.Context) {
 	token.RefreshIf(ctx)
 	ctx.Next()
 }

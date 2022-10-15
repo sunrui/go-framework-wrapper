@@ -12,8 +12,8 @@ import (
 	"net/http"
 )
 
-// MethodNotAllowedMiddleware 异常 405 中间件
-func MethodNotAllowedMiddleware(ctx *gin.Context) {
+// MethodNotAllowed 异常 405 中间件
+func MethodNotAllowed(ctx *gin.Context) {
 	// 返回客户端
 	ctx.JSON(http.StatusOK, result.MethodNotAllowed.WithKeyPair("uri", ctx.Request.URL.RequestURI()))
 	ctx.Abort()

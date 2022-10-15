@@ -18,8 +18,8 @@ import (
 	"strings"
 )
 
-// DocMiddleware 文档中间件
-func DocMiddleware(ctx *gin.Context) {
+// Swagger 文档中间件
+func Swagger(ctx *gin.Context) {
 	path := ctx.Request.URL.Path
 
 	// 非 /doc 开头不是文档
@@ -34,11 +34,11 @@ func DocMiddleware(ctx *gin.Context) {
 		return
 	}
 
-	_, _ = ctx.Writer.Write(Redoc(suffix))
+	_, _ = ctx.Writer.Write(redoc(suffix))
 }
 
-// Redoc 文档中间件
-func Redoc(suffix string) []byte {
+// 文档中间件
+func redoc(suffix string) []byte {
 	if suffix == "doc.json" {
 		data, _ := os.ReadFile("docs/swagger.json")
 		return data
@@ -66,8 +66,8 @@ func Redoc(suffix string) []byte {
 				</style>
 			  </head>
 			  <body>
-				<!--<Redoc spec-url='https://petstore.swagger.io/v2/swagger.json'></Redoc>-->
-				<Redoc spec-url='swagger/doc.json'></Redoc>
+				<!--<redoc spec-url='https://petstore.swagger.io/v2/swagger.json'></redoc>-->
+				<redoc spec-url='swagger/doc.json'></redoc>
 				<script src="/doc/redoc.js"> </script>
 			  </body>
 			</html>

@@ -12,10 +12,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// BodyMiddleware body 中间件
-func BodyMiddleware(ctx *gin.Context) {
+// Body 中间件
+func Body(ctx *gin.Context) {
 	// 如果需要记录日志或请求被异出则拷贝 body 对象
-	if config.Cur().Log.Enable || request.IsDebugRequest(ctx) {
+	if config.Cur().Log.Enable || request.IsDebug(ctx) {
 		request.CopyBody(ctx)
 	}
 

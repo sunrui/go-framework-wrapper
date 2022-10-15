@@ -14,8 +14,8 @@ import (
 	"net/http"
 )
 
-// RecoverMiddleware 异常捕获中间件
-func RecoverMiddleware(ctx *gin.Context) {
+// Recover 异常捕获中间件
+func Recover(ctx *gin.Context) {
 	// 捕获对象，全部抛出可以使用 panic 方法。
 	defer func() {
 		if err := recover(); err != nil {

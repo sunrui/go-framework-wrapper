@@ -37,8 +37,8 @@ func handlerFunc(routerFunc RouterFunc) gin.HandlerFunc {
 		r := routerFunc(ctx)
 
 		// 是否结果导出请求
-		if request.IsDebugRequest(ctx) {
-			req := request.GetRequest(ctx)
+		if request.IsDebug(ctx) {
+			req := request.Get(ctx)
 			r.Request = &req
 		}
 
@@ -46,14 +46,14 @@ func handlerFunc(routerFunc RouterFunc) gin.HandlerFunc {
 		if config.Cur().Log.Enable {
 			// 写文件
 			if config.Cur().Log.WriteFile {
-				if buffer := getLogBuffer(ctx, r); buffer != "" {
+				if buffer := getBuffer(ctx, r); buffer != "" {
 					log.Println(buffer)
 				}
 			}
 
 			// 写控制台
 			if config.Cur().Log.WriteConsole {
-				if buffer := getLogBuffer(ctx, r); buffer != "" {
+				if buffer := getBuffer(ctx, r); buffer != "" {
 					println(buffer)
 				}
 			}
