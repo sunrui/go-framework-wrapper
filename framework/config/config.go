@@ -13,24 +13,26 @@ import (
 	"runtime"
 )
 
-// log 配置对象
+// 日志
 type log struct {
-	Enable bool   `json:"enable"` // 开关
-	Level  string `json:"level"`  // 等级
+	Enable       bool   `json:"enable"`       // 开关
+	Level        string `json:"level"`        // 等级
+	WriteFile    bool   `json:"writeFile"`    // 写入文件
+	WriteConsole bool   `json:"writeConsole"` // 写入控制台
 }
 
-// rateLimit 配置对象
+// 限流
 type rateLimit struct {
 	Quantum  int64 `json:"quantum"`  // 间隔时间（秒）
 	Capacity int64 `json:"capacity"` // 令牌桶容量
 }
 
-// swagger 配置对象
+// 文档
 type swagger struct {
 	Enable bool `json:"enable"` // 是否启用
 }
 
-// mysql 配置对象
+// mysql
 type mysql struct {
 	Host     string `json:"host"`     // 主机
 	Port     int    `json:"port"`     // 端口
@@ -39,7 +41,7 @@ type mysql struct {
 	Password string `json:"password"` // 密码
 }
 
-// redis 配置对象
+// redis
 type redis struct {
 	Host     string `json:"host"`     // 主机
 	Port     int    `json:"port"`     // 端口
@@ -48,7 +50,7 @@ type redis struct {
 	Timeout  int    `json:"timeout"`  // 超时时间（秒）
 }
 
-// jwt 配置对象
+// 认证
 type jwt struct {
 	Key         string `json:"key"`         // 主键
 	Secret      []byte `json:"secret"`      // 密钥
@@ -56,7 +58,7 @@ type jwt struct {
 	AutoRefresh int    `json:"autoRefresh"` // 自动续订（秒）
 }
 
-// sms 配置对象
+// 短信
 type sms struct {
 	MagicCode     string `json:"magicCode"`     // 短信魔术码
 	MaxAge        int    `json:"maxAge"`        // 过期时间（秒）
@@ -64,7 +66,7 @@ type sms struct {
 	MaxSendPerDay int64  `json:"maxSendPerDay"` // 每日最多发送次数
 }
 
-// Config 配置对象
+// Config 对象
 type Config struct {
 	Log       log       `json:"log"`       // Log 配置对象
 	RateLimit rateLimit `json:"rateLimit"` // RateLimit 配置对象
@@ -78,8 +80,8 @@ type Config struct {
 // 当前配置
 var cur *Config
 
-// Get 获取当前配置
-func Get() *Config {
+// Cur 获取当前配置
+func Cur() *Config {
 	if cur != nil {
 		return cur
 	}

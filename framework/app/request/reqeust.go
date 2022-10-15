@@ -8,9 +8,19 @@ package request
 
 import (
 	"bytes"
+	"framework/config"
 	"github.com/gin-gonic/gin"
 	"io"
 )
+
+// validator 较验
+// https://github.com/go-playground/validator/
+
+// PageRequest 分页请求对象
+type PageRequest struct {
+	Page     int `json:"page" form:"page" validate:"required,gte=1,lte=9999"`       // 分页，从 1 开始
+	PageSize int `json:"pageSize" form:"pageSize" validate:"required,gte=1,lte=99"` // 分页大小
+}
 
 // Request 请求对象
 type Request struct {
@@ -25,7 +35,7 @@ type Request struct {
 // IsDebugRequest 是否结果导出请求
 func IsDebugRequest(ctx *gin.Context) bool {
 	const key, value = "debug", "true"
-	return ctx.Query(key) == value || ctx.GetHeader(key) == value
+	return config.IsDev() || ctx.Query(key) == value || ctx.GetHeader(key) == value
 }
 
 // GetRequest 获取请求对象

@@ -1,7 +1,9 @@
 {
   "log": {
     "enable": false,
-    "level": "ERROR"
+    "level": "TRACE",
+    "writeFile": false,
+    "writeConsole": false
   },
   "rateLimit": {
     "quantum": 1,

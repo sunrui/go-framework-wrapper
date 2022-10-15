@@ -7,8 +7,8 @@
 package app
 
 import (
+	"framework/app/request"
 	"framework/config"
-	"framework/request"
 	"framework/result"
 	"framework/token"
 	"github.com/gin-gonic/gin"
@@ -66,12 +66,12 @@ func SetLog(enable bool, level Level) {
 		initLog()
 	}
 
-	config.Get().Log.Enable = enable
-	config.Get().Log.Level = string(level)
+	config.Cur().Log.Enable = enable
+	config.Cur().Log.Level = string(level)
 }
 
-// writeResult 写入结果
-func writeResult(ctx *gin.Context, r result.Result) {
+// 获取日志内容
+func getLogBuffer(ctx *gin.Context, r result.Result) string {
 	// 获取 request 对象
 	req := request.GetRequest(ctx)
 
@@ -85,8 +85,8 @@ func writeResult(ctx *gin.Context, r result.Result) {
 	}()
 
 	// 判断是否需要输出
-	if level == LevelTrace && string(level) != config.Get().Log.Level {
-		return
+	if level == LevelTrace && string(level) != config.Cur().Log.Level {
+		return ""
 	}
 
 	var buffer string
@@ -126,23 +126,12 @@ func writeResult(ctx *gin.Context, r result.Result) {
 	// 结果
 	buffer += r.String(true) + "\n"
 
-	// 打印输出
-	log.Println(buffer)
-}
-
-// WriteLog 记录日志
-func WriteLog(ctx *gin.Context, result result.Result) {
-	go func() {
-		// 异步记录日志
-		if config.Get().Log.Enable {
-			writeResult(ctx, result)
-		}
-	}()
+	return buffer
 }
 
 // 初始化
 func init() {
-	if config.Get().Log.Enable {
+	if config.Cur().Log.Enable {
 		initLog()
 	}
 }

@@ -7,15 +7,15 @@
 package middleware
 
 import (
+	"framework/app/request"
 	"framework/config"
-	"framework/request"
 	"github.com/gin-gonic/gin"
 )
 
 // BodyMiddleware body 中间件
 func BodyMiddleware(ctx *gin.Context) {
 	// 如果需要记录日志或请求被异出则拷贝 body 对象
-	if config.Get().Log.Enable || request.IsDebugRequest(ctx) {
+	if config.Cur().Log.Enable || request.IsDebugRequest(ctx) {
 		request.CopyBody(ctx)
 	}
 

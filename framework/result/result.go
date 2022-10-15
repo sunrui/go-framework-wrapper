@@ -8,7 +8,7 @@ package result
 
 import (
 	"encoding/json"
-	"framework/request"
+	"framework/app/request"
 )
 
 // Pagination 分页对象

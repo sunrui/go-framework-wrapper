@@ -35,16 +35,14 @@ func (model *Model) BeforeCreate(*gorm.DB) (err error) {
 
 // 初始化
 func init() {
-	var err error
-
-	// 数据库连接
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local",
-		config.Get().Mysql.User,
-		config.Get().Mysql.Password,
-		config.Get().Mysql.Host,
-		config.Get().Mysql.Port,
-		config.Get().Mysql.Database)
+		config.Cur().Mysql.User,
+		config.Cur().Mysql.Password,
+		config.Cur().Mysql.Host,
+		config.Cur().Mysql.Port,
+		config.Cur().Mysql.Database)
 
+	var err error
 	if Mysql, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
 		NamingStrategy: schema.NamingStrategy{
 			TablePrefix:   "t_", // 表名前缀

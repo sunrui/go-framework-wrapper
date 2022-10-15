@@ -30,7 +30,7 @@ func postSend(ctx *gin.Context) result.Result {
 
 	// 获取当天发送条数，判断是否超出最大条数限制
 	count := sms.CountByPhoneAndDate(req.Phone, sms.GetNowDate())
-	if count >= config.Get().Sms.MaxSendPerDay {
+	if count >= config.Cur().Sms.MaxSendPerDay {
 		return result.RateLimit
 	}
 

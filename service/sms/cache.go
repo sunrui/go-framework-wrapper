@@ -40,7 +40,7 @@ func (cache *Cache) SaveCode(code string) {
 	db.Redis.Set(cache.getKey(), cachePayload{
 		Code:        code,
 		VerifyTimes: 0,
-	}, time.Duration(config.Get().Sms.MaxAge))
+	}, time.Duration(config.Cur().Sms.MaxAge))
 }
 
 // Del 移除缓存验证码
@@ -63,11 +63,11 @@ func (cache *Cache) Verify(code string) bool {
 		payload.VerifyTimes += 1
 
 		// 如果已经较验出错 maxVerifyTime 次，移除现有验证码
-		if payload.VerifyTimes == config.Get().Sms.MaxVerifyTime {
+		if payload.VerifyTimes == config.Cur().Sms.MaxVerifyTime {
 			cache.Del()
 		} else {
 			// 更新出错较验次数
-			db.Redis.Set(cache.getKey(), payload, time.Duration(config.Get().Sms.MaxAge))
+			db.Redis.Set(cache.getKey(), payload, time.Duration(config.Cur().Sms.MaxAge))
 		}
 
 		return false
