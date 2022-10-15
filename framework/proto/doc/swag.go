@@ -26,7 +26,7 @@ func Redoc(suffix string) []byte {
 		_, file, _, _ := runtime.Caller(0)
 		path := filepath.Dir(file)
 
-		data, _ := os.ReadFile(path + "/redoc.js")
+		data, _ := os.ReadFile(path + "/swag_redoc.js")
 		return data
 	}
 
@@ -73,7 +73,6 @@ func commandExec(name string, arg ...string) {
 
 // 执行 swag 更新文档
 func init() {
-	// 读取 swagger 配置
 	if config.Get().Swagger.Enable {
 		commandExec("swag", "fmt")
 		commandExec("swag", "init", "--parseDependency")

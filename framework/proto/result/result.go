@@ -109,11 +109,12 @@ func newResult(code string, message string) Result {
 func All() []Result {
 	return []Result{
 		Ok,
+		NoAuth,
 		ParameterBindError,
 		ParameterValidateError,
-		NoAuth,
 		Forbidden,
 		NotFound,
+		NoMatch,
 		NoContent,
 		MethodNotAllowed,
 		Conflict,

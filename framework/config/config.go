@@ -8,7 +8,6 @@ package config
 
 import (
 	"encoding/json"
-	"flag"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -65,8 +64,8 @@ type sms struct {
 	MaxSendPerDay int64  `json:"maxSendPerDay"` // 每日最多发送次数
 }
 
-// 配置对象
-type config struct {
+// Config 配置对象
+type Config struct {
 	Log       log       `json:"log"`       // Log 配置对象
 	RateLimit rateLimit `json:"rateLimit"` // RateLimit 配置对象
 	Swagger   swagger   `json:"swagger"`   // Swagger 配置对象
@@ -77,12 +76,12 @@ type config struct {
 }
 
 // 当前配置
-var conf *config
+var cur *Config
 
 // Get 获取当前配置
-func Get() *config {
-	if conf != nil {
-		return conf
+func Get() *Config {
+	if cur != nil {
+		return cur
 	}
 
 	// 配置文件
@@ -94,39 +93,19 @@ func Get() *config {
 		if IsDev() {
 			jsonFile = "config_dev.json"
 		} else {
-			jsonFile = "config_product.json"
+			jsonFile = "config_prod.json"
 		}
 
 		return path + "/" + jsonFile
 	}()
 
 	// 加载配置文件
-	conf = &config{}
+	cur = &Config{}
 	if stream, err := os.ReadFile(configFile); err != nil {
 		panic(err.Error())
-	} else if err = json.Unmarshal(stream, conf); err != nil {
+	} else if err = json.Unmarshal(stream, cur); err != nil {
 		panic(err.Error())
 	}
 
-	return conf
-}
-
-// 当前环境
-var build *string
-
-// IsDev 是否为开发环境
-func IsDev() bool {
-	return build != nil && *build != "product"
-}
-
-// IsProduct 是否为生产环境
-func IsProduct() bool {
-	return !IsDev()
-}
-
-// 初始化
-func init() {
-	// 解析参数，如 -build product
-	flag.Parse()
-	build = flag.String("build", "dev", "编译类型")
+	return cur
 }

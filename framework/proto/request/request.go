@@ -12,6 +12,9 @@ import (
 	"io"
 )
 
+// 上下文 body 标记
+const ctxBodyTag = "body"
+
 // Request 请求对象
 type Request struct {
 	Ip      string   `json:"ip"`      // ip 地址
@@ -22,9 +25,9 @@ type Request struct {
 	Body    *string  `json:"body"`    // 请求体
 }
 
-// IsRequestDump 是否结果导出请求
-func IsRequestDump(ctx *gin.Context) bool {
-	const key, value = "request", "dump"
+// IsDebugRequest 是否结果导出请求
+func IsDebugRequest(ctx *gin.Context) bool {
+	const key, value = "debug", "true"
 	return ctx.Query(key) == value || ctx.GetHeader(key) == value
 }
 
@@ -51,7 +54,7 @@ func GetRequest(ctx *gin.Context) Request {
 			return headers
 		}(ctx),
 		Body: func(ctx *gin.Context) *string {
-			body, exists := ctx.Get("body")
+			body, exists := ctx.Get(ctxBodyTag)
 			if exists {
 				bodyString := body.(string)
 				return &bodyString
@@ -68,7 +71,7 @@ func CopyBody(ctx *gin.Context) {
 		panic(err.Error())
 	} else if len(data) != 0 {
 		ctx.Request.Body = io.NopCloser(bytes.NewBuffer(data))
-		ctx.Set("body", string(data))
+		ctx.Set(ctxBodyTag, string(data))
 	}
 }
 
