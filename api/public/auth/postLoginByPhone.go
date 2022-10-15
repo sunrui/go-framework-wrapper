@@ -7,11 +7,11 @@
 package auth
 
 import (
-	"framework/app"
 	"framework/config"
 	"framework/db"
-	"framework/proto/result"
-	"framework/proto/token"
+	"framework/result"
+	"framework/token"
+	"framework/util"
 	"github.com/gin-gonic/gin"
 	"service/sms"
 	"service/user"
@@ -40,7 +40,7 @@ func postLoginByPhone(ctx *gin.Context) result.Result {
 	var req postLoginByPhoneReq
 
 	// 较验参数
-	app.ValidateParameter(ctx, &req)
+	util.ValidateParameter(ctx, &req)
 
 	// 如果非魔术验证码
 	if config.Get().Sms.MagicCode != "" && req.Code != config.Get().Sms.MagicCode {

@@ -7,10 +7,10 @@
 package sms
 
 import (
-	"framework/app"
 	"framework/config"
 	"framework/db"
-	"framework/proto/result"
+	"framework/result"
+	"framework/util"
 	"github.com/gin-gonic/gin"
 	"service/sms"
 )
@@ -26,7 +26,7 @@ func postSend(ctx *gin.Context) result.Result {
 	var req postCodeReq
 
 	// 较验参数
-	app.ValidateParameter(ctx, &req)
+	util.ValidateParameter(ctx, &req)
 
 	// 获取当天发送条数，判断是否超出最大条数限制
 	count := sms.CountByPhoneAndDate(req.Phone, sms.GetNowDate())

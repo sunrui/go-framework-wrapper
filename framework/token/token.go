@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2022 honeysense.com All rights reserved.
  * Author: sunrui
- * Date: 2022-04-25 20:46:17
+ * Date: 2022-10-15 11:12:33
  */
 
 package token
@@ -9,7 +9,7 @@ package token
 import (
 	"errors"
 	"framework/config"
-	"framework/proto/result"
+	"framework/result"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
 	"strings"

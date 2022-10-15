@@ -7,7 +7,7 @@
 package template
 
 import (
-	"framework/proto/result"
+	"framework/result"
 	"generate/service/template"
 	"github.com/gin-gonic/gin"
 )

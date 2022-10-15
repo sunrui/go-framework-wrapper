@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2022 honeysense.com All rights reserved.
  * Author: sunrui
- * Date: 2022/04/03 00:05:03
+ * Date: 2022-10-15 11:20:20
  */
 
 package request
@@ -11,9 +11,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"io"
 )
-
-// 上下文 body 标记
-const ctxBodyTag = "body"
 
 // Request 请求对象
 type Request struct {
@@ -53,17 +50,12 @@ func GetRequest(ctx *gin.Context) Request {
 
 			return headers
 		}(ctx),
-		Body: func(ctx *gin.Context) *string {
-			body, exists := ctx.Get(ctxBodyTag)
-			if exists {
-				bodyString := body.(string)
-				return &bodyString
-			} else {
-				return nil
-			}
-		}(ctx),
+		Body: GetBody(ctx),
 	}
 }
+
+// 上下文 body 标记
+const bodyTag = "bodyTag"
 
 // CopyBody 复制 body
 func CopyBody(ctx *gin.Context) {
@@ -71,15 +63,17 @@ func CopyBody(ctx *gin.Context) {
 		panic(err.Error())
 	} else if len(data) != 0 {
 		ctx.Request.Body = io.NopCloser(bytes.NewBuffer(data))
-		ctx.Set(ctxBodyTag, string(data))
+		ctx.Set(bodyTag, string(data))
 	}
 }
 
-// validator 较验
-// https://github.com/go-playground/validator/
-
-// PageRequest 分页请求对象
-type PageRequest struct {
-	Page     int `json:"page" form:"page" validate:"required,gte=1,lte=9999"`       // 分页，从 1 开始
-	PageSize int `json:"pageSize" form:"pageSize" validate:"required,gte=1,lte=99"` // 分页大小
+// GetBody 获取 body
+func GetBody(ctx *gin.Context) *string {
+	body, exists := ctx.Get(bodyTag)
+	if exists {
+		bodyString := body.(string)
+		return &bodyString
+	} else {
+		return nil
+	}
 }

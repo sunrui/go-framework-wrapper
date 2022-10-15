@@ -9,7 +9,7 @@ package template
 import (
 	"errors"
 	"framework/db"
-	"framework/proto/result"
+	"framework/result"
 	"gorm.io/gorm"
 )
 

@@ -1,15 +1,15 @@
 /*
  * Copyright (c) 2022 honeysense.com All rights reserved.
  * Author: sunrui
- * Date: 2022-04-25 22:13:11
+ * Date: 2022-10-15 09:03:33
  */
 
-package app
+package util
 
 import (
 	"errors"
 	"fmt"
-	"framework/proto/result"
+	"framework/result"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/validator/v10"

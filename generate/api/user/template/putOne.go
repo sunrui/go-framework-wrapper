@@ -7,9 +7,9 @@
 package template
 
 import (
-	"framework/app"
-	"framework/proto/result"
-	"framework/proto/token"
+	"framework/result"
+	"framework/token"
+	"framework/util"
 	"generate/service/template"
 	"github.com/gin-gonic/gin"
 )
@@ -33,7 +33,7 @@ func putOne(ctx *gin.Context) result.Result {
 	var req putOneReq
 
 	// 较验参数
-	app.ValidateParameter(ctx, &req)
+	util.ValidateParameter(ctx, &req)
 
 	// 获取 id
 	id := ctx.Param("id")

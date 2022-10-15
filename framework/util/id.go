@@ -4,7 +4,7 @@
  * Date: 2022-05-10 11:40:43
  */
 
-package utils
+package util
 
 import (
 	"github.com/google/uuid"

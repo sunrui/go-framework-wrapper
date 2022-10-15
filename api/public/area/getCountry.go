@@ -7,7 +7,7 @@
 package area
 
 import (
-	"framework/proto/result"
+	"framework/result"
 	"github.com/gin-gonic/gin"
 	"service/area"
 )

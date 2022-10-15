@@ -1,16 +1,16 @@
 /*
  * Copyright (c) 2022 honeysense.com All rights reserved.
  * Author: sunrui
- * Date: 2022/08/02 00:41:02
+ * Date: 2022-10-15 11:18:48
  */
 
-package log
+package app
 
 import (
 	"framework/config"
-	"framework/proto/request"
-	"framework/proto/result"
-	"framework/proto/token"
+	"framework/request"
+	"framework/result"
+	"framework/token"
 	"github.com/gin-gonic/gin"
 	"io"
 	"log"
@@ -26,10 +26,11 @@ const (
 	LevelError Level = "ERROR" // error
 )
 
+// log 目录
+const logPath = "log"
+
 // 初始化日志
 func initLog() {
-	const logPath = "log"
-
 	// 建立日志目录
 	if _, err := os.Stat(logPath); err != nil {
 		if err = os.Mkdir(logPath, os.ModePerm); err != nil {
@@ -48,7 +49,7 @@ func initLog() {
 		}()
 
 		fileName := time.Now().Format(timeLayout)
-		if file, err := os.Create(logPath + "/access - " + fileName + ".log"); err != nil {
+		if file, err := os.Create(logPath + "/" + fileName + ".log"); err != nil {
 			panic(err.Error())
 		} else {
 			return file
@@ -59,8 +60,8 @@ func initLog() {
 	log.SetFlags(log.Ldate | log.Ltime)
 }
 
-// Set 设置
-func Set(enable bool, level Level) {
+// SetLog 设置
+func SetLog(enable bool, level Level) {
 	if enable {
 		initLog()
 	}
@@ -69,8 +70,8 @@ func Set(enable bool, level Level) {
 	config.Get().Log.Level = string(level)
 }
 
-// WriteResult 写入结果
-func WriteResult(ctx *gin.Context, r result.Result) {
+// writeResult 写入结果
+func writeResult(ctx *gin.Context, r result.Result) {
 	// 获取 request 对象
 	req := request.GetRequest(ctx)
 
@@ -127,6 +128,16 @@ func WriteResult(ctx *gin.Context, r result.Result) {
 
 	// 打印输出
 	log.Println(buffer)
+}
+
+// WriteLog 记录日志
+func WriteLog(ctx *gin.Context, result result.Result) {
+	go func() {
+		// 异步记录日志
+		if config.Get().Log.Enable {
+			writeResult(ctx, result)
+		}
+	}()
 }
 
 // 初始化

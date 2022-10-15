@@ -7,8 +7,7 @@
 package app
 
 import (
-	"framework/proto/response"
-	"framework/proto/result"
+	"framework/result"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -33,7 +32,7 @@ type RouterGroup struct {
 func handlerFunc(routerFunc RouterFunc) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		r := routerFunc(ctx)
-		response.Reply(ctx, r)
+		Reply(ctx, r)
 	}
 }
 

@@ -7,7 +7,7 @@
 package common
 
 import (
-	"framework/proto/result"
+	"framework/result"
 	"github.com/gin-gonic/gin"
 	"time"
 )

@@ -7,10 +7,10 @@
 package template
 
 import (
-	"framework/app"
 	"framework/db"
-	"framework/proto/result"
-	"framework/proto/token"
+	"framework/result"
+	"framework/token"
+	"framework/util"
 	"generate/service/template"
 	"github.com/gin-gonic/gin"
 )
@@ -32,7 +32,7 @@ func postOne(ctx *gin.Context) result.Result {
 	var req postOneReq
 
 	// 较验参数
-	app.ValidateParameter(ctx, &req)
+	util.ValidateParameter(ctx, &req)
 
 	// 获取当前 userId
 	userId := token.MustGetUserId(ctx)

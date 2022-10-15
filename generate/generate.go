@@ -7,7 +7,7 @@
 package main
 
 import (
-	"framework/utils"
+	"framework/util"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -34,7 +34,7 @@ func runGenerate(model, modelName string, author string) error {
 		_ = os.RemoveAll(dst)
 
 		// 拷贝项目
-		if err := utils.CopyDirectory(src, dst); err != nil {
+		if err := util.CopyDirectory(src, dst); err != nil {
 			return err
 		}
 

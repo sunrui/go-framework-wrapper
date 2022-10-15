@@ -1,10 +1,10 @@
 /*
  * Copyright (c) 2022 honeysense.com All rights reserved.
  * Author: sunrui
- * Date: 2022/04/16 17:02:16
+ * Date: 2022-10-15 09:02:47
  */
 
-package utils
+package util
 
 import (
 	"fmt"
@@ -13,8 +13,8 @@ import (
 	"strings"
 )
 
-// DumpStack 获取推栈层级
-func DumpStack(level int) []string {
+// Stack 获取推栈层级
+func Stack(level int) []string {
 	stacks := make([]string, 0)
 
 	// 最大函数层级

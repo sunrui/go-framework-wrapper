@@ -7,10 +7,10 @@
 package template
 
 import (
-	"framework/app"
 	"framework/proto/request"
-	"framework/proto/result"
-	"framework/proto/token"
+	"framework/result"
+	"framework/token"
+	"framework/util"
 	"generate/service/template"
 	"github.com/gin-gonic/gin"
 )
@@ -32,12 +32,12 @@ func getAll(ctx *gin.Context) result.Result {
 	userId := token.MustGetUserId(ctx)
 
 	// 较验参数
-	app.ValidateParameter(ctx, &req)
+	util.ValidateParameter(ctx, &req)
 
 	// 根据 userId 查询所有
 	if array, pagination := template.FindAllByUserId(userId, req.Page, req.PageSize, true); len(array) == 0 {
 		return result.NoContent
 	} else {
-		return result.Ok.WithPageData(array, pagination)
+		return result.Ok.WithDataAndPagination(array, pagination)
 	}
 }

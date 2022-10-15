@@ -7,8 +7,8 @@
 package sms
 
 import (
-	"framework/app"
-	"framework/proto/result"
+	"framework/result"
+	"framework/util"
 	"github.com/gin-gonic/gin"
 	"service/sms"
 )
@@ -25,7 +25,7 @@ func postVerify(ctx *gin.Context) result.Result {
 	var req postVerifyReq
 
 	// 较验参数
-	app.ValidateParameter(ctx, &req)
+	util.ValidateParameter(ctx, &req)
 
 	// 缓存对象
 	cache := sms.Cache{

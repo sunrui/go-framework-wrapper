@@ -7,8 +7,8 @@
 package auth
 
 import (
-	"framework/proto/result"
-	"framework/proto/token"
+	"framework/result"
+	"framework/token"
 	"github.com/gin-gonic/gin"
 )
 

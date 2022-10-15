@@ -9,7 +9,7 @@ package db
 import (
 	"fmt"
 	"framework/config"
-	"framework/utils"
+	"framework/util"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
@@ -29,7 +29,7 @@ type Model struct {
 
 // BeforeCreate 创建对象前回调
 func (model *Model) BeforeCreate(*gorm.DB) (err error) {
-	model.Id = utils.CreateNanoid()
+	model.Id = util.CreateNanoid()
 	return nil
 }
 

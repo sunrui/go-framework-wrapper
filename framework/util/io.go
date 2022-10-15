@@ -4,7 +4,7 @@
  * Date: 2022/04/16 15:40:16
  */
 
-package utils
+package util
 
 import (
 	"io"

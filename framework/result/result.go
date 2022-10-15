@@ -1,14 +1,14 @@
 /*
  * Copyright (c) 2022 honeysense.com All rights reserved.
  * Author: sunrui
- * Date: 2022-04-25 20:36:20
+ * Date: 2022-10-15 09:11:59
  */
 
 package result
 
 import (
 	"encoding/json"
-	"framework/proto/request"
+	"framework/request"
 )
 
 // Pagination 分页对象
@@ -60,8 +60,8 @@ func (result Result) WithIdData(id string) Result {
 	return result
 }
 
-// WithPageData 设置结果对象数据
-func (result Result) WithPageData(data any, pagination Pagination) Result {
+// WithDataAndPagination 设置结果对象数据
+func (result Result) WithDataAndPagination(data any, pagination Pagination) Result {
 	result.Data = data
 	result.Pagination = &pagination
 	return result

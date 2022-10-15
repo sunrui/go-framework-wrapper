@@ -7,8 +7,8 @@
 package open
 
 import (
-	"framework/proto/result"
-	"framework/proto/token"
+	"framework/result"
+	"framework/token"
 	"github.com/gin-gonic/gin"
 	"service/open"
 )

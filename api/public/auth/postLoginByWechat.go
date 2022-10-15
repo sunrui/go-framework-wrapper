@@ -7,8 +7,8 @@
 package auth
 
 import (
-	"framework/app"
-	"framework/proto/result"
+	"framework/result"
+	"framework/util"
 	"github.com/gin-gonic/gin"
 )
 
@@ -17,7 +17,7 @@ func postLoginByWechat(ctx *gin.Context) result.Result {
 	var req postLoginByPhoneReq
 
 	// 较验参数
-	app.ValidateParameter(ctx, &req)
+	util.ValidateParameter(ctx, &req)
 
 	return result.Ok
 }

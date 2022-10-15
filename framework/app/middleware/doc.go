@@ -4,16 +4,38 @@
  * Date: 2022-06-14 10:11:05
  */
 
-package doc
+package middleware
 
 import (
 	"bytes"
 	"framework/config"
+	"github.com/gin-gonic/gin"
+	"net/http"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"runtime"
+	"strings"
 )
+
+// DocMiddleware 文档中间件
+func DocMiddleware(ctx *gin.Context) {
+	path := ctx.Request.URL.Path
+
+	// 非 /doc 开头不是文档
+	if !strings.HasPrefix(path, "/doc/") {
+		return
+	}
+
+	// 过滤掉非法的 /doc/? 路径
+	suffix := filepath.Base(path)
+	if suffix != "doc" && suffix != "doc.json" && suffix != "redoc.js" {
+		ctx.Redirect(http.StatusFound, "/doc")
+		return
+	}
+
+	_, _ = ctx.Writer.Write(Redoc(suffix))
+}
 
 // Redoc 文档中间件
 func Redoc(suffix string) []byte {
@@ -26,7 +48,7 @@ func Redoc(suffix string) []byte {
 		_, file, _, _ := runtime.Caller(0)
 		path := filepath.Dir(file)
 
-		data, _ := os.ReadFile(path + "/swag_redoc.js")
+		data, _ := os.ReadFile(path + "/doc_redoc.js")
 		return data
 	}
 
