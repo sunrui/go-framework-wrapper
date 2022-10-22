@@ -15,13 +15,42 @@ import (
 	"time"
 )
 
-// Redis 数据库访问对象
+// redis 数据库访问对象
 type redisPool struct {
 	redis.Pool
 }
 
 // Redis 对象
-var Redis *redisPool
+var Redis redisPool
+
+// 初始化
+func init() {
+	// 建立连接池
+	Redis = redisPool{
+		redis.Pool{
+			MaxIdle:     5,
+			MaxActive:   100,
+			IdleTimeout: 1 * time.Hour,
+			Wait:        true,
+			Dial: func() (redis.Conn, error) {
+				address := fmt.Sprintf("%s:%d", config.Cur().Redis.Host, config.Cur().Redis.Port)
+				timeout := time.Duration(config.Cur().Redis.Timeout) * time.Second
+
+				return redis.Dial("tcp", address,
+					redis.DialPassword(config.Cur().Redis.Password),
+					redis.DialDatabase(config.Cur().Redis.Database),
+					redis.DialConnectTimeout(timeout),
+					redis.DialReadTimeout(timeout),
+					redis.DialWriteTimeout(timeout))
+			},
+		},
+	}
+
+	// 尝试数据库连接
+	if _, err := Redis.Get().Do("PING"); err != nil {
+		panic(err.Error())
+	}
+}
 
 // Set 设置对象
 func (redisPool *redisPool) Set(key string, value any, second time.Duration) {
@@ -158,34 +187,5 @@ func (redisPool *redisPool) GetHashJson(hash string, key string, dst any) bool {
 		panic(err.Error())
 	} else {
 		return true
-	}
-}
-
-// 初始化
-func init() {
-	// 建立连接池
-	Redis = &redisPool{
-		redis.Pool{
-			MaxIdle:     5,
-			MaxActive:   100,
-			IdleTimeout: 1 * time.Hour,
-			Wait:        true,
-			Dial: func() (redis.Conn, error) {
-				address := fmt.Sprintf("%s:%d", config.Cur().Redis.Host, config.Cur().Redis.Port)
-				timeout := time.Duration(config.Cur().Redis.Timeout) * time.Second
-
-				return redis.Dial("tcp", address,
-					redis.DialPassword(config.Cur().Redis.Password),
-					redis.DialDatabase(config.Cur().Redis.Database),
-					redis.DialConnectTimeout(timeout),
-					redis.DialReadTimeout(timeout),
-					redis.DialWriteTimeout(timeout))
-			},
-		},
-	}
-
-	// 尝试数据库连接
-	if _, err := Redis.Get().Do("PING"); err != nil {
-		panic(err.Error())
 	}
 }

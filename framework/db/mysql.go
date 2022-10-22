@@ -16,8 +16,36 @@ import (
 	"time"
 )
 
-// Mysql 数据库访问对象
-var Mysql *gorm.DB
+// mysql 数据库访问对象
+type mysqlPool struct {
+	*gorm.DB
+}
+
+// Mysql 对象
+var Mysql mysqlPool
+
+// 初始化
+func init() {
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local",
+		config.Cur().Mysql.User,
+		config.Cur().Mysql.Password,
+		config.Cur().Mysql.Host,
+		config.Cur().Mysql.Port,
+		config.Cur().Mysql.Database)
+
+	if db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
+		NamingStrategy: schema.NamingStrategy{
+			TablePrefix:   "t_", // 表名前缀
+			SingularTable: true, // 使用单数表名
+		},
+	}); err != nil {
+		panic(err.Error())
+	} else {
+		Mysql = mysqlPool{
+			DB: db,
+		}
+	}
+}
 
 // Model 数据库通用对象
 type Model struct {
@@ -31,24 +59,4 @@ type Model struct {
 func (model *Model) BeforeCreate(*gorm.DB) (err error) {
 	model.Id = util.CreateNanoid()
 	return nil
-}
-
-// 初始化
-func init() {
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local",
-		config.Cur().Mysql.User,
-		config.Cur().Mysql.Password,
-		config.Cur().Mysql.Host,
-		config.Cur().Mysql.Port,
-		config.Cur().Mysql.Database)
-
-	var err error
-	if Mysql, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
-		NamingStrategy: schema.NamingStrategy{
-			TablePrefix:   "t_", // 表名前缀
-			SingularTable: true, // 使用单数表名
-		},
-	}); err != nil {
-		panic(err.Error())
-	}
 }
