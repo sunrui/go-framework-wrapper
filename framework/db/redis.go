@@ -34,7 +34,7 @@ func init() {
 			Wait:        true,
 			Dial: func() (redis.Conn, error) {
 				address := fmt.Sprintf("%s:%d", config.Cur().Redis.Host, config.Cur().Redis.Port)
-				timeout := time.Duration(config.Cur().Redis.Timeout) * time.Second
+				timeout := time.Duration(10) * time.Second
 
 				return redis.Dial("tcp", address,
 					redis.DialPassword(config.Cur().Redis.Password),

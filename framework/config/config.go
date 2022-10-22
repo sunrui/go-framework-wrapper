@@ -47,7 +47,6 @@ type redis struct {
 	Port     int    `json:"port"`     // 端口
 	Password string `json:"password"` // 密码
 	Database int    `json:"database"` // 数据库
-	Timeout  int    `json:"timeout"`  // 超时时间（秒）
 }
 
 // 认证
