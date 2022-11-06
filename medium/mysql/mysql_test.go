@@ -10,23 +10,28 @@ import (
 	"testing"
 )
 
-func TestMysql(t *testing.T) {
-	type User struct {
-		Model        // 通用参数
-		Name  string `json:"name"` // 姓名
-	}
+type User struct {
+	Model        // 通用参数
+	Name  string `json:"name"` // 姓名
+}
 
+func TestMysql_AutoMigrate(t *testing.T) {
 	Inst.AutoMigrate(&User{})
+}
 
+func TestMysql_Save(t *testing.T) {
 	user := User{
 		Name: "name",
 	}
-
 	Inst.Save(&user)
+}
 
+func TestFindOne(t *testing.T) {
 	one := FindOne[User](User{
-		Name: "name1",
+		Name: "name-1",
 	})
 
-	println(one.Name)
+	if one != nil {
+		t.Fatalf("one is not nil")
+	}
 }
