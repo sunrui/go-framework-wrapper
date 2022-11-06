@@ -19,6 +19,7 @@ type log struct {
 	Level        string `json:"level"`        // 等级
 	WriteFile    bool   `json:"writeFile"`    // 写入文件
 	WriteConsole bool   `json:"writeConsole"` // 写入控制台
+	FilePath     string `json:"filePath"`     // 文件目录
 }
 
 // 限流

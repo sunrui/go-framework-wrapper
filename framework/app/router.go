@@ -7,14 +7,15 @@
 package app
 
 import (
-	"framework/app/request"
 	"framework/config"
+	"framework/request"
 	"framework/result"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
 )
 
+// RouterFunc 路由回调
 type RouterFunc func(ctx *gin.Context) result.Result
 
 // Router 路由路径

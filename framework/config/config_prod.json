@@ -3,7 +3,8 @@
     "enable": true,
     "level": "TRACE",
     "writeFile": true,
-    "writeConsole": false
+    "writeConsole": false,
+    "filePath": "log"
   },
   "rateLimit": {
     "quantum": 10,

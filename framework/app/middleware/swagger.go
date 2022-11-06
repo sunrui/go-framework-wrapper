@@ -48,7 +48,7 @@ func redoc(suffix string) []byte {
 		_, file, _, _ := runtime.Caller(0)
 		path := filepath.Dir(file)
 
-		data, _ := os.ReadFile(path + "/doc_redoc.js")
+		data, _ := os.ReadFile(path + "/swagger_redoc.js")
 		return data
 	}
 

@@ -7,8 +7,8 @@
 package app
 
 import (
-	"framework/app/request"
 	"framework/config"
+	"framework/request"
 	"framework/result"
 	"framework/token"
 	"github.com/gin-gonic/gin"
@@ -26,14 +26,11 @@ const (
 	LevelError Level = "ERROR" // error
 )
 
-// log 目录
-const logPath = "log"
-
 // 初始化日志
 func initLog() {
 	// 建立日志目录
-	if _, err := os.Stat(logPath); err != nil {
-		if err = os.Mkdir(logPath, os.ModePerm); err != nil {
+	if _, err := os.Stat(config.Cur().Log.FilePath); err != nil {
+		if err = os.Mkdir(config.Cur().Log.FilePath, os.ModePerm); err != nil {
 			panic(err.Error())
 		}
 	}
@@ -49,7 +46,7 @@ func initLog() {
 		}()
 
 		fileName := time.Now().Format(timeLayout)
-		if file, err := os.Create(logPath + "/" + fileName + ".log"); err != nil {
+		if file, err := os.Create(config.Cur().Log.FilePath + "/" + fileName + ".log"); err != nil {
 			panic(err.Error())
 		} else {
 			return file
