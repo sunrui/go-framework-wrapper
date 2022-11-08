@@ -10,11 +10,13 @@ import (
 	"fmt"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
+	"medium/config"
 )
 
 type Mysql struct {
-	*gorm.DB
+	DB *gorm.DB
 }
 
 // NewMysql 创建对象
@@ -27,6 +29,13 @@ func NewMysql(conf conf) *Mysql {
 		conf.Database)
 
 	if db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
+		Logger: func() logger.Interface {
+			if config.IsDev() {
+				return logger.Default.LogMode(logger.Info)
+			} else {
+				return logger.Default.LogMode(logger.Warn)
+			}
+		}(),
 		NamingStrategy: schema.NamingStrategy{
 			TablePrefix:   "t_", // 表名前缀
 			SingularTable: true, // 使用单数表名
@@ -47,10 +56,15 @@ func (mysql Mysql) AutoMigrate(dst ...any) {
 	}
 }
 
-// 插入
+// Save 插入
 func (mysql Mysql) Save(value any) {
 	// 保存新的用户
 	if tx := mysql.DB.Save(value); tx.Error != nil {
 		panic(tx.Error.Error())
 	}
+}
+
+// Truncate 清空数据
+func (mysql Mysql) Truncate(dst any) {
+	mysql.DB.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&dst)
 }
