@@ -66,5 +66,5 @@ func (mysql Mysql) Save(value any) {
 
 // Truncate 清空数据
 func (mysql Mysql) Truncate(dst any) {
-	mysql.DB.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&dst)
+	mysql.DB.Unscoped().Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&dst)
 }

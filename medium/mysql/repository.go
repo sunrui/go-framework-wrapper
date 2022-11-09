@@ -56,7 +56,7 @@ func FindMany[T any](query interface{}, args ...interface{}) []T {
 func DeleteById[T any](id string) bool {
 	var dst T
 
-	if r := Inst.DB.Model(dst).Where("id = ?", id).Delete(dst); r.Error != nil {
+	if r := Inst.DB.Model(dst).Where("id = ?", id).Delete(&dst); r.Error != nil {
 		panic(r.Error.Error())
 	} else if r.RowsAffected >= 1 {
 		return true
