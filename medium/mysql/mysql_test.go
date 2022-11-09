@@ -80,7 +80,7 @@ func TestFindPage(t *testing.T) {
 	}
 
 	user := User{}
-	if ones := user.FindPage(0, 2, User{
+	if ones := user.FindPage(0, 2, "name ASC", User{
 		Name: "hello",
 	}); len(ones) != 0 {
 		for index, value := range ones {
@@ -95,8 +95,7 @@ func TestFindPage(t *testing.T) {
 	}
 
 	for i := 0; i < 5; i++ {
-		// find like name
-		if ones := user.FindPage(i, 2, "name LIKE ?", "%name%"); len(ones) != 2 {
+		if ones := user.FindPage(i, 2, "name ASC", "name LIKE ?", "%name%"); len(ones) != 2 {
 			for index, value := range ones {
 				fmt.Println(index, value)
 			}
@@ -106,6 +105,30 @@ func TestFindPage(t *testing.T) {
 			for index, value := range ones {
 				fmt.Println(index, value)
 			}
+		}
+	}
+
+	if ones := user.FindPage(0, -1, "created_at ASC", nil); len(ones) != 10 {
+		for index, value := range ones {
+			fmt.Println(index, value)
+		}
+
+		t.Fatalf("len(ones) != 10")
+	} else {
+		for index, value := range ones {
+			fmt.Println(index, value)
+		}
+	}
+
+	if ones := user.FindPage(0, -1, "created_at DESC", "name LIKE ?", "%name%"); len(ones) != 10 {
+		for index, value := range ones {
+			fmt.Println(index, value)
+		}
+
+		t.Fatalf("len(ones) != 10")
+	} else {
+		for index, value := range ones {
+			fmt.Println(index, value)
 		}
 	}
 }

@@ -36,7 +36,7 @@ func (model *Model[T]) BeforeCreate(*gorm.DB) (err error) {
 func (model *Model[T]) FindById(id string) *T {
 	var dst T
 
-	if db := Inst.DB.Model(dst).Where("id = ?", id).Find(&dst); db.Error != nil {
+	if db := Inst.DB.Where("id = ?", id).Find(&dst); db.Error != nil {
 		panic(db.Error.Error())
 	} else if db.RowsAffected == 1 {
 		return &dst
@@ -49,7 +49,7 @@ func (model *Model[T]) FindById(id string) *T {
 func (model *Model[T]) FindOne(query interface{}, args ...interface{}) *T {
 	var dst []T
 
-	if db := Inst.DB.Model(dst).Limit(2).Where(query, args).Find(&dst); db.Error != nil {
+	if db := Inst.DB.Limit(2).Where(query, args).Find(&dst); db.Error != nil {
 		panic(db.Error.Error())
 	} else if db.RowsAffected > 1 {
 		panic(errors.New(fmt.Sprintf("find %d record", db.RowsAffected)))
@@ -61,15 +61,15 @@ func (model *Model[T]) FindOne(query interface{}, args ...interface{}) *T {
 }
 
 // FindPage 根据条件查找分页一个或多个
-func (model *Model[T]) FindPage(page int, pageSize int, query interface{}, args ...interface{}) []T {
+func (model *Model[T]) FindPage(page int, pageSize int, order string, query interface{}, args ...interface{}) []T {
 	var dst []T
 
 	var db *gorm.DB
 
 	if query != nil {
-		db = Inst.DB.Offset(page*pageSize).Limit(pageSize).Offset(page*pageSize).Where(query, args).Find(&dst)
+		db = Inst.DB.Order(order).Offset(page*pageSize).Limit(pageSize).Offset(page*pageSize).Where(query, args).Find(&dst)
 	} else {
-		db = Inst.DB.Offset(page * pageSize).Limit(pageSize).Offset(page * pageSize).Find(&dst)
+		db = Inst.DB.Order(order).Offset(page * pageSize).Limit(pageSize).Offset(page * pageSize).Find(&dst)
 	}
 
 	if db.Error != nil {
@@ -83,7 +83,7 @@ func (model *Model[T]) FindPage(page int, pageSize int, query interface{}, args 
 func (model *Model[T]) SoftDeleteById(id string) bool {
 	var dst T
 
-	if r := Inst.DB.Model(dst).Where("id = ?", id).Delete(&dst); r.Error != nil {
+	if r := Inst.DB.Where("id = ?", id).Delete(&dst); r.Error != nil {
 		panic(r.Error.Error())
 	} else if r.RowsAffected >= 1 {
 		return true
@@ -96,7 +96,7 @@ func (model *Model[T]) SoftDeleteById(id string) bool {
 func (model *Model[T]) DeleteById(id string) bool {
 	var dst T
 
-	if r := Inst.DB.Model(dst).Unscoped().Where("id = ?", id).Delete(&dst); r.Error != nil {
+	if r := Inst.DB.Unscoped().Where("id = ?", id).Delete(&dst); r.Error != nil {
 		panic(r.Error.Error())
 	} else if r.RowsAffected >= 1 {
 		return true
