@@ -22,10 +22,6 @@ type Model[T any] struct {
 	DeletedAt gorm.DeletedAt `json:"deleted_at,omitempty" gorm:"comment:删除时间"`            // 删除时间
 }
 
-func NewEmptyModel[T any]() Model[T] {
-	return Model[T]{}
-}
-
 // BeforeCreate 创建对象前回调
 func (model *Model[T]) BeforeCreate(*gorm.DB) (err error) {
 	model.Id = util.CreateNanoid(16)

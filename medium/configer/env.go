@@ -4,7 +4,7 @@
  * Date: 2022-11-07 00:16:34
  */
 
-package config
+package configer
 
 import (
 	"flag"

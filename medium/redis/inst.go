@@ -4,12 +4,12 @@
  * Date: 2022-11-07 00:26:26
  */
 
-package mysql
+package redis
 
 import "medium/configer"
 
-var Inst *Mysql
+var Inst *Redis
 
 func init() {
-	Inst = newMysql(configer.Load[config]())
+	Inst = newRedis(configer.Load[config]())
 }

@@ -12,15 +12,15 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
-	"medium/config"
+	"medium/configer"
 )
 
 type Mysql struct {
-	DB *gorm.DB
+	*gorm.DB
 }
 
-// NewMysql 创建对象
-func NewMysql(conf conf) *Mysql {
+// 创建对象
+func newMysql(conf config) *Mysql {
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local",
 		conf.User,
 		conf.Password,
@@ -30,7 +30,7 @@ func NewMysql(conf conf) *Mysql {
 
 	if db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
 		Logger: func() logger.Interface {
-			if config.IsDev() {
+			if configer.IsDev() {
 				return logger.Default.LogMode(logger.Info)
 			} else {
 				return logger.Default.LogMode(logger.Warn)

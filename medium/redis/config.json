@@ -1,0 +1,14 @@
+{
+  "dev": {
+    "host": "localhost",
+    "port": 6379,
+    "password": "honeysenselt",
+    "database": 0
+  },
+  "prod": {
+    "host": "localhost",
+    "port": 6379,
+    "password": "honeysenselt",
+    "database": 0
+  }
+}

@@ -93,7 +93,7 @@ func Cur() *Config {
 
 		var jsonFile string
 		if IsDev() {
-			jsonFile = "config.json"
+			jsonFile = "configer.json"
 		} else {
 			jsonFile = "config_prod.json"
 		}

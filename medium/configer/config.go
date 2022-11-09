@@ -4,7 +4,7 @@
  * Date: 2022-11-07 00:15:14
  */
 
-package config
+package configer
 
 import (
 	"encoding/json"

@@ -1,15 +1,14 @@
 /*
  * Copyright (c) 2022 honeysense.com All rights reserved.
  * Author: sunrui
- * Date: 2022-11-06 19:35:52
+ * Date: 2022-11-09 22:14:07
  */
 
-package mysql
+package redis
 
 type config struct {
-	User     string `json:"user"`     // 用户名
-	Password string `json:"password"` // 密码
 	Host     string `json:"host"`     // 主机
 	Port     int    `json:"port"`     // 端口
-	Database string `json:"database"` // 数据库
+	Password string `json:"password"` // 密码
+	Database int    `json:"database"` // 数据库
 }
