@@ -9,7 +9,7 @@ package user
 import "medium/mysql"
 
 type User struct {
-	mysql.Model
+	mysql.Model[User]
 	Name string `json:"name"`
 }
 
