@@ -69,26 +69,43 @@ func TestFindOne(t *testing.T) {
 	}
 }
 
-func TestFindMany(t *testing.T) {
+func TestFindPage(t *testing.T) {
 	Inst.Truncate(&User{})
 
-	user := User{
-		Name: "name",
+	for i := 0; i < 10; i++ {
+		user := User{
+			Name: fmt.Sprintf("name-%d", i),
+		}
+		Inst.Save(&user)
 	}
-	Inst.Save(&user)
 
-	user2 := User{
-		Name: "name",
-	}
-	Inst.Save(&user2)
+	user := User{}
+	if ones := user.FindPage(0, 2, User{
+		Name: "hello",
+	}); len(ones) != 0 {
+		for index, value := range ones {
+			fmt.Println(index, value)
+		}
 
-	if ones := user.FindMany(User{
-		Name: "name",
-	}); len(ones) != 2 {
-		t.Fatalf("len(ones) != 2")
+		t.Fatalf("len(ones) != 0")
 	} else {
 		for index, value := range ones {
 			fmt.Println(index, value)
+		}
+	}
+
+	for i := 0; i < 5; i++ {
+		// find like name
+		if ones := user.FindPage(i, 2, "name LIKE ?", "%name%"); len(ones) != 2 {
+			for index, value := range ones {
+				fmt.Println(index, value)
+			}
+
+			t.Fatalf("len(ones) != 2")
+		} else {
+			for index, value := range ones {
+				fmt.Println(index, value)
+			}
 		}
 	}
 }

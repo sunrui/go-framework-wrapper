@@ -22,6 +22,10 @@ type Model[T any] struct {
 	DeletedAt gorm.DeletedAt `json:"deleted_at,omitempty" gorm:"comment:删除时间"`            // 删除时间
 }
 
+func NewEmptyModel[T any]() Model[T] {
+	return Model[T]{}
+}
+
 // BeforeCreate 创建对象前回调
 func (model *Model[T]) BeforeCreate(*gorm.DB) (err error) {
 	model.Id = util.CreateNanoid(16)
@@ -32,40 +36,46 @@ func (model *Model[T]) BeforeCreate(*gorm.DB) (err error) {
 func (model *Model[T]) FindById(id string) *T {
 	var dst T
 
-	if r := Inst.DB.Model(dst).Where("id = ?", id).Find(&dst); r.Error != nil {
-		panic(r.Error.Error())
-	} else if r.RowsAffected == 1 {
+	if db := Inst.DB.Model(dst).Where("id = ?", id).Find(&dst); db.Error != nil {
+		panic(db.Error.Error())
+	} else if db.RowsAffected == 1 {
 		return &dst
 	} else {
 		return nil
 	}
 }
 
-// FindOne 根据查件查找一个
+// FindOne 根据条件查找一个
 func (model *Model[T]) FindOne(query interface{}, args ...interface{}) *T {
 	var dst []T
 
-	if r := Inst.DB.Model(dst).Where(query, args).Find(&dst); r.Error != nil {
-		panic(r.Error.Error())
-	} else if r.RowsAffected > 1 {
-		panic(errors.New(fmt.Sprintf("find %d record", r.RowsAffected)))
-	} else if r.RowsAffected == 1 {
+	if db := Inst.DB.Model(dst).Limit(2).Where(query, args).Find(&dst); db.Error != nil {
+		panic(db.Error.Error())
+	} else if db.RowsAffected > 1 {
+		panic(errors.New(fmt.Sprintf("find %d record", db.RowsAffected)))
+	} else if db.RowsAffected == 1 {
 		return &dst[0]
 	} else {
 		return nil
 	}
 }
 
-// FindMany 根据查件查找一个或多个
-func (model *Model[T]) FindMany(query interface{}, args ...interface{}) []T {
+// FindPage 根据条件查找分页一个或多个
+func (model *Model[T]) FindPage(page int, pageSize int, query interface{}, args ...interface{}) []T {
 	var dst []T
 
-	if r := Inst.DB.Model(dst).Where(query, args).Find(&dst); r.Error != nil {
-		panic(r.Error.Error())
-	} else if r.RowsAffected >= 1 {
-		return dst
+	var db *gorm.DB
+
+	if query != nil {
+		db = Inst.DB.Offset(page*pageSize).Limit(pageSize).Offset(page*pageSize).Where(query, args).Find(&dst)
 	} else {
-		return nil
+		db = Inst.DB.Offset(page * pageSize).Limit(pageSize).Offset(page * pageSize).Find(&dst)
+	}
+
+	if db.Error != nil {
+		panic(db.Error.Error())
+	} else {
+		return dst
 	}
 }
 
