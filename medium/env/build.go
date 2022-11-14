@@ -4,7 +4,7 @@
  * Date: 2022-11-07 00:16:34
  */
 
-package configer
+package env
 
 import (
 	"flag"
@@ -17,11 +17,6 @@ var build *string
 // IsDev 是否为开发环境
 func IsDev() bool {
 	return build != nil && *build != "prod"
-}
-
-// IsProd 是否为生产环境
-func IsProd() bool {
-	return !IsDev()
 }
 
 // 初始化

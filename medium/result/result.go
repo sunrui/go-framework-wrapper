@@ -6,7 +6,10 @@
 
 package result
 
-import "encoding/json"
+import (
+	"encoding/json"
+	"medium/app/request"
+)
 
 // Pagination 分页对象
 type Pagination struct {
@@ -37,11 +40,11 @@ const (
 
 // Result 结果对象
 type Result[T any] struct {
-	Code       CodeType    `json:"code" example:"Ok"`    // 结果
-	Message    string      `json:"message" example:"成功"` // 消息
-	Data       T           `json:"data,omitempty"`       // 数据
-	Pagination *Pagination `json:"pagination,omitempty"` // 分页对象
-	//Request    *request.Request `json:"request,omitempty"`    // 请求对象
+	Code       CodeType         `json:"code" example:"Ok"`              // 结果
+	Message    *string          `json:"message,omitempty" example:"成功"` // 消息
+	Data       T                `json:"data,omitempty"`                 // 数据
+	Pagination *Pagination      `json:"pagination,omitempty"`           // 分页对象
+	Request    *request.Request `json:"request,omitempty"`              // 请求对象
 }
 
 // String 数据

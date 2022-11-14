@@ -12,7 +12,7 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
-	"medium/configer"
+	"medium/env"
 )
 
 type Mysql struct {
@@ -30,7 +30,7 @@ func newMysql(conf config) *Mysql {
 
 	if db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
 		Logger: func() logger.Interface {
-			if configer.IsDev() {
+			if env.IsDev() {
 				return logger.Default.LogMode(logger.Info)
 			} else {
 				return logger.Default.LogMode(logger.Warn)

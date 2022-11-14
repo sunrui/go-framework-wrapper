@@ -8,11 +8,15 @@ package middleware
 
 import (
 	"github.com/gin-gonic/gin"
+	"medium/result"
 )
 
 // MethodNotAllowed 异常 405 中间件
-func MethodNotAllowed(ctx *gin.Context) {
-	// 返回客户端
-	//ctx.JSON(http.StatusOK, result.MethodNotAllowed.WithKeyPair("uri", ctx.Request.URL.RequestURI()))
+func MethodNotAllowed(ctx *gin.Context) *result.Result[any] {
 	ctx.Abort()
+
+	return &result.Result[any]{
+		Code: result.METHOD_NOT_ALLOWED,
+		Data: result.KeyValueData("uri", ctx.Request.URL.RequestURI()),
+	}
 }

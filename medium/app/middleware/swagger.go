@@ -7,11 +7,9 @@
 package middleware
 
 import (
-	"bytes"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"runtime"
 	"strings"
@@ -71,31 +69,4 @@ func redoc(suffix string) []byte {
 			  </body>
 			</html>
 		`)
-}
-
-// 执行命令行
-func commandExec(name string, arg ...string) {
-	var out bytes.Buffer
-	var err error
-
-	cmd := exec.Command(name, arg...)
-	cmd.Stdout = &out
-
-	if err = cmd.Start(); err != nil {
-		panic(err.Error())
-	}
-
-	if err = cmd.Wait(); err != nil {
-		panic(err.Error())
-	}
-
-	println(out.String())
-}
-
-// 执行 swag 更新文档
-func init() {
-	//if config.Cur().Swagger.Enable {
-	//	commandExec("swag", "fmt")
-	//	commandExec("swag", "init", "--parseDependency")
-	//}
 }

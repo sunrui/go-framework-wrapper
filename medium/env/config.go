@@ -4,24 +4,24 @@
  * Date: 2022-11-07 00:15:14
  */
 
-package configer
+package env
 
 import (
 	"encoding/json"
 	"os"
 )
 
-const file = "config.json"
+const FILE = "config.json"
 
 type env[T any] struct {
 	Dev  T `json:"dev"`
 	Prod T `json:"prod"`
 }
 
-func Load[T any]() T {
+func LoadConfig[T any]() T {
 	var e env[T]
 
-	if stream, err := os.ReadFile(file); err != nil {
+	if stream, err := os.ReadFile(FILE); err != nil {
 		panic(err.Error())
 	} else if err = json.Unmarshal(stream, &e); err != nil {
 		panic(err.Error())

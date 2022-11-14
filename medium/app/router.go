@@ -8,6 +8,8 @@ package app
 
 import (
 	"github.com/gin-gonic/gin"
+	"medium/app/log"
+	"medium/app/request"
 	"medium/result"
 	"net/http"
 )
@@ -29,33 +31,19 @@ type RouterGroup struct {
 	Routers    []Router        // 路由路径
 }
 
-// gin 回调
-func handlerFunc(routerFunc RouterFunc) gin.HandlerFunc {
+// 路由回调
+func routerFunc(routerFunc RouterFunc) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		r := routerFunc(ctx)
 
-		//// 是否结果导出请求
-		//if request.IsDebug(ctx) {
-		//	req := request.Get(ctx)
-		//	r.Request = &req
-		//}
-		//
-		//// 记录日志
-		//if config.Cur().Log.Enable {
-		//	// 写文件
-		//	if config.Cur().Log.WriteFile {
-		//		if buffer := getBuffer(ctx, r); buffer != "" {
-		//			log.Println(buffer)
-		//		}
-		//	}
-		//
-		//	// 写控制台
-		//	if config.Cur().Log.WriteConsole {
-		//		if buffer := getBuffer(ctx, r); buffer != "" {
-		//			println(buffer)
-		//		}
-		//	}
-		//}
+		// 结果导出请求
+		if request.IsEnable() {
+			req := request.Get(ctx)
+			r.Request = &req
+		}
+
+		// 记录日志
+		log.Write(ctx, r)
 
 		// 返回客户端
 		ctx.JSON(http.StatusOK, r)
@@ -75,13 +63,13 @@ func registerRouter(engine *gin.Engine, router RouterGroup) {
 	for _, routerPath := range router.Routers {
 		switch routerPath.HttpMethod {
 		case http.MethodGet:
-			routerGroup.GET(routerPath.RelativePath, handlerFunc(routerPath.RouterFunc))
+			routerGroup.GET(routerPath.RelativePath, routerFunc(routerPath.RouterFunc))
 		case http.MethodPost:
-			routerGroup.POST(routerPath.RelativePath, handlerFunc(routerPath.RouterFunc))
+			routerGroup.POST(routerPath.RelativePath, routerFunc(routerPath.RouterFunc))
 		case http.MethodPut:
-			routerGroup.PUT(routerPath.RelativePath, handlerFunc(routerPath.RouterFunc))
+			routerGroup.PUT(routerPath.RelativePath, routerFunc(routerPath.RouterFunc))
 		case http.MethodDelete:
-			routerGroup.DELETE(routerPath.RelativePath, handlerFunc(routerPath.RouterFunc))
+			routerGroup.DELETE(routerPath.RelativePath, routerFunc(routerPath.RouterFunc))
 		default:
 			panic("http method not supported")
 		}

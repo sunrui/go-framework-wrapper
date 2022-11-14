@@ -6,10 +6,10 @@
 
 package redis
 
-import "medium/configer"
+import "medium/env"
 
 var Inst *Redis
 
 func init() {
-	Inst = newRedis(configer.Load[config]())
+	Inst = newRedis(env.LoadConfig[config]())
 }

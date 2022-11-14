@@ -4,12 +4,10 @@
  * Date: 2022-11-07 00:26:26
  */
 
-package mysql
+package token
 
-import "medium/env"
-
-var Inst *Mysql
+//var Inst *Token
 
 func init() {
-	Inst = newMysql(env.LoadConfig[config]())
+	//Inst = newToken(env.LoadConfig[config]())
 }
