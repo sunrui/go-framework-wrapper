@@ -11,7 +11,7 @@ var levelType LevelType
 
 // SetLevelType 设置等级
 func SetLevelType(_levelType LevelType) {
-	levelType = levelType
+	levelType = _levelType
 }
 
 // GetLevelType 获取等级

@@ -10,6 +10,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"medium/app/log"
 	"medium/app/middleware"
+	"medium/app/middleware/rateLimit"
+	"medium/app/middleware/swagger"
 	"medium/result"
 	"net/http"
 )
@@ -41,7 +43,7 @@ func registerMiddleware(engine *gin.Engine) {
 	engine.NoMethod(middlewareFunc(middleware.MethodNotAllowed))
 
 	// 注册限流中间件
-	engine.Use(middlewareFunc(middleware.RateLimit))
+	engine.Use(middlewareFunc(rateLimit.RateLimit))
 
 	// 注册异常中间件
 	engine.Use(middlewareFunc(middleware.Recover))
@@ -50,7 +52,7 @@ func registerMiddleware(engine *gin.Engine) {
 	engine.Use(middleware.Token)
 
 	// 注册文档中间件
-	engine.GET("/doc/*any", middleware.Swagger)
+	engine.GET("/doc/*any", swagger.Swagger)
 
 	// 注册 body 中间件
 	engine.Use(middleware.Body)

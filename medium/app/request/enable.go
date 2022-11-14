@@ -7,7 +7,7 @@
 package request
 
 // 开关
-var enable = false
+var enable = true
 
 // SetEnable 设置  开关
 func SetEnable(_enable bool) {
