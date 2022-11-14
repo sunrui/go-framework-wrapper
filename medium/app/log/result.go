@@ -16,7 +16,7 @@ import (
 )
 
 // 获取结果内容
-func getResultStream(ctx *gin.Context, r result.Result[any]) string {
+func getResult(ctx *gin.Context, r result.Result[any]) string {
 	// 获取 request 对象
 	req := request.Get(ctx)
 
@@ -31,15 +31,24 @@ func getResultStream(ctx *gin.Context, r result.Result[any]) string {
 	var buffer string
 
 	// 时间 - 等级 - IP
-	buffer += " - " + string(levelType) + " - " + req.Ip
+	buffer = " - " + string(levelType) + " - " + req.Ip
 
 	// userId
 	if userId := token.GetUserId(ctx); userId != nil {
 		buffer += " - userId(" + *userId + ")"
 	}
 
+	switch levelType {
+	case TRACE:
+	case DEBUG:
+	case INFO:
+	case WARNING:
+	case ERROR:
+		buffer = fmt.Sprintf("\033[1;37;41m%s\033[0m", buffer)
+	}
+
 	// 换行
-	buffer += "\n\n"
+	buffer += "\n"
 
 	// method http://host:port?query protocol
 	buffer += req.Method + " " + req.Uri + " " + req.Proto + "\n"
@@ -74,7 +83,7 @@ func Write(ctx *gin.Context, r result.Result[any]) {
 		return
 	}
 
-	stream := getResultStream(ctx, r)
+	stream := getResult(ctx, r)
 	log.Println(stream)
 	fmt.Println(stream)
 }

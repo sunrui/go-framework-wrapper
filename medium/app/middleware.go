@@ -8,6 +8,7 @@ package app
 
 import (
 	"github.com/gin-gonic/gin"
+	"medium/app/log"
 	"medium/app/middleware"
 	"medium/result"
 	"net/http"
@@ -20,7 +21,13 @@ type MiddlewareFunc func(ctx *gin.Context) *result.Result[any]
 func middlewareFunc(middlewareFunc MiddlewareFunc) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		r := middlewareFunc(ctx)
-		ctx.JSON(http.StatusOK, r)
+		if r != nil {
+			ctx.JSON(http.StatusOK, r)
+
+			defer func() {
+				log.Write(ctx, *r)
+			}()
+		}
 	}
 }
 
