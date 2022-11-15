@@ -37,7 +37,14 @@ func SetConfig(_conf config.Log) {
 
 	// 每次启动的时候建立新文件
 	log.SetOutput(io.MultiWriter(func() *os.File {
-		fileName := time.Now().Format("2006-01-02 15:04:05")
+		var timeLayout string
+		if config.IsDev() {
+			timeLayout = "2006-01-02"
+		} else {
+			timeLayout = "2006-01-02 15:04:05"
+		}
+
+		fileName := time.Now().Format(timeLayout)
 		if file, err := os.Create(config.Inst().Log.Directory + "/" + fileName + ".log"); err != nil {
 			panic(err.Error())
 		} else {
@@ -70,9 +77,6 @@ func getResult(ctx *gin.Context, r result.Result[any]) string {
 	if userId := token.GetUserId(); userId != nil {
 		buffer += " - userId(" + *userId + ")"
 	}
-
-	// 换色
-	buffer = fmt.Sprintf("\033[1;37;41m%s\033[0m", buffer)
 
 	// 换行
 	buffer += "\n"
