@@ -21,7 +21,7 @@ func TestIdData(t *testing.T) {
 
 func TestKeyValueData(t *testing.T) {
 	fmt.Println(Result[any]{
-		Code:    CONFLICT,
+		Code:    Conflict,
 		Message: "冲突了",
 		Data:    KeyValueData("my key", "mey value"),
 	})

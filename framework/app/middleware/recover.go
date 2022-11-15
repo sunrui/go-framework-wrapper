@@ -27,7 +27,7 @@ func Recover(ctx *gin.Context) *result.Result[any] {
 			ctx.Abort()
 
 			r = &result.Result[any]{
-				Code: result.INTERNAL_ERROR,
+				Code: result.InternalError,
 				Data: dataMap,
 			}
 		}

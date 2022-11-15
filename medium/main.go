@@ -7,7 +7,7 @@ package main
 
 import (
 	"framework/app"
-	"framework/rest/common"
+	"medium/api/common"
 )
 
 // @title   Medium 公用接口文档

@@ -12,7 +12,3 @@ type User struct {
 	mysql.Model[User]
 	Name string `json:"name"`
 }
-
-func FindByName(name string) *User {
-	return nil
-}

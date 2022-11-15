@@ -7,7 +7,6 @@
 package token
 
 import (
-	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
 )
 
@@ -87,7 +86,7 @@ type Token struct {
 //}
 
 // GetUserId 获取当前用户 id
-func GetUserId(ctx *gin.Context) *string {
+func GetUserId() *string {
 	//if token, err := Get(ctx); err != nil {
 	//	return nil
 	//} else {

@@ -3,7 +3,8 @@ module medium
 go 1.19
 
 require framework v0.0.0-00010101000000-000000000000
-require config v0.0.0-00010101000000-000000000000
+
+require config v0.0.0-00010101000000-000000000000 // indirect
 
 require (
 	github.com/gin-contrib/sse v0.1.0 // indirect
@@ -32,4 +33,5 @@ require (
 )
 
 replace framework => ../framework
+
 replace config => ../config

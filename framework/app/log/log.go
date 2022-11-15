@@ -7,22 +7,30 @@
 package log
 
 import (
+	"config"
+	"fmt"
+	"framework/app/request"
+	"framework/result"
+	"framework/token"
+	"github.com/gin-gonic/gin"
 	"io"
 	"log"
 	"os"
 	"time"
 )
 
-// Init 初始化日志
-func Init(level LevelType, filePath string) {
-	if level == "NONE" {
-		log.SetOutput(nil)
+// SetConfig 设置配置项
+func SetConfig(_conf config.Log) {
+	config.Inst.Log = _conf
+
+	if config.Inst.Log.Level == config.LogNone {
+		//log.SetOutput(nil)
 		return
 	}
 
 	// 建立日志目录
-	if _, err := os.Stat(filePath); err != nil {
-		if err = os.Mkdir(filePath, os.ModePerm); err != nil {
+	if _, err := os.Stat(config.Inst.Log.Directory); err != nil {
+		if err = os.Mkdir(config.Inst.Log.Directory, os.ModePerm); err != nil {
 			panic(err.Error())
 		}
 	}
@@ -30,7 +38,7 @@ func Init(level LevelType, filePath string) {
 	// 每次启动的时候建立新文件
 	log.SetOutput(io.MultiWriter(func() *os.File {
 		fileName := time.Now().Format("2006-01-02 15:04:05")
-		if file, err := os.Create(filePath + "/" + fileName + ".log"); err != nil {
+		if file, err := os.Create(config.Inst.Log.Directory + "/" + fileName + ".log"); err != nil {
 			panic(err.Error())
 		} else {
 			return file
@@ -38,4 +46,81 @@ func Init(level LevelType, filePath string) {
 	}()))
 
 	log.SetFlags(log.Ldate | log.Ltime)
+}
+
+// 获取结果内容
+func getResult(ctx *gin.Context, r result.Result[any]) string {
+	// 获取 request 对象
+	req := request.Get(ctx)
+
+	// 等级
+	var logLevel config.LogLevel
+	if r.Code == result.OK {
+		logLevel = config.LogInfo
+	} else {
+		logLevel = config.LogError
+	}
+
+	var buffer string
+
+	// 时间 - 等级 - IP
+	buffer = " - " + string(logLevel) + " - " + req.Ip
+
+	// userId
+	if userId := token.GetUserId(); userId != nil {
+		buffer += " - userId(" + *userId + ")"
+	}
+
+	switch logLevel {
+	case config.LogTrace:
+	case config.LogDebug:
+	case config.LogInfo:
+	case config.LogWarning:
+	case config.LogError:
+		buffer = fmt.Sprintf("\033[1;37;41m%s\033[0m", buffer)
+	}
+
+	// 换行
+	buffer += "\n"
+
+	// method http://host:port?query protocol
+	buffer += req.Method + " " + req.Uri + " " + req.Proto + "\n"
+
+	// header
+	for _, header := range req.Headers {
+		buffer += header + "\n"
+	}
+
+	// 空一行
+	buffer += "\n"
+
+	// body
+	if req.Body != nil {
+		buffer += *req.Body + "\n"
+	} else {
+		buffer += "<null>\n"
+	}
+
+	// 空一行
+	buffer += "\n"
+
+	// 结果
+	buffer += r.String() + "\n"
+
+	return buffer
+}
+
+// Write 写入文件
+func Write(ctx *gin.Context, r result.Result[any]) {
+	if config.Inst.Log.Level == config.LogNone {
+		return
+	}
+
+	stream := getResult(ctx, r)
+	log.Println(stream)
+	fmt.Println(stream)
+}
+
+func init() {
+	SetConfig(config.Inst.Log)
 }

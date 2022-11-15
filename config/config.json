@@ -16,6 +16,18 @@
     "rateLimit": {
       "capacity": 5,
       "quantum": 5
+    },
+    "log": {
+      "directory": "log",
+      "level": "NONE",
+      "file": true,
+      "console": true
+    },
+    "jwt": {
+      "secret": "123456"
+    },
+    "request": {
+      "dump": true
     }
   },
   "prod": {
@@ -35,6 +47,18 @@
     "rateLimit": {
       "capacity": 5,
       "quantum": 5
+    },
+    "log": {
+      "directory": "log",
+      "level": "NONE",
+      "file": true,
+      "console": true
+    },
+    "jwt": {
+      "secret": "123456"
+    },
+    "request": {
+      "dump": true
     }
   }
 }

@@ -9,8 +9,11 @@ import (
 
 type config struct {
 	Mysql     Mysql     `json:"mysql"`     // mysql
-	Redis     Redis     `json:"redis"`     // mysql
-	RateLimit RateLimit `json:"rateLimit"` // mysql
+	Redis     Redis     `json:"redis"`     // redis
+	RateLimit RateLimit `json:"rateLimit"` // rateLimit
+	Log       Log       `json:"log"`       // log
+	Jwt       Jwt       `json:"jwt"`       // jwt
+	Request   Request   `json:"request"`   // request
 }
 
 var Inst *config

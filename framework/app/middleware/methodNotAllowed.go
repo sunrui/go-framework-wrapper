@@ -16,7 +16,7 @@ func MethodNotAllowed(ctx *gin.Context) *result.Result[any] {
 	ctx.Abort()
 
 	return &result.Result[any]{
-		Code: result.METHOD_NOT_ALLOWED,
+		Code: result.MethodNotAllowed,
 		Data: result.KeyValueData("uri", ctx.Request.URL.RequestURI()),
 	}
 }

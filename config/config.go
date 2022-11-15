@@ -26,8 +26,27 @@ type Redis struct {
 	Database int    `json:"database"` // 数据库
 }
 
+// LogLevel 日志等级
+type LogLevel string
+
+const (
+	LogNone    LogLevel = "NONE"    // none
+	LogTrace   LogLevel = "TRACE"   // trace
+	LogDebug   LogLevel = "DEBUG"   // debug
+	LogInfo    LogLevel = "INFO"    // info
+	LogWarning LogLevel = "WARNING" // warning
+	LogError   LogLevel = "ERROR"   // error
+)
+
 type Log struct {
-	Level         string `json:"level"`         // 等级
-	EnableFile    bool   `json:"enableFile"`    // 写入文件
-	EnableConsole bool   `json:"enableConsole"` // 写入控制台
+	Directory string   `json:"directory"` // 路径
+	Level     LogLevel `json:"level"`     // 等级
+}
+
+type Jwt struct {
+	Secret string `json:"secret"` // 密钥
+}
+
+type Request struct {
+	Dump bool `json:"dump"` // 导出
 }

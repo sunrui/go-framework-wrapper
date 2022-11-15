@@ -16,7 +16,7 @@ func NotFound(ctx *gin.Context) *result.Result[any] {
 	ctx.Abort()
 
 	return &result.Result[any]{
-		Code: result.NOT_FOUND,
+		Code: result.NotFound,
 		Data: result.KeyValueData("uri", ctx.Request.URL.RequestURI()),
 	}
 }

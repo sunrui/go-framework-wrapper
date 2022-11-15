@@ -26,7 +26,7 @@ func RateLimit(ctx *gin.Context) *result.Result[any] {
 	if bucket.TakeAvailable(1) < 1 {
 		ctx.Abort()
 		return &result.Result[any]{
-			Code: result.RATE_LIMIT,
+			Code: result.RateLimit,
 			Data: result.KeyValueData("uri", ctx.Request.URL.RequestURI()),
 		}
 	}

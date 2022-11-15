@@ -7,13 +7,14 @@
 package middleware
 
 import (
+	"config"
 	"framework/app/request"
 	"github.com/gin-gonic/gin"
 )
 
 // Body 中间件
 func Body(ctx *gin.Context) {
-	if request.IsEnable() {
+	if config.Inst.Request.Dump {
 		request.CopyBody(ctx)
 	}
 

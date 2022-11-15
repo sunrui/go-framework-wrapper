@@ -23,19 +23,19 @@ type Pagination struct {
 type CodeType string
 
 const (
-	OK                 CodeType = "OK"
-	NO_AUTH            CodeType = "NO_AUTH"
-	PARAMETER_ERROR    CodeType = "PARAMETER_ERROR"
-	FORBIDDEN          CodeType = "FORBIDDEN"
-	NOT_FOUND          CodeType = "NOT_FOUND"
-	NO_MATCH           CodeType = "NO_MATCH"
-	NO_CONTENT         CodeType = "NO_CONTENT"
-	METHOD_NOT_ALLOWED CodeType = "METHOD_NOT_ALLOWED"
-	CONFLICT           CodeType = "CONFLICT"
-	RATE_LIMIT         CodeType = "RATE_LIMIT"
-	INTERNAL_ERROR     CodeType = "INTERNAL_ERROR"
-	THIRD_PARTY_ERROR  CodeType = "THIRD_PARTY_ERROR"
-	NOT_IMPLEMENTED    CodeType = "NOT_IMPLEMENTED"
+	OK               CodeType = "OK"
+	NoAuth           CodeType = "NoAuth"
+	ParameterError   CodeType = "ParameterError"
+	Forbidden        CodeType = "Forbidden"
+	NotFound         CodeType = "NotFound"
+	NoMatch          CodeType = "NoMatch"
+	NoContent        CodeType = "NoContent"
+	MethodNotAllowed CodeType = "MethodNotAllowed"
+	Conflict         CodeType = "Conflict"
+	RateLimit        CodeType = "RateLimit"
+	InternalError    CodeType = "InternalError"
+	ThirdPartyError  CodeType = "ThirdPartyError"
+	NotImplemented   CodeType = "NotImplemented"
 )
 
 // Result 结果对象

@@ -7,6 +7,7 @@
 package app
 
 import (
+	"config"
 	"framework/app/log"
 	"framework/app/request"
 	"framework/result"
@@ -37,7 +38,7 @@ func routerFunc(routerFunc RouterFunc) gin.HandlerFunc {
 		r := routerFunc(ctx)
 
 		// 结果导出请求
-		if request.IsEnable() {
+		if config.Inst.Request.Dump {
 			req := request.Get(ctx)
 			r.Request = &req
 		}
