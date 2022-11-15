@@ -1,13 +1,13 @@
 /*
  * Copyright (c) 2022 honeysense.com All rights reserved.
  * Author: sunrui
- * Date: 2022/04/07 22:38:07
+ * Date: 2022-11-15 20:53:52
  */
 package main
 
 import (
-	"medium/app"
-	"medium/rest/common"
+	"framework/app"
+	"framework/rest/common"
 )
 
 // @title   Medium 公用接口文档

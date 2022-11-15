@@ -1,0 +1,8 @@
+{
+  "dev": {
+    "jwtSecret": "localhost"
+  },
+  "prod": {
+    "jwtSecret": "localhost"
+  }
+}

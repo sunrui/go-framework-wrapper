@@ -1,0 +1,40 @@
+{
+  "dev": {
+    "mysql": {
+      "host": "localhost",
+      "port": 3306,
+      "database": "medium_dev",
+      "user": "root",
+      "password": "honeysenselt"
+    },
+    "redis": {
+      "host": "localhost",
+      "port": 6379,
+      "password": "honeysenselt",
+      "database": 0
+    },
+    "rateLimit": {
+      "capacity": 5,
+      "quantum": 5
+    }
+  },
+  "prod": {
+    "mysql": {
+      "host": "localhost",
+      "port": 3306,
+      "database": "medium_dev",
+      "user": "root",
+      "password": "honeysenselt"
+    },
+    "redis": {
+      "host": "localhost",
+      "port": 6379,
+      "password": "honeysenselt",
+      "database": 0
+    },
+    "rateLimit": {
+      "capacity": 5,
+      "quantum": 5
+    }
+  }
+}
