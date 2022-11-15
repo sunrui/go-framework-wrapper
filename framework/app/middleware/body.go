@@ -14,7 +14,7 @@ import (
 
 // Body 中间件
 func Body(ctx *gin.Context) {
-	if config.Inst.Request.Dump {
+	if config.Inst().Request.Dump {
 		request.CopyBody(ctx)
 	}
 

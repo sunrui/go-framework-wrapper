@@ -38,7 +38,7 @@ func routerFunc(routerFunc RouterFunc) gin.HandlerFunc {
 		r := routerFunc(ctx)
 
 		// 结果导出请求
-		if config.Inst.Request.Dump {
+		if config.Inst().Request.Dump {
 			req := request.Get(ctx)
 			r.Request = &req
 		}

@@ -7,7 +7,7 @@ import (
 	"runtime"
 )
 
-type config struct {
+type Config struct {
 	Mysql     Mysql     `json:"mysql"`     // mysql
 	Redis     Redis     `json:"redis"`     // redis
 	RateLimit RateLimit `json:"rateLimit"` // rateLimit
@@ -16,12 +16,16 @@ type config struct {
 	Request   Request   `json:"request"`   // request
 }
 
-var Inst *config
+var inst *Config
 
-func init() {
+func Inst() *Config {
+	if inst != nil {
+		return inst
+	}
+
 	type env struct {
-		Dev  config `json:"dev"`
-		Prod config `json:"prod"`
+		Dev  Config `json:"dev"`
+		Prod Config `json:"prod"`
 	}
 
 	_, file, _, _ := runtime.Caller(0)
@@ -35,8 +39,10 @@ func init() {
 	}
 
 	if IsDev() {
-		Inst = &e.Dev
+		inst = &e.Dev
 	} else {
-		Inst = &e.Prod
+		inst = &e.Prod
 	}
+
+	return inst
 }

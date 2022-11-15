@@ -11,5 +11,5 @@ import "config"
 var Inst *Mysql
 
 func init() {
-	Inst = newMysql(config.Inst.Mysql)
+	Inst = newMysql(config.Inst().Mysql)
 }

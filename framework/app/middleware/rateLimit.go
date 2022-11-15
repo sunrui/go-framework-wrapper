@@ -16,7 +16,7 @@ import (
 
 // RateLimit 流量限制中间件
 func RateLimit(ctx *gin.Context) *result.Result[any] {
-	conf := config.Inst.RateLimit
+	conf := config.Inst().RateLimit
 
 	bucket := ratelimit.NewBucketWithQuantum(time.Second, // 间隔单位
 		conf.Capacity, // 令牌桶容量

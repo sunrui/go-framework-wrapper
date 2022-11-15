@@ -21,16 +21,16 @@ import (
 
 // SetConfig 设置配置项
 func SetConfig(_conf config.Log) {
-	config.Inst.Log = _conf
+	config.Inst().Log = _conf
 
-	if config.Inst.Log.Level == config.LogNone {
-		//log.SetOutput(nil)
+	if config.Inst().Log.Level == config.LogNone {
+		log.SetOutput(nil)
 		return
 	}
 
 	// 建立日志目录
-	if _, err := os.Stat(config.Inst.Log.Directory); err != nil {
-		if err = os.Mkdir(config.Inst.Log.Directory, os.ModePerm); err != nil {
+	if _, err := os.Stat(config.Inst().Log.Directory); err != nil {
+		if err = os.Mkdir(config.Inst().Log.Directory, os.ModePerm); err != nil {
 			panic(err.Error())
 		}
 	}
@@ -38,7 +38,7 @@ func SetConfig(_conf config.Log) {
 	// 每次启动的时候建立新文件
 	log.SetOutput(io.MultiWriter(func() *os.File {
 		fileName := time.Now().Format("2006-01-02 15:04:05")
-		if file, err := os.Create(config.Inst.Log.Directory + "/" + fileName + ".log"); err != nil {
+		if file, err := os.Create(config.Inst().Log.Directory + "/" + fileName + ".log"); err != nil {
 			panic(err.Error())
 		} else {
 			return file
@@ -71,14 +71,8 @@ func getResult(ctx *gin.Context, r result.Result[any]) string {
 		buffer += " - userId(" + *userId + ")"
 	}
 
-	switch logLevel {
-	case config.LogTrace:
-	case config.LogDebug:
-	case config.LogInfo:
-	case config.LogWarning:
-	case config.LogError:
-		buffer = fmt.Sprintf("\033[1;37;41m%s\033[0m", buffer)
-	}
+	// 换色
+	buffer = fmt.Sprintf("\033[1;37;41m%s\033[0m", buffer)
 
 	// 换行
 	buffer += "\n"
@@ -112,7 +106,7 @@ func getResult(ctx *gin.Context, r result.Result[any]) string {
 
 // Write 写入文件
 func Write(ctx *gin.Context, r result.Result[any]) {
-	if config.Inst.Log.Level == config.LogNone {
+	if config.Inst().Log.Level == config.LogNone {
 		return
 	}
 
@@ -122,5 +116,5 @@ func Write(ctx *gin.Context, r result.Result[any]) {
 }
 
 func init() {
-	SetConfig(config.Inst.Log)
+	SetConfig(config.Inst().Log)
 }

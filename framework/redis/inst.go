@@ -11,5 +11,5 @@ import "config"
 var Inst *Redis
 
 func init() {
-	Inst = newRedis(config.Inst.Redis)
+	Inst = newRedis(config.Inst().Redis)
 }
