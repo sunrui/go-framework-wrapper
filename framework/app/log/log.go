@@ -8,8 +8,8 @@ package log
 
 import (
 	"framework/app/request"
+	"framework/app/token"
 	"framework/result"
-	"framework/token"
 	"github.com/gin-gonic/gin"
 )
 
@@ -24,7 +24,7 @@ func getBuffer(ctx *gin.Context, r result.Result[any]) string {
 	buffer = req.Ip
 
 	// userId
-	if userId := token.GetUserId(); userId != nil {
+	if userId := token.GetUserId(ctx); userId != nil {
 		buffer += " - userId(" + *userId + ")"
 	}
 

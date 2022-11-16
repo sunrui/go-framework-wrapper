@@ -22,11 +22,14 @@
       "file": "access",
       "level": "trace"
     },
-    "jwt": {
-      "secret": "123456"
-    },
     "request": {
       "dump": true
+    },
+    "token": {
+      "jwtSecret": "123456",
+      "key": "token",
+      "maxAge": 1209600,
+      "autoRefresh": 3600
     }
   },
   "prod": {
@@ -52,11 +55,14 @@
       "file": "access",
       "level": "debug"
     },
-    "jwt": {
-      "secret": "123456"
-    },
     "request": {
       "dump": true
+    },
+    "token": {
+      "jwtSecret": "123456",
+      "key": "C96C528F-A819-420C-9D15-CABC6B648A62",
+      "maxAge": 1209600,
+      "autoRefresh": 3600
     }
   }
 }
