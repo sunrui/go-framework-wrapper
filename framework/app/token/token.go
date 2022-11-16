@@ -115,7 +115,7 @@ func RefreshIf(ctx *gin.Context) {
 		InstExpired := token.ExpiresAt - time.Now().Unix()
 
 		// 设置距离过期时间（毫秒）
-		setExpired := int64((config.Inst().Token.MaxAge - config.Inst().Token.AutoRefreshAge) * 1000)
+		setExpired := (config.Inst().Token.MaxAge - config.Inst().Token.AutoRefreshAge) * 1000
 
 		// 已经大于最小刷新时长
 		if InstExpired >= setExpired {

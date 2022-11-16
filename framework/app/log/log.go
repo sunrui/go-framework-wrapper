@@ -13,7 +13,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// 获取结果内容
+// WriteResult 获取结果内容
 func WriteResult(ctx *gin.Context, r result.Result[any]) {
 	// 获取 request 对象
 	req := request.Get(ctx)
