@@ -7,7 +7,6 @@
 package redis
 
 import (
-	"config"
 	"encoding/json"
 	"fmt"
 	"github.com/garyburd/redigo/redis"
@@ -18,37 +17,6 @@ import (
 // Redis 对象
 type Redis struct {
 	Pool redis.Pool
-}
-
-// 初始化
-func newRedis(conf config.Redis) *Redis {
-	// 建立连接池
-	rediz := Redis{
-		Pool: redis.Pool{
-			MaxIdle:     5,
-			MaxActive:   100,
-			IdleTimeout: 1 * time.Hour,
-			Wait:        true,
-			Dial: func() (redis.Conn, error) {
-				address := fmt.Sprintf("%s:%d", conf.Host, conf.Port)
-				timeout := time.Duration(10) * time.Second
-
-				return redis.Dial("tcp", address,
-					redis.DialPassword(conf.Password),
-					redis.DialDatabase(conf.Database),
-					redis.DialConnectTimeout(timeout),
-					redis.DialReadTimeout(timeout),
-					redis.DialWriteTimeout(timeout))
-			},
-		},
-	}
-
-	// 尝试数据库连接
-	if _, err := rediz.Pool.Get().Do("PING"); err != nil {
-		panic(err.Error())
-	}
-
-	return &rediz
 }
 
 // Set 设置对象

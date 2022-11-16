@@ -6,10 +6,40 @@
 
 package redis
 
-import "config"
+import (
+	"config"
+	"fmt"
+	"github.com/garyburd/redigo/redis"
+	"time"
+)
 
+// Inst 实例
 var Inst *Redis
 
 func init() {
-	Inst = newRedis(config.Inst().Redis)
+	// 建立连接池
+	Inst = &Redis{
+		Pool: redis.Pool{
+			MaxIdle:     5,
+			MaxActive:   100,
+			IdleTimeout: 1 * time.Hour,
+			Wait:        true,
+			Dial: func() (redis.Conn, error) {
+				address := fmt.Sprintf("%s:%d", config.Inst().Redis.Host, config.Inst().Redis.Port)
+				timeout := time.Duration(10) * time.Second
+
+				return redis.Dial("tcp", address,
+					redis.DialPassword(config.Inst().Redis.Password),
+					redis.DialDatabase(config.Inst().Redis.Database),
+					redis.DialConnectTimeout(timeout),
+					redis.DialReadTimeout(timeout),
+					redis.DialWriteTimeout(timeout))
+			},
+		},
+	}
+
+	// 尝试数据库连接
+	if _, err := Inst.Pool.Get().Do("PING"); err != nil {
+		panic(err.Error())
+	}
 }

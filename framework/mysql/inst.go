@@ -6,10 +6,43 @@
 
 package mysql
 
-import "config"
+import (
+	"config"
+	"fmt"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
+	"gorm.io/gorm/schema"
+)
 
+// Inst 实例
 var Inst *Mysql
 
 func init() {
-	Inst = newMysql(config.Inst().Mysql)
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local",
+		config.Inst().Mysql.User,
+		config.Inst().Mysql.Password,
+		config.Inst().Mysql.Host,
+		config.Inst().Mysql.Port,
+		config.Inst().Mysql.Database)
+
+	if db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
+		Logger: func() logger.Interface {
+			if config.IsDev() {
+				return logger.Default.LogMode(logger.Info)
+			} else {
+				return logger.Default.LogMode(logger.Warn)
+			}
+		}(),
+		NamingStrategy: schema.NamingStrategy{
+			TablePrefix:   "t_", // 表名前缀
+			SingularTable: true, // 使用单数表名
+		},
+	}); err != nil {
+		panic(err.Error())
+	} else {
+		Inst = &Mysql{
+			DB: db,
+		}
+	}
 }

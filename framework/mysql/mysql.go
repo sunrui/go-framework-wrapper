@@ -7,46 +7,11 @@
 package mysql
 
 import (
-	"config"
-	"fmt"
-	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
-	"gorm.io/gorm/schema"
 )
 
 type Mysql struct {
 	*gorm.DB
-}
-
-// 创建对象
-func newMysql(conf config.Mysql) *Mysql {
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local",
-		conf.User,
-		conf.Password,
-		conf.Host,
-		conf.Port,
-		conf.Database)
-
-	if db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
-		Logger: func() logger.Interface {
-			if config.IsDev() {
-				return logger.Default.LogMode(logger.Info)
-			} else {
-				return logger.Default.LogMode(logger.Warn)
-			}
-		}(),
-		NamingStrategy: schema.NamingStrategy{
-			TablePrefix:   "t_", // 表名前缀
-			SingularTable: true, // 使用单数表名
-		},
-	}); err != nil {
-		panic(err.Error())
-	} else {
-		return &Mysql{
-			DB: db,
-		}
-	}
 }
 
 // AutoMigrate 创建表
