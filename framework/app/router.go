@@ -8,7 +8,7 @@ package app
 
 import (
 	"config"
-	"framework/app/middleware"
+	"framework/app/log"
 	"framework/app/request"
 	"framework/result"
 	"github.com/gin-gonic/gin"
@@ -44,7 +44,7 @@ func routerFunc(routerFunc RouterFunc) gin.HandlerFunc {
 		}
 
 		// 记录日志
-		middleware.WriteLog(ctx, r)
+		log.WriteLog(ctx, r)
 
 		// 返回客户端
 		ctx.JSON(http.StatusOK, r)
