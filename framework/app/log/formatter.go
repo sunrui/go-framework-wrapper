@@ -12,9 +12,11 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+// 自定义格式器
 type myFormatter struct {
 }
 
+// Format 格式化
 func (m *myFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 	var b *bytes.Buffer
 	if entry.Buffer != nil {
@@ -24,7 +26,7 @@ func (m *myFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 	}
 
 	timestamp := entry.Time.Format("2006-01-02 15:04:05")
-	b.WriteString(fmt.Sprintf("[%s] [%s] %s\n", timestamp, entry.Level, entry.Message))
+	b.WriteString(fmt.Sprintf("%s - %s - %s\n", timestamp, entry.Level, entry.Message))
 
 	return b.Bytes(), nil
 }

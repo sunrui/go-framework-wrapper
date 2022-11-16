@@ -8,7 +8,7 @@ package log
 
 import (
 	"config"
-	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
+	"github.com/lestrrat-go/file-rotatelogs"
 	"github.com/rifflock/lfshook"
 	"github.com/sirupsen/logrus"
 	"io"
@@ -17,6 +17,7 @@ import (
 	"time"
 )
 
+// 日志实例
 var logger *logrus.Logger
 
 func init() {
@@ -27,8 +28,10 @@ func init() {
 		}
 	}
 
+	// 文件全路径
 	fileName := path.Join(config.Inst().Log.Directory, config.Inst().Log.File+".log")
 
+	// 创建日志实例
 	logger = logrus.New()
 	logger.SetLevel(config.Inst().Log.Level)
 	logger.SetOutput(io.MultiWriter(func() *os.File {
@@ -39,18 +42,19 @@ func init() {
 		}
 	}()))
 
+	// 可循环的日志配置
 	logWriter, _ := rotatelogs.New(
 		// 分割后的文件名称
 		path.Join(config.Inst().Log.Directory, config.Inst().Log.File)+".%Y-%m-%d.log",
 		// 生成软链，指向最新日志文件
 		rotatelogs.WithLinkName(fileName),
-		// 设置最大保存时间(7天)
-		rotatelogs.WithMaxAge(7*24*time.Hour), //以hour为单位的整数
-		// 设置日志切割时间间隔(1天)
-		rotatelogs.WithRotationTime(1*time.Hour),
+		// 设置最大保存时间
+		rotatelogs.WithMaxAge(7*24*time.Hour),
+		// 设置日志切割时间间隔
+		rotatelogs.WithRotationTime(24*time.Hour),
 	)
 
-	// hook机制的设置
+	// hook 机制的设置
 	writerMap := lfshook.WriterMap{
 		logrus.InfoLevel:  logWriter,
 		logrus.FatalLevel: logWriter,

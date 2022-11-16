@@ -11,7 +11,6 @@ import (
 	"framework/result"
 	"framework/token"
 	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
 )
 
 // 获取结果内容
@@ -19,18 +18,10 @@ func getBuffer(ctx *gin.Context, r result.Result[any]) string {
 	// 获取 request 对象
 	req := request.Get(ctx)
 
-	// 等级
-	var logLevel logrus.Level
-	if r.Code == result.OK {
-		logLevel = logrus.DebugLevel
-	} else {
-		logLevel = logrus.ErrorLevel
-	}
-
 	var buffer string
 
-	// 时间 - 等级 - IP
-	buffer = " - " + logLevel.String() + " - " + req.Ip
+	// ip
+	buffer = req.Ip
 
 	// userId
 	if userId := token.GetUserId(); userId != nil {
@@ -38,7 +29,7 @@ func getBuffer(ctx *gin.Context, r result.Result[any]) string {
 	}
 
 	// 换行
-	buffer += "\n"
+	buffer += "\n\n"
 
 	// method http://host:port?query protocol
 	buffer += req.Method + " " + req.Uri + " " + req.Proto + "\n"
