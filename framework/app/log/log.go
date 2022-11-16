@@ -14,7 +14,7 @@ import (
 )
 
 // 获取结果内容
-func getBuffer(ctx *gin.Context, r result.Result[any]) string {
+func WriteResult(ctx *gin.Context, r result.Result[any]) {
 	// 获取 request 对象
 	req := request.Get(ctx)
 
@@ -55,16 +55,9 @@ func getBuffer(ctx *gin.Context, r result.Result[any]) string {
 	// 结果
 	buffer += r.String() + "\n"
 
-	return buffer
-}
-
-// WriteResult 写入文件
-func WriteResult(ctx *gin.Context, r result.Result[any]) {
-	stream := getBuffer(ctx, r)
-
 	if r.Code == result.OK {
-		logger.Debug(stream)
+		logger.Debug(buffer)
 	} else {
-		logger.Error(stream)
+		logger.Error(buffer)
 	}
 }

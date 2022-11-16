@@ -55,7 +55,7 @@ func init() {
 		rotatelogs.WithRotationTime(24*time.Hour),
 	)
 
-	gin.DefaultWriter = logWriter
+	gin.DefaultWriter = os.Stdout
 
 	// hook 机制的设置
 	writerMap := lfshook.WriterMap{
