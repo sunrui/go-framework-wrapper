@@ -21,7 +21,7 @@ type Redis struct {
 }
 
 // 初始化
-func newRedis(conf config.Redis) *Redis {
+func newRedis(conf config.redis) *Redis {
 	// 建立连接池
 	rediz := Redis{
 		Pool: redis.Pool{

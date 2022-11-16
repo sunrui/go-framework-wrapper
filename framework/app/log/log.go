@@ -58,8 +58,13 @@ func getBuffer(ctx *gin.Context, r result.Result[any]) string {
 	return buffer
 }
 
-// WriteLog 写入文件
-func WriteLog(ctx *gin.Context, r result.Result[any]) {
+// WriteResult 写入文件
+func WriteResult(ctx *gin.Context, r result.Result[any]) {
 	stream := getBuffer(ctx, r)
-	logger.Println(stream)
+
+	if r.Code == result.OK {
+		logger.Debug(stream)
+	} else {
+		logger.Error(stream)
+	}
 }

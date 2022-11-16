@@ -8,12 +8,12 @@ import (
 )
 
 type Config struct {
-	Mysql     Mysql     `json:"mysql"`     // mysql
-	Redis     Redis     `json:"redis"`     // redis
-	RateLimit RateLimit `json:"rateLimit"` // rateLimit
-	Log       Log       `json:"log"`       // log
-	Jwt       Jwt       `json:"jwt"`       // jwt
-	Request   Request   `json:"request"`   // request
+	Mysql     mysql     `json:"mysql"`     // mysql
+	Redis     redis     `json:"redis"`     // redis
+	RateLimit rateLimit `json:"rateLimit"` // rateLimit
+	Log       log       `json:"log"`       // log
+	Request   request   `json:"request"`   // request
+	Token     token     `json:"token"`     // token
 }
 
 var inst *Config

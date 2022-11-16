@@ -8,7 +8,8 @@ package config
 
 import "github.com/sirupsen/logrus"
 
-type Mysql struct {
+// mysql 数据库
+type mysql struct {
 	User     string `json:"user"`     // 用户名
 	Password string `json:"password"` // 密码
 	Host     string `json:"host"`     // 主机
@@ -16,28 +17,35 @@ type Mysql struct {
 	Database string `json:"database"` // 数据库
 }
 
-type RateLimit struct {
+// 限流
+type rateLimit struct {
 	Capacity int64 `json:"capacity"` // 令牌桶容量
 	Quantum  int64 `json:"quantum"`  // 每隔多少秒
 }
 
-type Redis struct {
+// redis 缓存
+type redis struct {
 	Host     string `json:"host"`     // 主机
 	Port     int    `json:"port"`     // 端口
 	Password string `json:"password"` // 密码
 	Database int    `json:"database"` // 数据库
 }
 
-type Log struct {
+// 日志
+type log struct {
 	Directory string       `json:"directory"` // 路径
 	File      string       `json:"file"`      // 文件
 	Level     logrus.Level `json:"level"`     // 等级
 }
 
-type Jwt struct {
-	Secret string `json:"secret"` // 密钥
+// 请求
+type request struct {
+	Dump bool `json:"dump"` // 导出
 }
 
-type Request struct {
-	Dump bool `json:"dump"` // 导出
+// 令牌
+type token struct {
+	JwtSecret      string `json:"jwtSecret"`  // jwt 密钥
+	MaxAge         int64  `json:"max_age"`    // 过期时间
+	AutoRefreshAge int64  `json:"refreshAge"` // 自动重新刷新时间
 }

@@ -44,7 +44,7 @@ func routerFunc(routerFunc RouterFunc) gin.HandlerFunc {
 		}
 
 		// 记录日志
-		log.WriteLog(ctx, r)
+		log.WriteResult(ctx, r)
 
 		// 返回客户端
 		ctx.JSON(http.StatusOK, r)

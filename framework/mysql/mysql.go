@@ -20,7 +20,7 @@ type Mysql struct {
 }
 
 // 创建对象
-func newMysql(conf config.Mysql) *Mysql {
+func newMysql(conf config.mysql) *Mysql {
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local",
 		conf.User,
 		conf.Password,
