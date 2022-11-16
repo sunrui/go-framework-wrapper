@@ -6,6 +6,8 @@
 
 package config
 
+import "github.com/sirupsen/logrus"
+
 type Mysql struct {
 	User     string `json:"user"`     // 用户名
 	Password string `json:"password"` // 密码
@@ -26,21 +28,10 @@ type Redis struct {
 	Database int    `json:"database"` // 数据库
 }
 
-// LogLevel 日志等级
-type LogLevel string
-
-const (
-	LogNone    LogLevel = "NONE"    // none
-	LogTrace   LogLevel = "TRACE"   // trace
-	LogDebug   LogLevel = "DEBUG"   // debug
-	LogInfo    LogLevel = "INFO"    // info
-	LogWarning LogLevel = "WARNING" // warning
-	LogError   LogLevel = "ERROR"   // error
-)
-
 type Log struct {
-	Directory string   `json:"directory"` // 路径
-	Level     LogLevel `json:"level"`     // 等级
+	Directory string       `json:"directory"` // 路径
+	File      string       `json:"file"`      // 文件
+	Level     logrus.Level `json:"level"`     // 等级
 }
 
 type Jwt struct {

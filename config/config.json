@@ -19,7 +19,8 @@
     },
     "log": {
       "directory": "log",
-      "level": "TRACE"
+      "file": "access.log",
+      "level": "trace"
     },
     "jwt": {
       "secret": "123456"
@@ -48,7 +49,8 @@
     },
     "log": {
       "directory": "log",
-      "level": "NONE"
+      "file": "access.log",
+      "level": "debug"
     },
     "jwt": {
       "secret": "123456"

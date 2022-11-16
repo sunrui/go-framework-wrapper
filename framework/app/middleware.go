@@ -7,7 +7,6 @@
 package app
 
 import (
-	"framework/app/log"
 	"framework/app/middleware"
 	"framework/result"
 	"github.com/gin-gonic/gin"
@@ -23,10 +22,6 @@ func middlewareFunc(middlewareFunc MiddlewareFunc) gin.HandlerFunc {
 		r := middlewareFunc(ctx)
 		if r != nil {
 			ctx.JSON(http.StatusOK, r)
-
-			defer func() {
-				log.Write(ctx, *r)
-			}()
 		}
 	}
 }
