@@ -18,8 +18,8 @@ import (
 	"time"
 )
 
-// 日志实例
-var logger *logrus.Logger
+// Inst 日志实例
+var Inst *logrus.Logger
 
 func init() {
 	// 建立日志目录
@@ -33,9 +33,9 @@ func init() {
 	fileName := path.Join(config.Inst().Log.Directory, config.Inst().Log.File+".log")
 
 	// 创建日志实例
-	logger = logrus.New()
-	logger.SetLevel(config.Inst().Log.Level)
-	logger.SetOutput(io.MultiWriter(func() *os.File {
+	Inst = logrus.New()
+	Inst.SetLevel(config.Inst().Log.Level)
+	Inst.SetOutput(io.MultiWriter(func() *os.File {
 		if file, err := os.Create(fileName); err != nil {
 			panic(err.Error())
 		} else {
@@ -67,6 +67,6 @@ func init() {
 		logrus.PanicLevel: logWriter,
 	}
 
-	logger.AddHook(lfshook.NewHook(writerMap, &myFormatter{}))
-	logger.SetFormatter(&myFormatter{})
+	Inst.AddHook(lfshook.NewHook(writerMap, &myFormatter{}))
+	Inst.SetFormatter(&myFormatter{})
 }

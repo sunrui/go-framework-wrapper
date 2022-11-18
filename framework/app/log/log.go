@@ -56,8 +56,8 @@ func WriteResult(ctx *gin.Context, r result.Result[any]) {
 	buffer += r.String() + "\n"
 
 	if r.Code == result.OK {
-		logger.Debug(buffer)
+		Inst.Debug(buffer)
 	} else {
-		logger.Error(buffer)
+		Inst.Error(buffer)
 	}
 }

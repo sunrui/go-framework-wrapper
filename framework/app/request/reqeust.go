@@ -7,6 +7,7 @@
 package request
 
 import (
+	"config"
 	"github.com/gin-gonic/gin"
 )
 
@@ -44,4 +45,9 @@ func Get(ctx *gin.Context) Request {
 		}(ctx),
 		Body: GetBody(ctx),
 	}
+}
+
+// 设置请求导出
+func SetDump(dump bool) {
+	config.Inst().Request.Dump = dump
 }

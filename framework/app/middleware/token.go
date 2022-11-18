@@ -7,11 +7,12 @@
 package middleware
 
 import (
+	"framework/app/token"
 	"github.com/gin-gonic/gin"
 )
 
 // Token 注册刷新令牌中间件
 func Token(ctx *gin.Context) {
-	//token.RefreshIf(ctx)
+	token.RefreshIf(ctx)
 	ctx.Next()
 }
