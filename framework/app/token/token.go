@@ -29,14 +29,14 @@ type token struct {
 
 // 生成 jwt 字符串
 func encode(payload Payload) (string, error) {
-	token := token{
+	t := token{
 		jwt.StandardClaims{
 			ExpiresAt: time.Now().Unix() + config.Inst().Token.MaxAge*1000,
 		},
 		payload,
 	}
 
-	tokenClaims := jwt.NewWithClaims(jwt.SigningMethodHS256, token)
+	tokenClaims := jwt.NewWithClaims(jwt.SigningMethodHS256, t)
 	return tokenClaims.SignedString(config.Inst().Token.JwtSecret)
 }
 
@@ -57,10 +57,10 @@ func decode(tokenString string) (*token, error) {
 
 // Write 写入 cookie 令牌
 func Write(ctx *gin.Context, payload Payload) {
-	if token, err := encode(payload); err != nil {
+	if t, err := encode(payload); err != nil {
 		panic(err.Error())
 	} else {
-		ctx.SetCookie(config.Inst().Token.Key, token, int(config.Inst().Token.MaxAge), "/", "", false, true)
+		ctx.SetCookie(config.Inst().Token.Key, t, int(config.Inst().Token.MaxAge), "/", "", false, true)
 	}
 }
 
@@ -92,34 +92,34 @@ func get(ctx *gin.Context) (*token, error) {
 
 // GetUserId 获取当前用户 id
 func GetUserId(ctx *gin.Context) *string {
-	if token, err := get(ctx); err != nil {
+	if t, err := get(ctx); err != nil {
 		return nil
 	} else {
-		return &token.UserId
+		return &t.UserId
 	}
 }
 
 // MustGetUserId 强制获取当前用户 id
 func MustGetUserId(ctx *gin.Context) string {
-	if token, err := get(ctx); err != nil {
+	if t, err := get(ctx); err != nil {
 		panic(result.NoAuth)
 	} else {
-		return token.UserId
+		return t.UserId
 	}
 }
 
 // RefreshIf 刷新令牌
 func RefreshIf(ctx *gin.Context) {
-	if token, err := get(ctx); err == nil {
+	if t, err := get(ctx); err == nil {
 		// 当前距离过期时间（毫秒）
-		InstExpired := token.ExpiresAt - time.Now().Unix()
+		InstExpired := t.ExpiresAt - time.Now().Unix()
 
 		// 设置距离过期时间（毫秒）
 		setExpired := (config.Inst().Token.MaxAge - config.Inst().Token.AutoRefreshAge) * 1000
 
 		// 已经大于最小刷新时长
 		if InstExpired >= setExpired {
-			Write(ctx, token.Payload)
+			Write(ctx, t.Payload)
 		}
 	}
 }

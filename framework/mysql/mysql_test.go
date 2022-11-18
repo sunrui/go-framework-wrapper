@@ -18,26 +18,26 @@ type User struct {
 }
 
 func TestMysql_AutoMigrate(t *testing.T) {
-	Inst.AutoMigrate(&User{})
+	AutoMigrate(&User{})
 }
 
 func TestMysql_Save(t *testing.T) {
-	Inst.Truncate(&User{})
+	Truncate(&User{})
 
 	user := User{
 		Name: "name",
 	}
 
-	Inst.Save(&user)
+	Save(&user)
 }
 
 func TestFindById(t *testing.T) {
-	Inst.Truncate(&User{})
+	Truncate(&User{})
 
 	user := User{
 		Name: "name",
 	}
-	Inst.Save(&user)
+	Save(&user)
 
 	if one := user.FindById("not found"); one != nil {
 		t.Fatalf("one != nil")
@@ -49,20 +49,20 @@ func TestFindById(t *testing.T) {
 }
 
 func TestFindOne(t *testing.T) {
-	Inst.Truncate(&User{})
+	Truncate(&User{})
 
 	user := User{
 		Name: "name",
 	}
-	Inst.Save(&user)
+	Save(&user)
 
-	if one := user.FindOne(User{
+	if one := FindOne[User](User{
 		Name: "name-1",
 	}); one != nil {
 		log.Fatalf("one != nil")
 	}
 
-	if one := user.FindOne(User{
+	if one := FindOne[User](User{
 		Name: "name",
 	}); one == nil {
 		log.Fatalf("one == nil")
@@ -70,17 +70,16 @@ func TestFindOne(t *testing.T) {
 }
 
 func TestFindPage(t *testing.T) {
-	Inst.Truncate(&User{})
+	Truncate(&User{})
 
 	for i := 0; i < 10; i++ {
 		user := User{
 			Name: fmt.Sprintf("name-%d", i),
 		}
-		Inst.Save(&user)
+		Save(&user)
 	}
 
-	user := User{}
-	if ones := user.FindPage(0, 2, "name ASC", User{
+	if ones := FindPage[User](0, 2, "name ASC", User{
 		Name: "hello",
 	}); len(ones) != 0 {
 		for index, value := range ones {
@@ -95,7 +94,7 @@ func TestFindPage(t *testing.T) {
 	}
 
 	for i := 0; i < 5; i++ {
-		if ones := user.FindPage(i, 2, "name ASC", "name LIKE ?", "%name%"); len(ones) != 2 {
+		if ones := FindPage[User](i, 2, "name ASC", "name LIKE ?", "%name%"); len(ones) != 2 {
 			for index, value := range ones {
 				fmt.Println(index, value)
 			}
@@ -108,7 +107,7 @@ func TestFindPage(t *testing.T) {
 		}
 	}
 
-	if ones := user.FindPage(0, -1, "created_at ASC", nil); len(ones) != 10 {
+	if ones := FindPage[User](0, -1, "created_at ASC", nil); len(ones) != 10 {
 		for index, value := range ones {
 			fmt.Println(index, value)
 		}
@@ -120,7 +119,7 @@ func TestFindPage(t *testing.T) {
 		}
 	}
 
-	if ones := user.FindPage(0, -1, "created_at DESC", "name LIKE ?", "%name%"); len(ones) != 10 {
+	if ones := FindPage[User](0, -1, "created_at DESC", "name LIKE ?", "%name%"); len(ones) != 10 {
 		for index, value := range ones {
 			fmt.Println(index, value)
 		}
@@ -134,35 +133,35 @@ func TestFindPage(t *testing.T) {
 }
 
 func TestSoftDeleteById(t *testing.T) {
-	Inst.Truncate(&User{})
+	Truncate(&User{})
 
 	user := User{
 		Name: "name",
 	}
-	Inst.Save(&user)
+	Save(&user)
 
-	if r := user.SoftDeleteById(user.Id); r != true {
+	if r := SoftDeleteById[User](user.Id); r != true {
 		log.Fatalf("r != true")
 	}
 
-	if r := user.SoftDeleteById(user.Id); r == true {
+	if r := SoftDeleteById[User](user.Id); r == true {
 		log.Fatalf("r == true")
 	}
 }
 
 func TestDeleteById(t *testing.T) {
-	Inst.Truncate(&User{})
+	Truncate(&User{})
 
 	user := User{
 		Name: "name",
 	}
-	Inst.Save(&user)
+	Save(&user)
 
-	if r := user.DeleteById(user.Id); r != true {
+	if r := DeleteById[User](user.Id); r != true {
 		log.Fatalf("r != true")
 	}
 
-	if r := user.DeleteById(user.Id); r == true {
+	if r := DeleteById[User](user.Id); r == true {
 		log.Fatalf("r == true")
 	}
 }

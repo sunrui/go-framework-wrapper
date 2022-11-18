@@ -1,10 +1,10 @@
 /*
  * Copyright (c) 2022 honeysense.com All rights reserved.
  * Author: sunrui
- * Date: 2022/04/03 13:44:03
+ * Date: 2022-11-18 23:30:47
  */
 
-package common
+package public
 
 import (
 	"framework/result"

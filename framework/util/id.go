@@ -23,7 +23,7 @@ func CreateUuid() string {
 
 // CreateNanoid 创建唯一 nanoid
 func CreateNanoid(size int) string {
-	const dictionary = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	const dictionary = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz-"
 	if id, err := gonanoid.Generate(dictionary, size); err != nil {
 		panic(err.Error())
 	} else {
