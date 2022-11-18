@@ -14,7 +14,7 @@
       "database": 0
     },
     "rateLimit": {
-      "capacity": 5,
+      "capacity": 1,
       "quantum": 5
     },
     "log": {

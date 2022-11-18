@@ -14,15 +14,11 @@ import (
 	"time"
 )
 
+// 令牌桶
+var bucket *ratelimit.Bucket
+
 // RateLimit 流量限制中间件
 func RateLimit(ctx *gin.Context) *result.Result[any] {
-	conf := config.Inst().RateLimit
-
-	bucket := ratelimit.NewBucketWithQuantum(time.Second, // 间隔单位
-		conf.Capacity, // 令牌桶容量
-		conf.Quantum,  // 每隔多久
-	)
-
 	if bucket.TakeAvailable(1) < 1 {
 		ctx.Abort()
 		return &result.Result[any]{
@@ -33,4 +29,12 @@ func RateLimit(ctx *gin.Context) *result.Result[any] {
 
 	ctx.Next()
 	return nil
+}
+
+// 初始化
+func init() {
+	bucket = ratelimit.NewBucketWithQuantum(time.Second, // 间隔单位
+		config.Inst().RateLimit.Capacity, // 令牌桶容量
+		config.Inst().RateLimit.Quantum,  // 每隔多久
+	)
 }

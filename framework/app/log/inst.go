@@ -8,7 +8,6 @@ package log
 
 import (
 	"config"
-	"github.com/gin-gonic/gin"
 	"github.com/lestrrat-go/file-rotatelogs"
 	"github.com/rifflock/lfshook"
 	"github.com/sirupsen/logrus"
@@ -54,8 +53,6 @@ func init() {
 		// 设置日志切割时间间隔
 		rotatelogs.WithRotationTime(24*time.Hour),
 	)
-
-	gin.DefaultWriter = os.Stdout
 
 	// hook 机制的设置
 	writerMap := lfshook.WriterMap{
