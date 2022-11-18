@@ -39,11 +39,11 @@ func TestFindById(t *testing.T) {
 	}
 	Save(&user)
 
-	if one := user.FindById("not found"); one != nil {
+	if one := FindById[User]("not found"); one != nil {
 		t.Fatalf("one != nil")
 	}
 
-	if one := user.FindById(user.Id); one == nil {
+	if one := FindById[User](user.Id); one == nil {
 		t.Fatalf("one == nil")
 	}
 }

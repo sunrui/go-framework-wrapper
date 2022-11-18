@@ -37,7 +37,7 @@ func Truncate(dst any) {
 }
 
 // FindById 根据 id 查找
-func (model *Model[T]) FindById(id string) *T {
+func FindById[T any](id string) *T {
 	var dst T
 
 	if db := Inst.DB.Where("id = ?", id).Find(&dst); db.Error != nil {

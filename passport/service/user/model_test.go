@@ -32,5 +32,7 @@ func TestFind(t *testing.T) {
 		Name: "name",
 	}); one == nil {
 		log.Fatalf("one == nil")
+	} else {
+		log.Println(one.Name)
 	}
 }
