@@ -16,3 +16,7 @@ type User struct {
 	WxOpenId     string `json:"wxOpenId" gorm:"comment:微信 openId"`     // 微信 openId
 	AlipayOpenId string `json:"aliOpenId" gorm:"comment:支付宝 openId"`   // 支付宝 openId
 }
+
+func init() {
+	mysql.AutoMigrate(&User{})
+}

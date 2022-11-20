@@ -9,15 +9,9 @@ package redis
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/garyburd/redigo/redis"
 	"reflect"
 	"time"
 )
-
-// Redis 对象
-type Redis struct {
-	Pool redis.Pool
-}
 
 // Set 设置对象
 func (rediz *Redis) Set(key string, value any, expired time.Duration) {

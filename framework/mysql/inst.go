@@ -15,6 +15,11 @@ import (
 	"gorm.io/gorm/schema"
 )
 
+// Mysql 数据库
+type Mysql struct {
+	*gorm.DB
+}
+
 // Inst 实例
 var Inst *Mysql
 

@@ -13,6 +13,11 @@ import (
 	"time"
 )
 
+// Redis 对象
+type Redis struct {
+	Pool redis.Pool
+}
+
 // Inst 实例
 var Inst *Redis
 

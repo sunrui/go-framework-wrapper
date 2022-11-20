@@ -11,3 +11,7 @@ import "framework/mysql"
 type UserInfo struct {
 	mysql.Model[UserInfo]
 }
+
+func init() {
+	mysql.AutoMigrate(&UserInfo{})
+}

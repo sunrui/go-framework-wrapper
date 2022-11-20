@@ -12,10 +12,6 @@ import (
 	"gorm.io/gorm"
 )
 
-type Mysql struct {
-	*gorm.DB
-}
-
 // AutoMigrate 创建表
 func AutoMigrate(dst ...any) {
 	if err := Inst.DB.AutoMigrate(dst...); err != nil {
@@ -25,7 +21,6 @@ func AutoMigrate(dst ...any) {
 
 // Save 插入
 func Save(value any) {
-	// 保存新的用户
 	if tx := Inst.DB.Save(value); tx.Error != nil {
 		panic(tx.Error.Error())
 	}
