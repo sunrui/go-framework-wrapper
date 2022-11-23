@@ -8,6 +8,7 @@ package mysql
 
 import (
 	"config"
+	"encoding/json"
 	"fmt"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -43,11 +44,15 @@ func init() {
 			TablePrefix:   "t_", // 表名前缀
 			SingularTable: true, // 使用单数表名
 		},
-	}); err != nil {
-		panic(err.Error())
-	} else {
+	}); err == nil {
+		sqlDb, _ := db.DB()
+		data, _ := json.Marshal(sqlDb.Stats()) //获得当前的SQL配置情况
+		fmt.Println(string(data))
+
 		Inst = &Mysql{
 			DB: db,
 		}
+	} else {
+		panic(err.Error())
 	}
 }

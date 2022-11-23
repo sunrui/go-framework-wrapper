@@ -5,12 +5,14 @@
       "port": 3306,
       "database": "medium_dev",
       "user": "root",
-      "password": "honeysenselt"
+      "password": "root",
+      "maxIdleConns": 10,
+      "MaxOpenConns": 100
     },
     "redis": {
       "host": "localhost",
       "port": 6379,
-      "password": "honeysenselt",
+      "password": "",
       "database": 0
     },
     "rateLimit": {
@@ -38,7 +40,9 @@
       "port": 3306,
       "database": "medium_dev",
       "user": "root",
-      "password": "honeysenselt"
+      "password": "honeysenselt",
+      "maxIdleConns": 10,
+      "MaxOpenConns": 100
     },
     "redis": {
       "host": "localhost",
