@@ -5,6 +5,6 @@ go mod tidy -v
 cd ../config || exit
 pwd
 go mod tidy -v
-cd ../medium || exit
+cd ../passport || exit
 pwd
 go mod tidy -v
