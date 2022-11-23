@@ -6,7 +6,11 @@
 
 package user
 
-import "framework/mysql"
+import (
+	"framework/mysql"
+	"golang.org/x/crypto/bcrypt"
+	"gorm.io/gorm"
+)
 
 type User struct {
 	mysql.Model[User]
@@ -15,6 +19,17 @@ type User struct {
 	Password     string `json:"password" gorm:"comment:密码"`            // 密码
 	WxOpenId     string `json:"wxOpenId" gorm:"comment:微信 openId"`     // 微信 openId
 	AlipayOpenId string `json:"aliOpenId" gorm:"comment:支付宝 openId"`   // 支付宝 openId
+}
+
+// BeforeSave 更改密码
+func (user *User) BeforeSave(tx *gorm.DB) (err error) {
+	if pw, err := bcrypt.GenerateFromPassword([]byte(user.Password), 0); err == nil {
+		tx.Statement.SetColumn("password", pw)
+	} else {
+		return err
+	}
+
+	return nil
 }
 
 func init() {
