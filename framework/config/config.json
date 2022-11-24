@@ -20,7 +20,7 @@
       "quantum": 5
     },
     "log": {
-      "enable": false,
+      "enable": true,
       "directory": "log",
       "file": "access",
       "level": "trace"

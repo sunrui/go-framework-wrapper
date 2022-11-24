@@ -8,6 +8,7 @@ package log
 
 import (
 	"framework/config"
+	"github.com/gin-gonic/gin"
 	"github.com/lestrrat-go/file-rotatelogs"
 	"github.com/rifflock/lfshook"
 	"github.com/sirupsen/logrus"
@@ -45,6 +46,9 @@ func init() {
 			return file
 		}
 	}()))
+
+	// 开启 gin 日志写入
+	gin.DefaultWriter = io.MultiWriter(Inst.Out, os.Stdout)
 
 	// 可循环的日志配置
 	logWriter, _ := rotatelogs.New(

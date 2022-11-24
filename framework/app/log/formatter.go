@@ -25,8 +25,7 @@ func (m *myFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 		b = &bytes.Buffer{}
 	}
 
-	timestamp := entry.Time.Format("2006-01-02 15:04:05")
-	b.WriteString(fmt.Sprintf("%s - %s - %s\n", timestamp, entry.Level, entry.Message))
+	b.WriteString(fmt.Sprintf("%s - %s", entry.Level, entry.Message))
 
 	return b.Bytes(), nil
 }

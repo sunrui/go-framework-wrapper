@@ -23,21 +23,15 @@ func WriteResult(ctx *gin.Context, r *result.Result) {
 	// 获取 request 对象
 	req := request.Get(ctx)
 
-	var buffer string
-
-	// ip
-	buffer = req.Ip
+	// method http://host:port?query protocol
+	buffer := req.Method + " " + req.Uri + " " + req.Proto
 
 	// userId
 	if userId := token.GetUserId(ctx); userId != nil {
 		buffer += " - userId(" + *userId + ")"
 	}
 
-	// 换行
-	buffer += "\n\n"
-
-	// method http://host:port?query protocol
-	buffer += req.Method + " " + req.Uri + " " + req.Proto + "\n"
+	buffer += "\n"
 
 	// header
 	for _, header := range req.Headers {
@@ -58,11 +52,11 @@ func WriteResult(ctx *gin.Context, r *result.Result) {
 	buffer += "\n"
 
 	// 结果
-	buffer += r.String() + "\n"
+	buffer += r.String()
 
 	if r.Code == result.Ok.Code {
-		Inst.Debug(buffer)
+		Inst.Debugln(buffer)
 	} else {
-		Inst.Error(buffer)
+		Inst.Errorln(buffer)
 	}
 }
