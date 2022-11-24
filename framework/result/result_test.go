@@ -11,18 +11,30 @@ import (
 	"testing"
 )
 
-func TestIdData(t *testing.T) {
-	fmt.Println(Result[any]{
-		Code:    OK,
-		Message: "增加成功",
-		Data:    IdData("my id"),
-	})
+func TestOk(t *testing.T) {
+	fmt.Println(Ok())
 }
 
-func TestKeyValueData(t *testing.T) {
-	fmt.Println(Result[any]{
-		Code:    Conflict,
-		Message: "冲突了",
-		Data:    KeyValueData("my key", "mey value"),
-	})
+func TestOkWithData(t *testing.T) {
+	fmt.Println(OkWithData[string]("hello world"))
+}
+
+func TestOkWithIdData(t *testing.T) {
+	fmt.Println(OkWithMapData(M{
+		"id": "my id",
+	}))
+}
+
+func TestOkWithDataAndPagination(t *testing.T) {
+	fmt.Println(OkWithDataAndPagination[string]("hello world", &Pagination{
+		Page:      0,
+		PageSize:  0,
+		TotalPage: 0,
+		TotalSize: 0,
+	}))
+}
+
+func TestNoAuth(t *testing.T) {
+	r := NoAuth.WithMessage("hello world")
+	fmt.Println(r)
 }

@@ -19,32 +19,13 @@ type Pagination struct {
 	TotalSize int64 `json:"totalSize"` // 总大小
 }
 
-// CodeType 代码类型
-type CodeType string
-
-const (
-	OK               CodeType = "OK"
-	NoAuth           CodeType = "NoAuth"
-	ParameterError   CodeType = "ParameterError"
-	Forbidden        CodeType = "Forbidden"
-	NotFound         CodeType = "NotFound"
-	NoMatch          CodeType = "NoMatch"
-	NoContent        CodeType = "NoContent"
-	MethodNotAllowed CodeType = "MethodNotAllowed"
-	Conflict         CodeType = "Conflict"
-	RateLimit        CodeType = "RateLimit"
-	InternalError    CodeType = "InternalError"
-	ThirdPartyError  CodeType = "ThirdPartyError"
-	NotImplemented   CodeType = "NotImplemented"
-)
-
 // Result 结果对象
 type Result[T any] struct {
-	Code       CodeType         `json:"code" example:"Ok"`              // 结果
-	Message    string           `json:"message,omitempty" example:"成功"` // 消息
-	Data       T                `json:"data,omitempty"`                 // 数据
-	Pagination *Pagination      `json:"pagination,omitempty"`           // 分页对象
-	Request    *request.Request `json:"request,omitempty"`              // 请求对象
+	Code       string           `json:"code" example:"Ok"`    // 代码
+	Message    string           `json:"message" example:"成功"` // 消息
+	Data       T                `json:"data,omitempty"`       // 数据
+	Pagination *Pagination      `json:"pagination,omitempty"` // 分页对象
+	Request    *request.Request `json:"request,omitempty"`    // 请求对象
 }
 
 // String 数据
@@ -53,20 +34,19 @@ func (result Result[T]) String() string {
 	return string(marshal)
 }
 
-// KeyValueData 键值数据
-func KeyValueData(key string, value any) map[string]any {
-	dataMap := make(map[string]any)
-	dataMap[key] = value
-	return dataMap
+func (result *Result[T]) WithMessage(message string) *Result[T] {
+	result.Message = message
+	return result
 }
 
-// IdData Id 数据
-func IdData(id string) any {
-	type idData struct {
-		Id string `json:"id"`
-	}
+func (result *Result[T]) WithRequest(request request.Request) *Result[T] {
+	result.Request = &request
+	return result
+}
 
-	return idData{
-		Id: id,
+func newResult[T any](code string, message string) Result[T] {
+	return Result[T]{
+		Code:    code,
+		Message: message,
 	}
 }
