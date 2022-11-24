@@ -36,11 +36,13 @@ func (result Result) String() string {
 	return string(marshal)
 }
 
+// WithMessage 设置消息
 func (result *Result) WithMessage(message string) *Result {
 	result.Message = message
 	return result
 }
 
+// WithRequest 设置请求
 func (result *Result) WithRequest(request request.Request) *Result {
 	result.Request = &request
 	return result

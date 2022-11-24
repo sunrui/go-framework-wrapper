@@ -13,9 +13,9 @@ import (
 )
 
 // 获取当前用户
-func getUser(ctx *gin.Context) result.Result {
+func getUser(ctx *gin.Context) *result.Result {
 	id := ctx.Param("id")
 	fmt.Println(id)
 
-	return result.Result{}
+	return &result.Ok
 }

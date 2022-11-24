@@ -38,9 +38,6 @@ func registerMiddleware(engine *gin.Engine) {
 	// 注册限流中间件
 	engine.Use(middlewareFunc(middleware.RateLimit))
 
-	// 注册异常中间件
-	engine.Use(middlewareFunc(middleware.Recover))
-
 	// 注册刷新令牌中间件
 	engine.Use(middleware.Token)
 
@@ -49,4 +46,7 @@ func registerMiddleware(engine *gin.Engine) {
 
 	// 注册 body 中间件
 	engine.Use(middleware.Body)
+
+	// 注册异常中间件
+	engine.Use(middleware.Recover)
 }

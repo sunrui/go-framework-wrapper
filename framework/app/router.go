@@ -16,7 +16,7 @@ import (
 )
 
 // RouterFunc 路由回调
-type RouterFunc func(ctx *gin.Context) result.Result
+type RouterFunc func(ctx *gin.Context) *result.Result
 
 // Router 路由路径
 type Router struct {
@@ -44,7 +44,7 @@ func routerFunc(routerFunc RouterFunc) gin.HandlerFunc {
 		}
 
 		// 记录日志
-		log.WriteResult(ctx, r)
+		log.WriteResult(ctx, *r)
 
 		// 返回客户端
 		ctx.JSON(http.StatusOK, r)

@@ -11,26 +11,22 @@ import (
 	"framework/result"
 	"framework/util"
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 // Recover 异常捕获中间件
-func Recover(ctx *gin.Context) *result.Result {
+func Recover(ctx *gin.Context) {
 	// 捕获对象，全部抛出可以使用 panic 方法。
-	defer func() *result.Result {
-		var r *result.Result = nil
-
+	defer func() {
 		if err := recover(); err != nil {
-			ctx.Abort()
-
-			result.InternalError.WithData(result.M{
+			r := result.InternalError.WithData(result.M{
 				"stack": util.Stack(5),
 				"error": fmt.Sprintf("%s", err),
 			})
+
+			ctx.AbortWithStatusJSON(http.StatusOK, r)
+		} else {
+			ctx.Next()
 		}
-
-		return r
 	}()
-
-	ctx.Next()
-	return nil
 }
