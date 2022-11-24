@@ -7,8 +7,8 @@
 package mysql
 
 import (
-	"config"
 	"fmt"
+	"framework/config"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"

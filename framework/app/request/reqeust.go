@@ -47,7 +47,7 @@ func Get(ctx *gin.Context) Request {
 	}
 }
 
-// 设置请求导出
+// SetDump 设置请求导出
 func SetDump(dump bool) {
 	config.Inst().Request.Dump = dump
 }
