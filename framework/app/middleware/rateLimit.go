@@ -18,13 +18,13 @@ import (
 var bucket *ratelimit.Bucket
 
 // RateLimit 流量限制中间件
-func RateLimit(ctx *gin.Context) *result.Result[any] {
+func RateLimit(ctx *gin.Context) *result.Result {
 	if bucket.TakeAvailable(1) < 1 {
 		ctx.Abort()
-		return &result.Result[any]{
-			Code: result.RateLimit,
-			Data: result.KeyValueData("uri", ctx.Request.URL.RequestURI()),
-		}
+
+		return result.RateLimit.WithData(result.M{
+			"uri": ctx.Request.URL.RequestURI(),
+		})
 	}
 
 	ctx.Next()

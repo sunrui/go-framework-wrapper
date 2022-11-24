@@ -11,26 +11,9 @@ import (
 	"testing"
 )
 
-func TestOk(t *testing.T) {
-	fmt.Println(Ok())
-}
-
-func TestOkWithData(t *testing.T) {
-	fmt.Println(OkWithData[string]("hello world"))
-}
-
-func TestOkWithIdData(t *testing.T) {
-	fmt.Println(OkWithMapData(M{
-		"id": "my id",
-	}))
-}
-
-func TestOkWithDataAndPagination(t *testing.T) {
-	fmt.Println(OkWithDataAndPagination[string]("hello world", &Pagination{
-		Page:      0,
-		PageSize:  0,
-		TotalPage: 0,
-		TotalSize: 0,
+func TestResult_WithData(t *testing.T) {
+	fmt.Println(Ok.WithData(M{
+		"hello": "world",
 	}))
 }
 

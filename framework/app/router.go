@@ -16,7 +16,7 @@ import (
 )
 
 // RouterFunc 路由回调
-type RouterFunc func(ctx *gin.Context) result.Result[any]
+type RouterFunc func(ctx *gin.Context) result.Result
 
 // Router 路由路径
 type Router struct {

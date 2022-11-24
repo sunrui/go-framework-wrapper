@@ -15,7 +15,7 @@ import (
 )
 
 // WriteResult 获取结果内容
-func WriteResult(ctx *gin.Context, r result.Result[any]) {
+func WriteResult(ctx *gin.Context, r result.Result) {
 	if !config.Inst().Log.Enable {
 		return
 	}
@@ -60,7 +60,7 @@ func WriteResult(ctx *gin.Context, r result.Result[any]) {
 	// 结果
 	buffer += r.String() + "\n"
 
-	if r.Code == result.OK {
+	if r.Code == result.Ok.Code {
 		Inst.Debug(buffer)
 	} else {
 		Inst.Error(buffer)

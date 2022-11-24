@@ -14,7 +14,7 @@ import (
 )
 
 // MiddlewareFunc 中间件回调对象
-type MiddlewareFunc func(ctx *gin.Context) *result.Result[any]
+type MiddlewareFunc func(ctx *gin.Context) *result.Result
 
 // 中间件回调
 func middlewareFunc(middlewareFunc MiddlewareFunc) gin.HandlerFunc {

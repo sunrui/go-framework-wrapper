@@ -26,7 +26,7 @@ import (
 // @Param   extensions query    []string                    false "string collection" extensions(x-example=test,x-nullable)
 // @Success 200        {object} result.Result{data=sms.Sms} true
 // @Router  /public/common/ [get]
-func getIndex(_ *gin.Context) result.Result[any] {
+func getIndex(_ *gin.Context) result.Result {
 	//return result.Ok.WithData("hello world")
-	return result.Result[any]{}
+	return result.Result{}
 }
