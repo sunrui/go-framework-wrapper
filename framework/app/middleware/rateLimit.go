@@ -7,7 +7,7 @@
 package middleware
 
 import (
-	"config"
+	"framework/config"
 	"framework/result"
 	"github.com/gin-gonic/gin"
 	"github.com/juju/ratelimit"

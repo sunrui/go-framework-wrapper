@@ -7,9 +7,9 @@
 package app
 
 import (
-	"config"
 	"framework/app/log"
 	"framework/app/request"
+	"framework/config"
 	"framework/result"
 	"github.com/gin-gonic/gin"
 	"net/http"

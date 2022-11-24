@@ -1,14 +1,13 @@
 /*
  * Copyright (c) 2022 honeysense.com All rights reserved.
  * Author: sunrui
- * Date: 2022-11-18 22:21:00
+ * Date: 2022/04/07 22:38:07
  */
-
 package main
 
 import (
 	"framework/app"
-	"passport/api/public"
+	"public/common"
 )
 
 // @title   Medium 公用接口文档
@@ -21,7 +20,7 @@ func main() {
 
 	// 注册路由
 	server.RouterGroup("/public", []app.RouterGroup{
-		public.GetRouter(),
+		common.GetRouter(),
 	})
 
 	// 启动服务

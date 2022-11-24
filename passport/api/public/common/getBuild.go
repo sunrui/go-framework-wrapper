@@ -1,10 +1,10 @@
 /*
  * Copyright (c) 2022 honeysense.com All rights reserved.
  * Author: sunrui
- * Date: 2022-11-18 23:30:47
+ * Date: 2022/04/03 13:44:03
  */
 
-package public
+package common
 
 import (
 	"framework/result"
@@ -20,8 +20,6 @@ var build = time.Now()
 // @Success 200 {object} result.Result{data=string} true {"status":"Ok","description":"成功"}
 // @Router  /public/common/build [get]
 func getBuild(_ *gin.Context) result.Result[any] {
-	return result.Result[any]{
-		Code: result.OK,
-		Data: build.Format("2006-01-02 15:04:05"),
-	}
+	//return result.Ok.WithData(build.Format("2006-01-02 15:04:05"))
+	return result.Result[any]{}
 }

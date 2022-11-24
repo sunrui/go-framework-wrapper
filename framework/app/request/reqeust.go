@@ -7,7 +7,7 @@
 package request
 
 import (
-	"config"
+	"framework/config"
 	"github.com/gin-gonic/gin"
 )
 

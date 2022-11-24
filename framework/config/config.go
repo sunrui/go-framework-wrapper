@@ -35,6 +35,7 @@ type redis struct {
 
 // 日志
 type log struct {
+	Enable    bool         `json:"enable"`    // 启用
 	Directory string       `json:"directory"` // 路径
 	File      string       `json:"file"`      // 文件
 	Level     logrus.Level `json:"level"`     // 等级

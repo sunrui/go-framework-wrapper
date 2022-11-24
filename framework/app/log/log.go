@@ -9,12 +9,17 @@ package log
 import (
 	"framework/app/request"
 	"framework/app/token"
+	"framework/config"
 	"framework/result"
 	"github.com/gin-gonic/gin"
 )
 
 // WriteResult 获取结果内容
 func WriteResult(ctx *gin.Context, r result.Result[any]) {
+	if !config.Inst().Log.Enable {
+		return
+	}
+
 	// 获取 request 对象
 	req := request.Get(ctx)
 

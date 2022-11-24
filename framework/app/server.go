@@ -7,7 +7,7 @@
 package app
 
 import (
-	"config"
+	"framework/config"
 	"github.com/gin-gonic/gin"
 	"strconv"
 )

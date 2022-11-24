@@ -1,10 +1,10 @@
 /*
  * Copyright (c) 2022 honeysense.com All rights reserved.
  * Author: sunrui
- * Date: 2022-11-18 23:30:47
+ * Date: 2022/04/03 13:44:03
  */
 
-package public
+package common
 
 import (
 	"framework/result"
@@ -27,7 +27,6 @@ import (
 // @Success 200        {object} result.Result{data=sms.Sms} true
 // @Router  /public/common/ [get]
 func getIndex(_ *gin.Context) result.Result[any] {
-	return result.Result[any]{
-		Code: result.OK,
-	}
+	//return result.Ok.WithData("hello world")
+	return result.Result[any]{}
 }

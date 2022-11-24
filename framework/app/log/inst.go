@@ -7,7 +7,7 @@
 package log
 
 import (
-	"config"
+	"framework/config"
 	"github.com/lestrrat-go/file-rotatelogs"
 	"github.com/rifflock/lfshook"
 	"github.com/sirupsen/logrus"
@@ -21,6 +21,10 @@ import (
 var Inst *logrus.Logger
 
 func init() {
+	if !config.Inst().Log.Enable {
+		return
+	}
+
 	// 建立日志目录
 	if _, err := os.Stat(config.Inst().Log.Directory); err != nil {
 		if err = os.Mkdir(config.Inst().Log.Directory, os.ModePerm); err != nil {

@@ -7,8 +7,8 @@
 package token
 
 import (
-	"config"
 	"errors"
+	"framework/config"
 	"framework/result"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
