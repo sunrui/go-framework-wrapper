@@ -6,8 +6,8 @@
       "database": "medium_dev",
       "user": "root",
       "password": "root",
-      "maxIdleConns": 10,
-      "MaxOpenConns": 100
+      "MaxOpenConns": 100,
+      "maxIdleConns": 10
     },
     "redis": {
       "host": "localhost",
@@ -41,8 +41,8 @@
       "database": "medium_dev",
       "user": "root",
       "password": "honeysenselt",
-      "maxIdleConns": 10,
-      "MaxOpenConns": 100
+      "maxOpenConns": 100,
+      "maxIdleConns": 10
     },
     "redis": {
       "host": "localhost",

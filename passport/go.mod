@@ -46,4 +46,4 @@ require (
 
 replace framework => ../framework
 
-replace config => ../config
+replace config => ./../framework/config

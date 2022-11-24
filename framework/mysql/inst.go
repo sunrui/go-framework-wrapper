@@ -8,7 +8,6 @@ package mysql
 
 import (
 	"config"
-	"encoding/json"
 	"fmt"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -45,9 +44,10 @@ func init() {
 			SingularTable: true, // 使用单数表名
 		},
 	}); err == nil {
+		// 配置连接池
 		sqlDb, _ := db.DB()
-		data, _ := json.Marshal(sqlDb.Stats()) //获得当前的SQL配置情况
-		fmt.Println(string(data))
+		sqlDb.SetMaxOpenConns(config.Inst().Mysql.MaxOpenConns)
+		sqlDb.SetMaxIdleConns(config.Inst().Mysql.MaxIdleConns)
 
 		Inst = &Mysql{
 			DB: db,
