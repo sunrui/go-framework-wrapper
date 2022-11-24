@@ -15,18 +15,18 @@ import (
 )
 
 // Recover 异常捕获中间件
-func Recover(ctx *gin.Context) {
-	// 捕获对象，全部抛出可以使用 panic 方法。
-	defer func() {
-		if err := recover(); err != nil {
-			r := result.InternalError.WithData(result.M{
-				"stack": util.Stack(5),
-				"error": fmt.Sprintf("%s", err),
-			})
+func Recover() func(ctx *gin.Context) {
+	return func(ctx *gin.Context) {
+		defer func() {
+			if err := recover(); err != nil {
+				r := result.InternalError.WithData(result.M{
+					"stack": util.Stack(10),
+					"error": fmt.Sprintf("%s", err),
+				})
 
-			ctx.AbortWithStatusJSON(http.StatusOK, r)
-		} else {
-			ctx.Next()
-		}
-	}()
+				ctx.AbortWithStatusJSON(http.StatusOK, r)
+			}
+		}()
+		ctx.Next()
+	}
 }

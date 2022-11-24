@@ -48,5 +48,5 @@ func registerMiddleware(engine *gin.Engine) {
 	engine.Use(middleware.Body)
 
 	// 注册异常中间件
-	engine.Use(middleware.Recover)
+	engine.Use(middleware.Recover())
 }
