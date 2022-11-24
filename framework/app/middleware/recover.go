@@ -8,10 +8,10 @@ package middleware
 
 import (
 	"fmt"
+	"framework/app/response"
 	"framework/result"
 	"framework/util"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 // Recover 异常捕获中间件
@@ -24,7 +24,7 @@ func Recover() func(ctx *gin.Context) {
 					"error": fmt.Sprintf("%s", err),
 				})
 
-				ctx.AbortWithStatusJSON(http.StatusOK, r)
+				response.Response(ctx, r)
 			}
 		}()
 		ctx.Next()

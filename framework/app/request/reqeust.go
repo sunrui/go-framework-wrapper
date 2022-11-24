@@ -47,6 +47,12 @@ func Get(ctx *gin.Context) Request {
 	}
 }
 
+// IsDump 是否导出
+func IsDump(ctx *gin.Context) bool {
+	dump := ctx.DefaultQuery("dump", "false")
+	return config.Inst().Request.Dump || dump == "true"
+}
+
 // SetDump 设置请求导出
 func SetDump(dump bool) {
 	config.Inst().Request.Dump = dump

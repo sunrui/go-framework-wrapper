@@ -8,9 +8,9 @@ package app
 
 import (
 	"framework/app/middleware"
+	"framework/app/response"
 	"framework/result"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 // MiddlewareFunc 中间件回调对象
@@ -19,9 +19,8 @@ type MiddlewareFunc func(ctx *gin.Context) *result.Result
 // 中间件回调
 func middlewareFunc(middlewareFunc MiddlewareFunc) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		r := middlewareFunc(ctx)
-		if r != nil {
-			ctx.JSON(http.StatusOK, r)
+		if r := middlewareFunc(ctx); r != nil {
+			response.Response(ctx, r)
 		}
 	}
 }

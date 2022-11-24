@@ -15,7 +15,7 @@ import (
 )
 
 // WriteResult 获取结果内容
-func WriteResult(ctx *gin.Context, r result.Result) {
+func WriteResult(ctx *gin.Context, r *result.Result) {
 	if !config.Inst().Log.Enable {
 		return
 	}

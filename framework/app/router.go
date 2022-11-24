@@ -7,9 +7,7 @@
 package app
 
 import (
-	"framework/app/log"
-	"framework/app/request"
-	"framework/config"
+	"framework/app/response"
 	"framework/result"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -36,18 +34,7 @@ type RouterGroup struct {
 func routerFunc(routerFunc RouterFunc) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		r := routerFunc(ctx)
-
-		// 结果导出请求
-		if config.Inst().Request.Dump {
-			req := request.Get(ctx)
-			r.Request = &req
-		}
-
-		// 记录日志
-		log.WriteResult(ctx, *r)
-
-		// 返回客户端
-		ctx.JSON(http.StatusOK, r)
+		response.Response(ctx, r)
 	}
 }
 

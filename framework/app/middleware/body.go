@@ -8,13 +8,12 @@ package middleware
 
 import (
 	"framework/app/request"
-	"framework/config"
 	"github.com/gin-gonic/gin"
 )
 
 // Body 中间件
 func Body(ctx *gin.Context) {
-	if config.Inst().Request.Dump {
+	if request.IsDump(ctx) {
 		request.CopyBody(ctx)
 	}
 
