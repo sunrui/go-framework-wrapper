@@ -49,8 +49,8 @@ func Get(ctx *gin.Context) Request {
 
 // IsDump 是否导出
 func IsDump(ctx *gin.Context) bool {
-	dump := ctx.DefaultQuery("dump", "false")
-	if dump == "false" {
+	dump := ctx.DefaultQuery("dump", "")
+	if dump == "false" || dump == "0" {
 		return false
 	}
 
