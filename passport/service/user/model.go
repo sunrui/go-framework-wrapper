@@ -16,13 +16,13 @@ type User struct {
 	mysql.Model[User]
 	Name         string `json:"name" gorm:"index;unique;comment:用户名"`       // 用户名
 	Phone        string `json:"phone" gorm:"index;unique;comment:手机号"`      // 手机号
-	Password     string `json:"password" gorm:"comment:密码"`                 // 密码
+	Password     string `json:"password" gorm:"binary(60);comment:密码"`      // 密码
 	WxOpenId     string `json:"wxOpenId" gorm:"unique;comment:微信 openId"`   // 微信 openId
 	AlipayOpenId string `json:"aliOpenId" gorm:"unique;comment:支付宝 openId"` // 支付宝 openId
 }
 
 // BeforeSave 更改密码
-func (user *User) BeforeSave(tx *gorm.DB) (err error) {
+func (user *User) BeforeSave(tx *gorm.DB) error {
 	if pw, err := bcrypt.GenerateFromPassword([]byte(user.Password), 0); err == nil {
 		tx.Statement.SetColumn("password", pw)
 	} else {

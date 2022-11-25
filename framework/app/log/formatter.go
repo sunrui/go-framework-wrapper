@@ -8,7 +8,6 @@ package log
 
 import (
 	"bytes"
-	"fmt"
 	"github.com/sirupsen/logrus"
 )
 
@@ -25,7 +24,7 @@ func (m *myFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 		b = &bytes.Buffer{}
 	}
 
-	b.WriteString(fmt.Sprintf("%s - %s", entry.Level, entry.Message))
+	b.WriteString(entry.Message)
 
 	return b.Bytes(), nil
 }

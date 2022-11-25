@@ -16,6 +16,7 @@ import (
 
 // WriteResult 获取结果内容
 func WriteResult(ctx *gin.Context, r *result.Result) {
+	// 未启用日志返回
 	if !config.Inst().Log.Enable {
 		return
 	}
@@ -31,6 +32,7 @@ func WriteResult(ctx *gin.Context, r *result.Result) {
 		buffer += " - userId(" + *userId + ")"
 	}
 
+	// 空一行
 	buffer += "\n"
 
 	// header
@@ -52,7 +54,10 @@ func WriteResult(ctx *gin.Context, r *result.Result) {
 	buffer += "\n"
 
 	// 结果
-	buffer += r.String()
+	buffer += r.String() + "\n"
+
+	// 空一行
+	buffer += "\n"
 
 	if r.Code == result.Ok.Code {
 		Inst.Debugln(buffer)
