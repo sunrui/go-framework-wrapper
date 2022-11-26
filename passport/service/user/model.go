@@ -13,7 +13,7 @@ import (
 )
 
 type User struct {
-	mysql.Model[User]
+	mysql.Model
 	Name         string `json:"name" gorm:"index;unique;comment:用户名"`  // 用户名
 	Phone        string `json:"phone" gorm:"index;unique;comment:手机号"` // 手机号
 	Password     string `json:"password" gorm:"binary(60);comment:密码"` // 密码
@@ -33,7 +33,7 @@ func (user *User) BeforeSave(tx *gorm.DB) error {
 }
 
 type UserDevice struct {
-	mysql.Model[UserDevice]
+	mysql.Model
 	UserId      string     `json:"userId"`      // 用户 id
 	Type        DeviceType `json:"type"`        // 类型
 	Ip          string     `json:"ip"`          // ip
@@ -45,12 +45,12 @@ type UserDevice struct {
 }
 
 type UserInfo struct {
-	mysql.Model[UserInfo]
+	mysql.Model
 }
 
 // UserRole 用户角色
 type UserRole struct {
-	mysql.Model[UserRole]
+	mysql.Model
 	UserId string `json:"userId" gorm:"type:char(12);comment:用户 id"` // 用户 id
 	//Type   RoleType `json:"type" gorm:"type:varchar(32), comment:类型"`  // 类型
 }
