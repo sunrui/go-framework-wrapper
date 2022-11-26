@@ -14,7 +14,7 @@ import (
 )
 
 // 手机号码登录请求
-type postLoginByPhoneReq struct {
+type postLoginByNameReq struct {
 	Phone       string          `json:"phone" validate:"required,len=11"`       // 手机号
 	Code        string          `json:"code" validate:"required,len=6,numeric"` // 验证码
 	DeviceType  userDevice.Type `json:"deviceType" validate:"required"`         // 设备类型
@@ -23,7 +23,7 @@ type postLoginByPhoneReq struct {
 }
 
 // 手机号码登录结果
-type postLoginByPhoneRes struct {
+type postLoginByNameRes struct {
 	UserId string `json:"userId"` // 用户 id
 }
 
@@ -35,7 +35,7 @@ type postLoginByPhoneRes struct {
 // @ApprovalSuccess 200    {object}  postLoginByPhoneRes
 // @Failure         400 {object} result.Result
 // @RouterGroup     /auth/login/phone [post]
-func postNameByPhone(ctx *gin.Context) *result.Result {
+func postNameByName(ctx *gin.Context) *result.Result {
 	var r postLoginByNameReq
 
 	// 较验参数

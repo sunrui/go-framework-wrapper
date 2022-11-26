@@ -5,7 +5,7 @@
       "port": 3306,
       "database": "medium_dev",
       "user": "root",
-      "password": "root",
+      "password": "honeysenselt",
       "MaxOpenConns": 100,
       "maxIdleConns": 10
     },
