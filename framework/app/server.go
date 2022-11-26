@@ -22,7 +22,6 @@ type Server struct {
 func New() *Server {
 	engine := gin.New()
 
-	// 注册中间件
 	// 注册 404 回调
 	engine.NoRoute(routerFunc(middleware.NotFound))
 

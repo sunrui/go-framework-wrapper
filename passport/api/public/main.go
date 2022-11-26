@@ -20,7 +20,7 @@ func initContext() {
 	_, file, _, _ := runtime.Caller(0)
 	path := filepath.Dir(file)
 
-	if err := context.InitContext(path + "/../config.json"); err != nil {
+	if err := context.Init(path + "/../config.json"); err != nil {
 		panic(err.Error())
 	}
 }

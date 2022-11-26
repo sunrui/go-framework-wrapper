@@ -19,16 +19,25 @@ var Mysql *mysql.Mysql    // 数据库
 var Redis *redis.Redis    // 缓存
 var Token *token.Token    // 令牌
 
-func InitContext(jsonFile string) error {
+// Init 初始化
+func Init(jsonFile string) error {
 	var err error
 
+	// 初始化 config
 	if Config, err = config.New(jsonFile); err != nil {
 		return err
 	}
 
+	// 初始化日志
 	Log = NewLog(Config.Log)
+
+	// 初始化 mysql 数据库
 	Mysql = mysql.New(Config.Mysql, Log.Mysql)
+
+	// 初始化 redis 缓存
 	Redis = redis.New(Config.Redis)
+
+	// 初始化令牌
 	Token = token.New(Config.Token)
 
 	return nil
