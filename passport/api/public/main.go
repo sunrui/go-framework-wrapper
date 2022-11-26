@@ -7,7 +7,7 @@ package main
 
 import (
 	"framework/app"
-	"public/common"
+	"public/api/common"
 	"public/user"
 )
 

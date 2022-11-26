@@ -7,7 +7,7 @@ package main
 
 import (
 	"framework/app"
-	"user/user"
+	"user/api/user"
 )
 
 // @title    Medium 用户接口文档

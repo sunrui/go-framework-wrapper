@@ -6,7 +6,7 @@
 package main
 
 import (
-	"admin/user"
+	"admin/api/user"
 	"framework/app"
 )
 
