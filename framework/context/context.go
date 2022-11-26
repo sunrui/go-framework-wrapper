@@ -22,14 +22,14 @@ var Token *token.Token    // 令牌
 func InitContext(jsonFile string) error {
 	var err error
 
-	if Config, err = config.NewConfig(jsonFile); err != nil {
+	if Config, err = config.New(jsonFile); err != nil {
 		return err
 	}
 
 	Log = NewLog(Config.Log)
-	Mysql = mysql.NewMysql(Config.Mysql, Log.Mysql)
-	Redis = redis.NewRedis(Config.Redis)
-	Token = token.NewToken(Config.Token)
+	Mysql = mysql.New(Config.Mysql, Log.Mysql)
+	Redis = redis.New(Config.Redis)
+	Token = token.New(Config.Token)
 
 	return nil
 }

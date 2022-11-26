@@ -23,7 +23,7 @@ type Router struct {
 	RouterFunc   RouterFunc // 回调
 }
 
-// RouterGroup 路由对象
+// RouterGroup 路由
 type RouterGroup struct {
 	GroupName  string          // 组名
 	Middleware gin.HandlerFunc // 中间件

@@ -27,8 +27,7 @@ func CopyBody(ctx *gin.Context) {
 
 // GetBody 获取 body
 func GetBody(ctx *gin.Context) *string {
-	body, exists := ctx.Get(BodyTag)
-	if exists {
+	if body, ok := ctx.Get(BodyTag); ok {
 		bodyString := body.(string)
 		return &bodyString
 	} else {

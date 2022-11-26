@@ -21,8 +21,8 @@ type Mysql struct {
 	*gorm.DB
 }
 
-// NewMysql 创建数据库
-func NewMysql(mysqlConfig config.Mysql, log *logrus.Logger) *Mysql {
+// New 创建数据库
+func New(mysqlConfig config.Mysql, log *logrus.Logger) *Mysql {
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local",
 		mysqlConfig.User,
 		mysqlConfig.Password,

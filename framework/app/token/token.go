@@ -13,11 +13,13 @@ import (
 	"time"
 )
 
+// 令牌
 type Token struct {
 	config config.Token
 }
 
-func NewToken(tokenConfig config.Token) *Token {
+// New 创建
+func New(tokenConfig config.Token) *Token {
 	return &Token{
 		config: tokenConfig,
 	}
@@ -55,16 +57,16 @@ func (token Token) MustGetUserId(ctx *gin.Context) string {
 // RefreshIf 刷新令牌
 func (token Token) RefreshIf(ctx *gin.Context) {
 	if str := getCookieString(ctx, token.config.Key); str != "" {
-		if jwtPayload, err := decode(str, token.config.JwtSecret); err != nil {
+		if jwt, err := decode(str, token.config.JwtSecret); err != nil {
 			// 当前距离过期时间（毫秒）
-			expired := jwtPayload.ExpiresAt - time.Now().Unix()
+			expired := jwt.ExpiresAt - time.Now().Unix()
 
 			// 设置距离过期时间（毫秒）
 			setExpired := (token.config.MaxAge - token.config.AutoRefreshAge) * 1000
 
 			// 已经大于最小刷新时长
 			if expired >= setExpired {
-				token.Write(ctx, jwtPayload.Payload)
+				token.Write(ctx, jwt.Payload)
 			}
 		}
 	}

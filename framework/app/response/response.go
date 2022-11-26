@@ -25,7 +25,7 @@ func Response(ctx *gin.Context, r *result.Result) {
 	}
 
 	go func() {
-		// 开启控制台
+		// 控制台日志
 		if config.IsDev() {
 			fmt.Println(r)
 		}

@@ -15,13 +15,13 @@ import (
 	"time"
 )
 
-// Redis 对象
+// Redis 缓存
 type Redis struct {
 	Pool redis.Pool
 }
 
-// NewRedis 创建实例
-func NewRedis(redisConfig config.Redis) *Redis {
+// New 创建
+func New(redisConfig config.Redis) *Redis {
 	// 建立连接池
 	rediz := &Redis{
 		Pool: redis.Pool{
@@ -51,14 +51,14 @@ func NewRedis(redisConfig config.Redis) *Redis {
 	return rediz
 }
 
-// Set 设置对象
+// Set 设置
 func (rediz *Redis) Set(key string, value any, expired time.Duration) {
 	pool := rediz.Pool.Get()
 	defer func() {
 		_ = pool.Close()
 	}()
 
-	// 判断存储的是否为对象
+	// 判断存储的是否为结构体
 	if reflect.TypeOf(value).Kind() == reflect.Struct {
 		if marshal, err := json.Marshal(value); err != nil {
 			panic(err.Error())
@@ -89,7 +89,7 @@ func (rediz *Redis) GetString(key string) *string {
 	}
 }
 
-// GetJson 获取对象
+// GetJson 获取
 func (rediz *Redis) GetJson(key string, dst any) bool {
 	pool := rediz.Pool.Get()
 	defer func() {
@@ -107,7 +107,7 @@ func (rediz *Redis) GetJson(key string, dst any) bool {
 	}
 }
 
-// Exists 是否存在对象
+// Exists 是否存在
 func (rediz *Redis) Exists(key string) bool {
 	pool := rediz.Pool.Get()
 	defer func() {
@@ -121,7 +121,7 @@ func (rediz *Redis) Exists(key string) bool {
 	}
 }
 
-// Del 删除对象
+// Del 删除
 func (rediz *Redis) Del(key string) {
 	pool := rediz.Pool.Get()
 	defer func() {
@@ -133,14 +133,14 @@ func (rediz *Redis) Del(key string) {
 	}
 }
 
-// SetHash 设置 hash 对象
+// SetHash 设置 hash
 func (rediz *Redis) SetHash(hash string, key string, value any) {
 	pool := rediz.Pool.Get()
 	defer func() {
 		_ = pool.Close()
 	}()
 
-	// 判断存储的是否为对象
+	// 判断存储的是否为结构体
 	if reflect.TypeOf(value).Kind() == reflect.Struct {
 		if marshal, err := json.Marshal(value); err != nil {
 			panic(err.Error())
@@ -154,7 +154,7 @@ func (rediz *Redis) SetHash(hash string, key string, value any) {
 	}
 }
 
-// GetHash 获取 hash 对象
+// GetHash 获取 hash
 func (rediz *Redis) GetHash(hash string, key string) *string {
 	pool := rediz.Pool.Get()
 	defer func() {
@@ -171,7 +171,7 @@ func (rediz *Redis) GetHash(hash string, key string) *string {
 	}
 }
 
-// GetHashJson 获取 hash 对象
+// GetHashJson 获取 hash
 func (rediz *Redis) GetHashJson(hash string, key string, dst any) bool {
 	pool := rediz.Pool.Get()
 	defer func() {

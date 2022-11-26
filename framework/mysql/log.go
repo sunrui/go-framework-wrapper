@@ -14,7 +14,7 @@ import (
 	"time"
 )
 
-// 自定义日志
+// 日志
 type myLog struct {
 	log *logrus.Logger
 }
@@ -34,7 +34,7 @@ func (m myLog) Printf(format string, v ...interface{}) {
 	}
 }
 
-// 获取日志对象
+// 获取日志
 func getLogger(log *logrus.Logger) logger.Interface {
 	// 慢日志打印
 	var slowThreshold time.Duration

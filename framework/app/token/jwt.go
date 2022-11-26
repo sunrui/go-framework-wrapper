@@ -11,12 +11,12 @@ import (
 	"time"
 )
 
-// Payload 自定义对象
+// Payload 负荷
 type Payload struct {
 	UserId string `json:"userId"` // 用户 id
 }
 
-// 令牌对象
+// jwt 负荷
 type jwtPayload struct {
 	jwt.StandardClaims
 	Payload

@@ -22,7 +22,7 @@ func Recover() func(ctx *gin.Context) {
 				var r *result.Result
 				var ok bool
 
-				// 判断是否抛出了 Result 对象
+				// 判断是否抛出了 Result
 				if r, ok = err.(*result.Result); !ok {
 					r = result.InternalError.WithData(result.M{
 						"stack": util.Stack(10),
@@ -33,6 +33,7 @@ func Recover() func(ctx *gin.Context) {
 				response.Response(ctx, r)
 			}
 		}()
+
 		ctx.Next()
 	}
 }

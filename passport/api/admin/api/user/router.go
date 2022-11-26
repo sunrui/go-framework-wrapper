@@ -12,7 +12,7 @@ import (
 	"passport/middleware"
 )
 
-// GetRouter 获取路由对象
+// GetRouter 获取路由
 func GetRouter() app.RouterGroup {
 	return app.RouterGroup{
 		GroupName:  "/api-user",

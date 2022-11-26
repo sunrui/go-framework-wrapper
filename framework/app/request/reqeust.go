@@ -10,7 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Request 请求对象
+// Request 请求
 type Request struct {
 	Ip      string   `json:"ip"`      // ip 地址
 	Proto   string   `json:"proto"`   // 协议
@@ -20,7 +20,7 @@ type Request struct {
 	Body    *string  `json:"body"`    // 请求体
 }
 
-// Get 获取请求对象
+// Get 获取
 func Get(ctx *gin.Context) Request {
 	return Request{
 		Ip:     ctx.ClientIP(),

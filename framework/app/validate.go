@@ -36,7 +36,7 @@ func ValidateParameter(ctx *gin.Context, req any) {
 
 	// 存在解析参数错误
 	if err = validator.New().Struct(req); err != nil {
-		// 参数错误对象
+		// 参数错误
 		type ParamError struct {
 			Field    string `json:"field"`    // 变量名
 			Validate string `json:"validate"` // 较验值

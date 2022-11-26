@@ -13,7 +13,7 @@ import (
 
 type M map[string]any
 
-// Pagination 分页对象
+// Pagination 分页
 type Pagination struct {
 	Page      int   `json:"page"`      // 当前页，从 1 开始
 	PageSize  int   `json:"pageSize"`  // 每页大小
@@ -21,13 +21,13 @@ type Pagination struct {
 	TotalSize int64 `json:"totalSize"` // 总大小
 }
 
-// Result 结果对象
+// Result 结果
 type Result struct {
 	Code       string           `json:"code" example:"Ok"`    // 代码
 	Message    string           `json:"message" example:"成功"` // 消息
 	Data       any              `json:"data,omitempty"`       // 数据
-	Pagination *Pagination      `json:"pagination,omitempty"` // 分页对象
-	Request    *request.Request `json:"request,omitempty"`    // 请求对象
+	Pagination *Pagination      `json:"pagination,omitempty"` // 分页config
+	Request    *request.Request `json:"request,omitempty"`    // 请求config
 }
 
 // String 数据
@@ -78,7 +78,7 @@ var (
 	NoContent        = newResult("NoContent", "没有内容")
 	MethodNotAllowed = newResult("MethodNotAllowed", "方法不允许")
 	Conflict         = newResult("Conflict", "冲突")
-	RateLimit        = newResult("Take", "限流")
+	RateLimit        = newResult("RateLimit", "限流")
 	InternalError    = newResult("InternalError", "内部错误")
 	ThirdPartyError  = newResult("ThirdPartyError", "第三方错误")
 	NotImplemented   = newResult("NotImplemented", "未实现")

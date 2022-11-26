@@ -14,12 +14,12 @@ import (
 	"time"
 )
 
-// RateLimit 限流对象
+// RateLimit 限流
 type RateLimit struct {
 	*ratelimit.Bucket
 }
 
-// NewRateLimit 创建限流对象
+// NewRateLimit 创建限流
 func NewRateLimit() RateLimit {
 	return RateLimit{
 		Bucket: ratelimit.NewBucketWithQuantum(time.Second, // 间隔单位
@@ -29,7 +29,7 @@ func NewRateLimit() RateLimit {
 	}
 }
 
-// Take 限流
+// Take 监测限流
 func (bucket RateLimit) Take(ctx *gin.Context) *result.Result {
 	if bucket.TakeAvailable(1) < 1 {
 		ctx.Abort()

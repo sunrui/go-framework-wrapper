@@ -35,7 +35,7 @@ func NewLog(logConfig config.Log) *Logs {
 
 	// http 访问
 	if logConfig.Switch.HttpAccess {
-		HttpAccessLogger = log.NewLog(logConfig, "http", "access")
+		HttpAccessLogger = log.New(logConfig, "http", "access")
 
 		// 开启 gin 日志
 		if config.IsDev() {
@@ -47,12 +47,12 @@ func NewLog(logConfig config.Log) *Logs {
 
 	// http 错误
 	if logConfig.Switch.HttpError {
-		HttpErrorLogger = log.NewLog(logConfig, "http", "error")
+		HttpErrorLogger = log.New(logConfig, "http", "error")
 	}
 
 	// mysql
 	if logConfig.Switch.Mysql {
-		MysqlLogger = log.NewLog(logConfig, "mysql", "mysql")
+		MysqlLogger = log.New(logConfig, "mysql", "mysql")
 	}
 
 	return &Logs{

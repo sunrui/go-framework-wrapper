@@ -15,7 +15,7 @@ import (
 
 // 获取结果数据
 func getResultString(ctx *gin.Context, r *result.Result) string {
-	// 获取 request 对象
+	// 获取 request
 	req := request.Get(ctx)
 
 	// method http://host:port?query protocol

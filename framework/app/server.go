@@ -13,12 +13,12 @@ import (
 	"strconv"
 )
 
-// Server 服务对象
+// Server 服务
 type Server struct {
-	engine *gin.Engine // gin 对象
+	engine *gin.Engine // gin config
 }
 
-// New 创建新的服务对象
+// New 创建服务
 func New() *Server {
 	engine := gin.New()
 
@@ -38,7 +38,6 @@ func New() *Server {
 	engine.Use(middleware.Token)
 
 	// 注册文档中间件
-	// TODO 加入开关
 	engine.GET("/doc/*any", middleware.Swagger)
 
 	// 注册 body 中间件
@@ -57,12 +56,12 @@ func (server *Server) Middleware(handlerFunc gin.HandlerFunc) {
 	server.engine.Use(handlerFunc)
 }
 
-// Router 路由对象
+// Router 路由
 func (server *Server) Router(router RouterGroup) {
 	registerRouter(server.engine, router)
 }
 
-// RouterGroup 路由对象组
+// RouterGroup 路由组
 func (server *Server) RouterGroup(groupName string, routers []RouterGroup) {
 	for _, router := range routers {
 		router.GroupName = groupName + router.GroupName

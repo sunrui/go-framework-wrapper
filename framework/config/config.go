@@ -74,8 +74,8 @@ type Config struct {
 	Token     Token     `json:"token"`     // Token
 }
 
-// NewConfig 创建配置
-func NewConfig(jsonFile string) (*Config, error) {
+// New 创建
+func New(jsonFile string) (*Config, error) {
 	type env struct {
 		Dev  Config `json:"dev"`
 		Prod Config `json:"prod"`
