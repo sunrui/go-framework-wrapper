@@ -23,7 +23,10 @@ func (m *myLog) Printf(format string, v ...interface{}) {
 	str := fmt.Sprintf(format, v...)
 
 	// 写入日志
-	log.Mysql.Print(str)
+	if log.Mysql != nil {
+		log.Mysql.Print(str)
+	}
+
 	// 写入控制台
 	fmt.Print(str)
 }

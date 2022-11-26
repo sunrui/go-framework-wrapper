@@ -19,11 +19,6 @@ import (
 
 // 获取结果数据
 func getResultBuffer(ctx *gin.Context, r *result.Result) string {
-	// 未启用日志返回
-	if !config.Inst().Log.Enable {
-		return ""
-	}
-
 	// 获取 request 对象
 	req := request.Get(ctx)
 
@@ -82,9 +77,13 @@ func Response(ctx *gin.Context, r *result.Result) {
 		// 记录日志
 		buffer := getResultBuffer(ctx, r)
 		if r.Code == result.Ok.Code {
-			log.Http.Debugln(buffer)
+			if log.HttpAccess != nil {
+				log.HttpAccess.Debugln(buffer)
+			}
 		} else {
-			log.Http.Errorln(buffer)
+			if log.HttpError != nil {
+				log.HttpError.Errorln(buffer)
+			}
 		}
 	}()
 

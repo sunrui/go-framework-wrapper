@@ -33,9 +33,15 @@ type redis struct {
 	Database int    `json:"database"` // 数据库
 }
 
+type logSwitch struct {
+	HttpAccess bool `json:"httpAccess"` // http 访问
+	HttpError  bool `json:"httpError"`  // http 错误
+	Mysql      bool `json:"mysql"`      // mysql
+}
+
 // 日志
 type log struct {
-	Enable    bool         `json:"enable"`    // 启用
+	Switch    logSwitch    `json:"switch"`    // 启用
 	Directory string       `json:"directory"` // 路径
 	Level     logrus.Level `json:"level"`     // 等级
 }

@@ -14,20 +14,30 @@ import (
 	"os"
 )
 
-// Http 日志实例
-var Http *logrus.Logger
+// HttpAccess 日志实例
+var HttpAccess *logrus.Logger
+
+// HttpError 日志实例
+var HttpError *logrus.Logger
 
 // Mysql 日志实例
 var Mysql *logrus.Logger
 
 func init() {
-	if !config.Inst().Log.Enable {
-		return
+	// http 访问
+	if config.Inst().Log.Switch.HttpAccess {
+		HttpAccess = newLog("http", "access")
+		// 开启 gin 日志
+		gin.DefaultWriter = io.MultiWriter(HttpAccess.Out, os.Stdout)
 	}
 
-	Http = newLog("http", "http")
-	// 开启 gin 日志
-	gin.DefaultWriter = io.MultiWriter(Http.Out, os.Stdout)
+	// http 错误
+	if config.Inst().Log.Switch.HttpError {
+		HttpError = newLog("http", "error")
+	}
 
-	Mysql = newLog("mysql", "mysql")
+	// mysql
+	if config.Inst().Log.Switch.Mysql {
+		Mysql = newLog("mysql", "mysql")
+	}
 }

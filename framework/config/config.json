@@ -20,7 +20,11 @@
       "quantum": 5
     },
     "log": {
-      "enable": true,
+      "switch": {
+        "httpAccess": false,
+        "httpError": true,
+        "mysql": true
+      },
       "directory": "log",
       "level": "trace"
     },
@@ -55,7 +59,11 @@
       "quantum": 5
     },
     "log": {
-      "enable": true,
+      "switch": {
+        "httpAccess": true,
+        "httpError": true,
+        "mysql": true
+      },
       "directory": "log",
       "level": "debug"
     },
