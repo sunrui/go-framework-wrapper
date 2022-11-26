@@ -9,69 +9,25 @@ package log
 import (
 	"framework/config"
 	"github.com/gin-gonic/gin"
-	"github.com/lestrrat-go/file-rotatelogs"
-	"github.com/rifflock/lfshook"
 	"github.com/sirupsen/logrus"
 	"io"
 	"os"
-	"path"
-	"time"
 )
 
-// Inst 日志实例
-var Inst *logrus.Logger
+// Http 日志实例
+var Http *logrus.Logger
+
+// Mysql 日志实例
+var Mysql *logrus.Logger
 
 func init() {
 	if !config.Inst().Log.Enable {
 		return
 	}
 
-	// 建立日志目录
-	if _, err := os.Stat(config.Inst().Log.Directory); err != nil {
-		if err = os.Mkdir(config.Inst().Log.Directory, os.ModePerm); err != nil {
-			panic(err.Error())
-		}
-	}
+	Http = newLog("http", "http")
+	// 开启 gin 日志
+	gin.DefaultWriter = io.MultiWriter(Http.Out, os.Stdout)
 
-	// 文件全路径
-	fileName := path.Join(config.Inst().Log.Directory, config.Inst().Log.File+".log")
-
-	// 创建日志实例
-	Inst = logrus.New()
-	Inst.SetLevel(config.Inst().Log.Level)
-	Inst.SetOutput(io.MultiWriter(func() *os.File {
-		if file, err := os.Create(fileName); err != nil {
-			panic(err.Error())
-		} else {
-			return file
-		}
-	}()))
-
-	// 开启 gin 日志写入
-	gin.DefaultWriter = io.MultiWriter(Inst.Out, os.Stdout)
-
-	// 可循环的日志配置
-	logWriter, _ := rotatelogs.New(
-		// 分割后的文件名称
-		path.Join(config.Inst().Log.Directory, config.Inst().Log.File)+".%Y-%m-%d.log",
-		// 生成软链，指向最新日志文件
-		rotatelogs.WithLinkName(fileName),
-		// 设置最大保存时间
-		rotatelogs.WithMaxAge(7*24*time.Hour),
-		// 设置日志切割时间间隔
-		rotatelogs.WithRotationTime(24*time.Hour),
-	)
-
-	// hook 机制的设置
-	writerMap := lfshook.WriterMap{
-		logrus.InfoLevel:  logWriter,
-		logrus.FatalLevel: logWriter,
-		logrus.DebugLevel: logWriter,
-		logrus.WarnLevel:  logWriter,
-		logrus.ErrorLevel: logWriter,
-		logrus.PanicLevel: logWriter,
-	}
-
-	Inst.AddHook(lfshook.NewHook(writerMap, &myFormatter{}))
-	Inst.SetFormatter(&myFormatter{})
+	Mysql = newLog("mysql", "mysql")
 }

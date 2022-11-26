@@ -11,7 +11,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-// 自定义格式器
+// 自定义格式化
 type myFormatter struct {
 }
 

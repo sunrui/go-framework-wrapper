@@ -19,7 +19,7 @@ type Server struct {
 
 // New 创建新的服务对象
 func New() *Server {
-	engine := gin.Default()
+	engine := gin.New()
 
 	// 注册中间件
 	registerMiddleware(engine)

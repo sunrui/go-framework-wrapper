@@ -22,7 +22,6 @@
     "log": {
       "enable": true,
       "directory": "log",
-      "file": "access",
       "level": "trace"
     },
     "request": {
@@ -58,7 +57,6 @@
     "log": {
       "enable": true,
       "directory": "log",
-      "file": "access",
       "level": "debug"
     },
     "request": {
