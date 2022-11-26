@@ -8,6 +8,7 @@ package main
 import (
 	"framework/app"
 	"public/common"
+	"public/user"
 )
 
 // @title   Medium 公用接口文档
@@ -21,6 +22,7 @@ func main() {
 	// 注册路由
 	server.RouterGroup("/public", []app.RouterGroup{
 		common.GetRouter(),
+		user.GetRouter(),
 	})
 
 	// 启动服务

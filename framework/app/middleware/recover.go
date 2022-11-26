@@ -19,10 +19,16 @@ func Recover() func(ctx *gin.Context) {
 	return func(ctx *gin.Context) {
 		defer func() {
 			if err := recover(); err != nil {
-				r := result.InternalError.WithData(result.M{
-					"stack": util.Stack(10),
-					"error": fmt.Sprintf("%s", err),
-				})
+				var r *result.Result
+				var ok bool
+
+				// 判断是否抛出了 Result 对象
+				if r, ok = err.(*result.Result); !ok {
+					r = result.InternalError.WithData(result.M{
+						"stack": util.Stack(10),
+						"error": fmt.Sprintf("%s", err),
+					})
+				}
 
 				response.Response(ctx, r)
 			}
