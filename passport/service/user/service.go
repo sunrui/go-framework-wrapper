@@ -7,12 +7,13 @@
 package user
 
 import (
+	"framework/context"
 	"framework/mysql"
 	"golang.org/x/crypto/bcrypt"
 )
 
 func IsValidateNameAndPassword(name string, password string) bool {
-	if user := mysql.FindOne[User](User{
+	if user := mysql.FindOne[User](context.Mysql, User{
 		Name: name,
 	}); user == nil {
 		return false
@@ -26,7 +27,7 @@ func IsValidateNameAndPassword(name string, password string) bool {
 }
 
 func IsValidatePhoneAndPassword(phone string, password string) bool {
-	if user := mysql.FindOne[User](User{
+	if user := mysql.FindOne[User](context.Mysql, User{
 		Phone: phone,
 	}); user == nil {
 		return false

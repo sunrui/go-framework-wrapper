@@ -78,7 +78,7 @@ var (
 	NoContent        = newResult("NoContent", "没有内容")
 	MethodNotAllowed = newResult("MethodNotAllowed", "方法不允许")
 	Conflict         = newResult("Conflict", "冲突")
-	RateLimit        = newResult("RateLimit", "限流")
+	RateLimit        = newResult("Take", "限流")
 	InternalError    = newResult("InternalError", "内部错误")
 	ThirdPartyError  = newResult("ThirdPartyError", "第三方错误")
 	NotImplemented   = newResult("NotImplemented", "未实现")

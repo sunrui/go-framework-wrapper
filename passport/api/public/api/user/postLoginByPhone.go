@@ -10,14 +10,14 @@ import (
 	"framework/app"
 	"framework/result"
 	"github.com/gin-gonic/gin"
-	"passport/service/userDevice"
+	"passport/service/user"
 )
 
 // 手机号码登录请求
 type postLoginByPhoneReq struct {
 	Phone       string          `json:"phone" validate:"required,len=11"`       // 手机号
 	Code        string          `json:"code" validate:"required,len=6,numeric"` // 验证码
-	DeviceType  userDevice.Type `json:"deviceType" validate:"required"`         // 设备类型
+	DeviceType  user.DeviceType `json:"deviceType" validate:"required"`         // 设备类型
 	PackageName string          `json:"packageName" validate:"required"`        // 包名
 	AppVersion  string          `json:"appVersion" validate:"required"`         // 软件版本
 }

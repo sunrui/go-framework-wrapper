@@ -17,10 +17,15 @@ import (
 	"time"
 )
 
-// 生成日志
-func newLog(directory string, filePrefix string) *logrus.Logger {
+const (
+	maxAge       = 7 * 24 * time.Hour // 最长过期时间
+	rotationTime = 24 * time.Hour     // 最大回滚时长
+)
+
+// NewLog 创建日志
+func NewLog(logConfig config.Log, directory string, filePrefix string) *logrus.Logger {
 	// 路径
-	filePath := config.Inst().Log.Directory + "/" + directory
+	filePath := logConfig.Directory + "/" + directory
 	// 文件
 	fileName := path.Join(filePath, filePrefix+".log")
 
@@ -33,7 +38,7 @@ func newLog(directory string, filePrefix string) *logrus.Logger {
 
 	// 创建日志实例
 	log := logrus.New()
-	log.SetLevel(config.Inst().Log.Level)
+	log.SetLevel(logConfig.Level)
 	log.SetOutput(io.MultiWriter(func() *os.File {
 		if file, err := os.Create(fileName); err != nil {
 			panic(err.Error())
@@ -49,9 +54,9 @@ func newLog(directory string, filePrefix string) *logrus.Logger {
 		// 生成软链，指向最新日志文件
 		rotatelogs.WithLinkName(fileName),
 		// 设置最大保存时间
-		rotatelogs.WithMaxAge(7*24*time.Hour),
+		rotatelogs.WithMaxAge(maxAge),
 		// 设置日志切割时间间隔
-		rotatelogs.WithRotationTime(24*time.Hour),
+		rotatelogs.WithRotationTime(rotationTime),
 	)
 
 	// hook 机制的设置

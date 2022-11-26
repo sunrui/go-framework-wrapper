@@ -8,31 +8,34 @@ package mysql
 
 import (
 	"fmt"
-	"framework/app/log"
 	"framework/config"
+	"github.com/sirupsen/logrus"
 	"gorm.io/gorm/logger"
 	"time"
 )
 
 // 自定义日志
 type myLog struct {
+	log *logrus.Logger
 }
 
 // Printf 序列化
-func (m *myLog) Printf(format string, v ...interface{}) {
+func (m myLog) Printf(format string, v ...interface{}) {
 	str := fmt.Sprintf(format, v...)
 
 	// 写入日志
-	if log.Mysql != nil {
-		log.Mysql.Print(str)
+	if m.log != nil {
+		m.log.Print(str)
 	}
 
 	// 写入控制台
-	fmt.Print(str)
+	if config.IsDev() {
+		fmt.Print(str)
+	}
 }
 
 // 获取日志对象
-func getLogger() logger.Interface {
+func getLogger(log *logrus.Logger) logger.Interface {
 	// 慢日志打印
 	var slowThreshold time.Duration
 
@@ -43,7 +46,9 @@ func getLogger() logger.Interface {
 	}
 
 	return logger.New(
-		&myLog{},
+		&myLog{
+			log: log,
+		},
 		logger.Config{
 			SlowThreshold: slowThreshold,
 			LogLevel:      logger.Info,

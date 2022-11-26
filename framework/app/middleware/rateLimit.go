@@ -7,18 +7,30 @@
 package middleware
 
 import (
-	"framework/config"
+	"framework/context"
 	"framework/result"
 	"github.com/gin-gonic/gin"
 	"github.com/juju/ratelimit"
 	"time"
 )
 
-// 令牌桶
-var bucket *ratelimit.Bucket
+// RateLimit 限流对象
+type RateLimit struct {
+	*ratelimit.Bucket
+}
 
-// RateLimit 流量限制中间件
-func RateLimit(ctx *gin.Context) *result.Result {
+// NewRateLimit 创建限流对象
+func NewRateLimit() RateLimit {
+	return RateLimit{
+		Bucket: ratelimit.NewBucketWithQuantum(time.Second, // 间隔单位
+			context.Config.RateLimit.Capacity, // 令牌桶容量
+			context.Config.RateLimit.Quantum,  // 每隔多久
+		),
+	}
+}
+
+// Take 限流
+func (bucket RateLimit) Take(ctx *gin.Context) *result.Result {
 	if bucket.TakeAvailable(1) < 1 {
 		ctx.Abort()
 
@@ -29,12 +41,4 @@ func RateLimit(ctx *gin.Context) *result.Result {
 
 	ctx.Next()
 	return nil
-}
-
-// 初始化
-func init() {
-	bucket = ratelimit.NewBucketWithQuantum(time.Second, // 间隔单位
-		config.Inst().RateLimit.Capacity, // 令牌桶容量
-		config.Inst().RateLimit.Quantum,  // 每隔多久
-	)
 }

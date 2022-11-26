@@ -34,7 +34,7 @@ func Swagger(ctx *gin.Context) {
 	_, _ = ctx.Writer.Write(redoc(suffix))
 }
 
-// 文档中间件
+// 文档
 func redoc(suffix string) []byte {
 	if suffix == "doc.json" {
 		data, _ := os.ReadFile("docs/swagger.json")

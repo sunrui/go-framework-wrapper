@@ -6,23 +6,49 @@
 package main
 
 import (
-	"admin/api/user"
 	"framework/app"
+	"framework/context"
+	"passport/service"
+	"path/filepath"
+	"runtime"
 )
 
-// @title   Medium 后台接口文档
-// @version 1.0
-// @host    127.0.0.1:8082
-// @BasePath
-func main() {
+// 初始化上下文
+func initContext() {
+	_, file, _, _ := runtime.Caller(0)
+	path := filepath.Dir(file)
+
+	if err := context.InitContext(path + "/../config.json"); err != nil {
+		panic(err.Error())
+	}
+}
+
+// 开启服务
+func startServer() {
 	// 创建服务
 	server := app.New()
 
 	// 注册路由
-	server.RouterGroup("/api-admin", []app.RouterGroup{
-		user.GetRouter(),
+	server.RouterGroup("/public", []app.RouterGroup{
+		//common.GetRouter(),
+		//user.GetRouter(),
 	})
 
 	// 启动服务
 	server.Run(8082)
+}
+
+// @title   Medium 管理后台接口文档
+// @version 1.0
+// @host    127.0.0.1:8082
+// @BasePath
+func main() {
+	// 初始化上下文
+	initContext()
+
+	// 数据库初始化
+	service.Mirage()
+
+	// 启动服务
+	startServer()
 }

@@ -6,10 +6,14 @@
 
 package config
 
-import "github.com/sirupsen/logrus"
+import (
+	"encoding/json"
+	"github.com/sirupsen/logrus"
+	"os"
+)
 
-// 数据库
-type mysql struct {
+// Mysql 数据库
+type Mysql struct {
 	User         string `json:"user"`         // 用户名
 	Password     string `json:"password"`     // 密码
 	Host         string `json:"host"`         // 主机
@@ -19,42 +23,74 @@ type mysql struct {
 	MaxIdleConns int    `json:"maxIdleConns"` // 最大空闲连接
 }
 
-// 限流
-type rateLimit struct {
+// RateLimit 限流
+type RateLimit struct {
 	Capacity int64 `json:"capacity"` // 令牌桶容量
 	Quantum  int64 `json:"quantum"`  // 每隔多少秒
 }
 
-// 缓存
-type redis struct {
+// Redis 缓存
+type Redis struct {
 	Host     string `json:"host"`     // 主机
 	Port     int    `json:"port"`     // 端口
 	Password string `json:"password"` // 密码
 	Database int    `json:"database"` // 数据库
 }
 
-type logSwitch struct {
+// LogSwitch 日志开关
+type LogSwitch struct {
 	HttpAccess bool `json:"httpAccess"` // http 访问
 	HttpError  bool `json:"httpError"`  // http 错误
-	Mysql      bool `json:"mysql"`      // mysql
+	Mysql      bool `json:"Mysql"`      // Mysql
 }
 
-// 日志
-type log struct {
-	Switch    logSwitch    `json:"switch"`    // 启用
+// Log 日志
+type Log struct {
+	Switch    LogSwitch    `json:"switch"`    // 启用
 	Directory string       `json:"directory"` // 路径
 	Level     logrus.Level `json:"level"`     // 等级
 }
 
-// 请求
-type request struct {
+// Request 请求
+type Request struct {
 	Dump bool `json:"dump"` // 导出
 }
 
-// 令牌
-type token struct {
+// Token 令牌
+type Token struct {
 	JwtSecret      string `json:"jwtSecret"`  // jwt 密钥
 	Key            string `json:"key"`        // 键名
 	MaxAge         int64  `json:"max_age"`    // 过期时间（秒）
 	AutoRefreshAge int64  `json:"refreshAge"` // 自动重新刷新时间（秒）
+}
+
+// Config 配置
+type Config struct {
+	Mysql     Mysql     `json:"mysql"`     // Mysql
+	Redis     Redis     `json:"redis"`     // Redis
+	RateLimit RateLimit `json:"rateLimit"` // RateLimit
+	Log       Log       `json:"log"`       // Log
+	Request   Request   `json:"request"`   // Request
+	Token     Token     `json:"token"`     // Token
+}
+
+// NewConfig 创建配置
+func NewConfig(jsonFile string) (*Config, error) {
+	type env struct {
+		Dev  Config `json:"dev"`
+		Prod Config `json:"prod"`
+	}
+
+	var e env
+	if stream, err := os.ReadFile(jsonFile); err != nil {
+		return nil, err
+	} else if err = json.Unmarshal(stream, &e); err != nil {
+		return nil, err
+	}
+
+	if IsDev() {
+		return &e.Dev, nil
+	} else {
+		return &e.Prod, nil
+	}
 }

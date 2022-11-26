@@ -32,6 +32,25 @@ func (user *User) BeforeSave(tx *gorm.DB) error {
 	return nil
 }
 
-func init() {
-	mysql.AutoMigrate(&User{})
+type UserDevice struct {
+	mysql.Model[UserDevice]
+	UserId      string     `json:"userId"`      // 用户 id
+	Type        DeviceType `json:"type"`        // 类型
+	Ip          string     `json:"ip"`          // ip
+	PackageName string     `json:"packageName"` // 包名
+	AppVersion  string     `json:"appVersion"`  // 软件版本
+	JwtToken    string     `json:"jwtToken"`    // jwt 令牌
+	LoginType   LoginType  `json:"loginType"`   // 登录类型
+	UserAgent   string     `json:"userAgent"`   // 用户代理
+}
+
+type UserInfo struct {
+	mysql.Model[UserInfo]
+}
+
+// UserRole 用户角色
+type UserRole struct {
+	mysql.Model[UserRole]
+	UserId string `json:"userId" gorm:"type:char(12);comment:用户 id"` // 用户 id
+	//Type   RoleType `json:"type" gorm:"type:varchar(32), comment:类型"`  // 类型
 }

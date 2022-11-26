@@ -7,7 +7,6 @@
 package request
 
 import (
-	"framework/config"
 	"github.com/gin-gonic/gin"
 )
 
@@ -45,19 +44,4 @@ func Get(ctx *gin.Context) Request {
 		}(ctx),
 		Body: GetBody(ctx),
 	}
-}
-
-// IsDump 是否导出
-func IsDump(ctx *gin.Context) bool {
-	dump := ctx.DefaultQuery("dump", "")
-	if dump == "false" || dump == "0" {
-		return false
-	}
-
-	return config.Inst().Request.Dump
-}
-
-// SetDump 设置请求导出
-func SetDump(dump bool) {
-	config.Inst().Request.Dump = dump
 }

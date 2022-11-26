@@ -7,6 +7,7 @@
 package app
 
 import (
+	"framework/app/middleware"
 	"framework/config"
 	"github.com/gin-gonic/gin"
 	"strconv"
@@ -22,7 +23,29 @@ func New() *Server {
 	engine := gin.New()
 
 	// 注册中间件
-	registerMiddleware(engine)
+	// 注册 404 回调
+	engine.NoRoute(routerFunc(middleware.NotFound))
+
+	// 注册 405 回调
+	engine.HandleMethodNotAllowed = true
+	engine.NoMethod(routerFunc(middleware.MethodNotAllowed))
+
+	// 注册限流中间件
+	rateLimit := middleware.NewRateLimit()
+	engine.Use(routerFunc(rateLimit.Take))
+
+	// 注册刷新令牌中间件
+	engine.Use(middleware.Token)
+
+	// 注册文档中间件
+	// TODO 加入开关
+	engine.GET("/doc/*any", middleware.Swagger)
+
+	// 注册 body 中间件
+	engine.Use(middleware.Body)
+
+	// 注册异常中间件
+	engine.Use(middleware.Recover())
 
 	return &Server{
 		engine: engine,
