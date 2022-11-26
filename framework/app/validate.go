@@ -8,7 +8,6 @@ package app
 
 import (
 	"errors"
-	"fmt"
 	"framework/result"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
@@ -23,17 +22,16 @@ func ValidateParameter(ctx *gin.Context, req any) {
 	var err error
 
 	// 绑定类型
-	var bindingType = func() binding.Binding {
-		if ctx.Request.Method == http.MethodGet {
-			return binding.Query
-		} else {
-			return binding.JSON
-		}
-	}()
+	var bindingType binding.Binding
+	if ctx.Request.Method == http.MethodGet {
+		bindingType = binding.Query
+	} else {
+		bindingType = binding.JSON
+	}
 
 	// 强制解析
 	if err = ctx.ShouldBindWith(req, bindingType); err != nil {
-		panic(result.ParameterError.WithData(fmt.Sprintf("%s", err)))
+		panic(result.ParameterError.WithData(err.Error()))
 	}
 
 	// 存在解析参数错误
