@@ -33,8 +33,9 @@ type RouterGroup struct {
 // 路由回调
 func routerFunc(routerFunc RouterFunc) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		r := routerFunc(ctx)
-		response.Response(ctx, r)
+		if r := routerFunc(ctx); r != nil {
+			response.Response(ctx, r)
+		}
 	}
 }
 
