@@ -35,7 +35,7 @@ type postLoginByNameRes struct {
 // @ApprovalSuccess 200    {object}  postLoginByPhoneRes
 // @Failure         400 {object} result.Result
 // @RouterGroup     /auth/login/phone [post]
-func postNameByName(ctx *gin.Context) *result.Result {
+func postLoginByName(ctx *gin.Context) *result.Result {
 	var r postLoginByNameReq
 
 	// 较验参数
