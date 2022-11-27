@@ -30,8 +30,7 @@ func New() *Server {
 	engine.NoMethod(routerFunc(middleware.MethodNotAllowed))
 
 	// 注册限流中间件
-	rateLimit := middleware.NewRateLimit()
-	engine.Use(routerFunc(rateLimit.Take))
+	engine.Use(routerFunc(middleware.NewRateLimit().Take))
 
 	// 注册刷新令牌中间件
 	engine.Use(middleware.Token)
