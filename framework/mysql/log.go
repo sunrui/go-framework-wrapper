@@ -40,7 +40,7 @@ func getLogger(log *logrus.Logger) logger.Interface {
 	var slowThreshold time.Duration
 
 	if config.IsDev() {
-		slowThreshold = time.Millisecond // 1 毫秒
+		slowThreshold = 10 * time.Millisecond // 10 毫秒
 	} else {
 		slowThreshold = 100 * time.Millisecond // 100 毫秒
 	}

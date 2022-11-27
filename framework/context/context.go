@@ -13,7 +13,7 @@ import (
 	"framework/redis"
 )
 
-var Config *config.Config // 配置文件
+var Config *config.Config // 配置
 var Log *Logs             // 日志
 var Mysql *mysql.Mysql    // 数据库
 var Redis *redis.Redis    // 缓存
@@ -23,7 +23,7 @@ var Token *token.Token    // 令牌
 func Init(jsonFile string) error {
 	var err error
 
-	// 初始化 config
+	// 初始化配置
 	if Config, err = config.New(jsonFile); err != nil {
 		return err
 	}

@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// 令牌
+// Token 令牌
 type Token struct {
 	config config.Token
 }

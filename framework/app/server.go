@@ -20,6 +20,11 @@ type Server struct {
 
 // New 创建服务
 func New() *Server {
+	// 如果非调式环境注册 release 模式
+	if !config.IsDev() {
+		gin.SetMode(gin.ReleaseMode)
+	}
+
 	engine := gin.New()
 
 	// 注册 404 回调
@@ -71,13 +76,5 @@ func (server *Server) RouterGroup(groupName string, routers []RouterGroup) {
 func (server *Server) Run(port int) {
 	if err := server.engine.Run(":" + strconv.Itoa(port)); err != nil {
 		panic(err.Error())
-	}
-}
-
-// 初始化
-func init() {
-	// 如果非调式环境注册 release 模式
-	if !config.IsDev() {
-		gin.SetMode(gin.ReleaseMode)
 	}
 }
