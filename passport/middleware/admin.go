@@ -7,11 +7,11 @@
 package middleware
 
 import (
-	"framework/app/token"
+	"framework/context"
 	"github.com/gin-gonic/gin"
 )
 
 // Admin 管理中间件
 func Admin(ctx *gin.Context) {
-	_ = token.MustGetUserId(ctx)
+	_ = context.Token.MustGetUserId(ctx)
 }

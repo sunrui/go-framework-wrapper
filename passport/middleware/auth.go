@@ -7,11 +7,11 @@
 package middleware
 
 import (
-	"framework/app/token"
+	"framework/context"
 	"github.com/gin-gonic/gin"
 )
 
 // Auth 授权中间件
 func Auth(ctx *gin.Context) {
-	_ = token.MustGetUserId(ctx)
+	_ = context.Token.MustGetUserId(ctx)
 }
