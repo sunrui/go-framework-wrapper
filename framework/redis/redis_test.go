@@ -20,25 +20,25 @@ func TestRedis(t *testing.T) {
 		Database: 0,
 	})
 
-	rediz.Set("hello", "world", time.Duration(60))
+	rediz.Set("hello", []byte("world"), time.Duration(60))
 
-	value, ttl, ok := rediz.GetString("hello")
-	t.Log(*value, ttl, ok)
+	value, ttl, ok := rediz.Get("hello")
+	t.Log(string(value), ttl, ok)
 
-	value, ttl, ok = rediz.GetString("hello-not-exist")
-	t.Log(value, ttl, ok)
+	value, ttl, ok = rediz.Get("hello-not-exist")
+	t.Log(string(value), ttl, ok)
 
 	if ok := rediz.Exists("hello"); !ok {
 		t.Fatalf("hello exist")
 	}
 
-	if ttl, ok := rediz.getTtl("hello"); !ok {
+	if ttl, ok := rediz.GetTtl("hello"); !ok {
 		t.Fatalf("hello not exist")
 	} else {
 		t.Log(ttl)
 	}
 
-	if _, ok := rediz.getTtl("hello-not-exist"); ok {
+	if _, ok := rediz.GetTtl("hello-not-exist"); ok {
 		t.Fatalf("hello not exist")
 	}
 
@@ -52,5 +52,5 @@ func TestRedis(t *testing.T) {
 
 	rediz.SetHash("hash", "hello", "world")
 	value, ok = rediz.GetHash("hash", "hello")
-	t.Log(*value, ok)
+	t.Log(string(value), ok)
 }

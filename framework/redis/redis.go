@@ -49,7 +49,8 @@ func New(redisConfig config.Redis) *Redis {
 	return rediz
 }
 
-func (rediz *Redis) getTtl(key string) (ttl int64, ok bool) {
+// GetTtl 获取过期时间
+func (rediz *Redis) GetTtl(key string) (ttl int64, ok bool) {
 	pool := rediz.Pool.Get()
 	defer func() {
 		_ = pool.Close()
@@ -64,8 +65,8 @@ func (rediz *Redis) getTtl(key string) (ttl int64, ok bool) {
 	}
 }
 
-// Set 设置
-func (rediz *Redis) Set(key string, value string, expired time.Duration) {
+// Set 设置字符串
+func (rediz *Redis) Set(key string, value []byte, expired time.Duration) {
 	pool := rediz.Pool.Get()
 	defer func() {
 		_ = pool.Close()
@@ -76,8 +77,8 @@ func (rediz *Redis) Set(key string, value string, expired time.Duration) {
 	}
 }
 
-// GetString 获取字符串
-func (rediz *Redis) GetString(key string) (value *string, ttl int64, ok bool) {
+// Get 获取字符串
+func (rediz *Redis) Get(key string) (value []byte, ttl int64, ok bool) {
 	pool := rediz.Pool.Get()
 	defer func() {
 		_ = pool.Close()
@@ -88,9 +89,8 @@ func (rediz *Redis) GetString(key string) (value *string, ttl int64, ok bool) {
 	} else if reply == nil {
 		return nil, 0, false
 	} else {
-		dst := fmt.Sprintf("%s", reply)
-		value = &dst
-		ttl, ok = rediz.getTtl(key)
+		value = reply.([]byte)
+		ttl, ok = rediz.GetTtl(key)
 		return
 	}
 }
@@ -108,7 +108,7 @@ func (rediz *Redis) SetHash(hash string, key string, value any) {
 }
 
 // GetHash 获取 hash
-func (rediz *Redis) GetHash(hash string, key string) (value *string, ok bool) {
+func (rediz *Redis) GetHash(hash string, key string) (value []byte, ok bool) {
 	pool := rediz.Pool.Get()
 	defer func() {
 		_ = pool.Close()
@@ -119,8 +119,7 @@ func (rediz *Redis) GetHash(hash string, key string) (value *string, ok bool) {
 	} else if reply == nil {
 		return nil, false
 	} else {
-		dst := fmt.Sprintf("%s", reply)
-		return &dst, true
+		return reply.([]byte), true
 	}
 }
 

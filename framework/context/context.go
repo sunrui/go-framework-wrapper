@@ -29,7 +29,7 @@ func Init(jsonFile string) error {
 	}
 
 	// 初始化日志
-	Log = NewLog(Config.Log)
+	Log = NewLogs(Config.Log)
 
 	// 初始化 mysql 数据库
 	Mysql = mysql.New(Config.Mysql, Log.Mysql)
@@ -38,7 +38,8 @@ func Init(jsonFile string) error {
 	Redis = redis.New(Config.Redis)
 
 	// 初始化令牌
-	Token = token.New(Config.Token)
+	tokenStorage := token.NewRedisStorage(Redis, Config.Token.Key)
+	Token = token.New(Config.Token, tokenStorage)
 
 	return nil
 }

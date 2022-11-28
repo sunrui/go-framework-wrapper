@@ -60,7 +60,7 @@ type Request struct {
 type Token struct {
 	JwtSecret      string `json:"jwtSecret"`  // jwt 密钥
 	Key            string `json:"key"`        // 键名
-	MaxAge         int64  `json:"max_age"`    // 过期时间（秒）
+	MaxAge         int64  `json:"maxAge"`     // 过期时间（秒）
 	AutoRefreshAge int64  `json:"refreshAge"` // 自动重新刷新时间（秒）
 }
 
