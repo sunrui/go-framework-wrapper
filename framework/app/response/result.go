@@ -22,8 +22,8 @@ func getResultString(ctx *gin.Context, r *result.Result) string {
 	buffer := req.Method + " " + req.Uri + " " + req.Proto
 
 	// userId
-	if userId := context.Token.GetUserId(ctx); userId != nil {
-		buffer += " - userId(" + *userId + ")"
+	if payload, _, err := context.Token.GetPayload(ctx); err != nil {
+		buffer += " - userId(" + payload.UserId + ")"
 	}
 
 	// 空一行

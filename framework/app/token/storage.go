@@ -73,7 +73,7 @@ func (jwtStorage JwtStorage) Get(value string) (payload *Payload, ttl int64, err
 	return nil, 0, err
 }
 
-// Redis 存储
+// RedisStorage Redis 存储
 type RedisStorage struct {
 	Redis     *redis.Redis // Redis 对象
 	KeyPrefix string       // 键值前缀

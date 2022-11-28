@@ -32,7 +32,7 @@ func (user *User) BeforeSave(tx *gorm.DB) error {
 	return nil
 }
 
-type UserDevice struct {
+type Device struct {
 	mysql.Model
 	UserId      string     `json:"userId"`      // 用户 id
 	Type        DeviceType `json:"type"`        // 类型
@@ -44,12 +44,12 @@ type UserDevice struct {
 	UserAgent   string     `json:"userAgent"`   // 用户代理
 }
 
-type UserInfo struct {
+type Info struct {
 	mysql.Model
 }
 
-// UserRole 用户角色
-type UserRole struct {
+// Role UserRole 用户角色
+type Role struct {
 	mysql.Model
 	UserId string `json:"userId" gorm:"type:char(12);comment:用户 id"` // 用户 id
 	//Type   RoleType `json:"type" gorm:"type:varchar(32), comment:类型"`  // 类型

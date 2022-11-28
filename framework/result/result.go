@@ -31,7 +31,7 @@ type Result struct {
 }
 
 // String 数据
-func (result Result) String() string {
+func (result *Result) String() string {
 	marshal, _ := json.MarshalIndent(result, "", "\t")
 	return string(marshal)
 }
@@ -54,7 +54,7 @@ func (result *Result) WithData(data any) *Result {
 	return result
 }
 
-// WithData 设置 data 和 pagination
+// WithDataAndPagination WithData 设置 data 和 pagination
 func (result *Result) WithDataAndPagination(data any, pagination *Pagination) *Result {
 	result.Data = data
 	result.Pagination = pagination
