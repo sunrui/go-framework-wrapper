@@ -7,11 +7,9 @@
 package redis
 
 import (
-	"encoding/json"
 	"fmt"
 	"framework/config"
-	"github.com/garyburd/redigo/redis"
-	"reflect"
+	"github.com/gomodule/redigo/redis"
 	"time"
 )
 
@@ -51,29 +49,35 @@ func New(redisConfig config.Redis) *Redis {
 	return rediz
 }
 
-// Set 设置
-func (rediz *Redis) Set(key string, value any, expired time.Duration) {
+func (rediz *Redis) getTtl(key string) (ttl int64, ok bool) {
 	pool := rediz.Pool.Get()
 	defer func() {
 		_ = pool.Close()
 	}()
 
-	// 判断存储的是否为结构体
-	if reflect.TypeOf(value).Kind() == reflect.Struct {
-		if marshal, err := json.Marshal(value); err != nil {
-			panic(err.Error())
-		} else {
-			value = string(marshal)
-		}
+	if reply, err := pool.Do("TTL", key); err != nil {
+		panic(err.Error())
+	} else if reply.(int64) <= 0 {
+		return 0, false
+	} else {
+		return reply.(int64), true
 	}
+}
 
-	if _, err := pool.Do("SET", key, value, "EX", fmt.Sprintf("%d", expired/time.Second)); err != nil {
+// Set 设置
+func (rediz *Redis) Set(key string, value string, expired time.Duration) {
+	pool := rediz.Pool.Get()
+	defer func() {
+		_ = pool.Close()
+	}()
+
+	if _, err := pool.Do("SET", key, value, "EX", fmt.Sprintf("%d", expired)); err != nil {
 		panic(err.Error())
 	}
 }
 
 // GetString 获取字符串
-func (rediz *Redis) GetString(key string) *string {
+func (rediz *Redis) GetString(key string) (value *string, ttl int64, ok bool) {
 	pool := rediz.Pool.Get()
 	defer func() {
 		_ = pool.Close()
@@ -82,54 +86,12 @@ func (rediz *Redis) GetString(key string) *string {
 	if reply, err := pool.Do("GET", key); err != nil {
 		panic(err.Error())
 	} else if reply == nil {
-		return nil
+		return nil, 0, false
 	} else {
 		dst := fmt.Sprintf("%s", reply)
-		return &dst
-	}
-}
-
-// GetJson 获取
-func (rediz *Redis) GetJson(key string, dst any) bool {
-	pool := rediz.Pool.Get()
-	defer func() {
-		_ = pool.Close()
-	}()
-
-	if reply, err := pool.Do("GET", key); err != nil {
-		panic(err.Error())
-	} else if reply == nil {
-		return false
-	} else if err = json.Unmarshal(reply.([]uint8), dst); err != nil {
-		panic(err.Error())
-	} else {
-		return true
-	}
-}
-
-// Exists 是否存在
-func (rediz *Redis) Exists(key string) bool {
-	pool := rediz.Pool.Get()
-	defer func() {
-		_ = pool.Close()
-	}()
-
-	if ret, err := pool.Do("EXISTS", key); err != nil {
-		panic(err.Error())
-	} else {
-		return ret.(int64) == 1
-	}
-}
-
-// Del 删除
-func (rediz *Redis) Del(key string) {
-	pool := rediz.Pool.Get()
-	defer func() {
-		_ = pool.Close()
-	}()
-
-	if _, err := pool.Do("DEL", key); err != nil {
-		panic(err.Error())
+		value = &dst
+		ttl, ok = rediz.getTtl(key)
+		return
 	}
 }
 
@@ -140,22 +102,13 @@ func (rediz *Redis) SetHash(hash string, key string, value any) {
 		_ = pool.Close()
 	}()
 
-	// 判断存储的是否为结构体
-	if reflect.TypeOf(value).Kind() == reflect.Struct {
-		if marshal, err := json.Marshal(value); err != nil {
-			panic(err.Error())
-		} else {
-			value = string(marshal)
-		}
-	}
-
 	if _, err := pool.Do("HSET", hash, key, value); err != nil {
 		panic(err.Error())
 	}
 }
 
 // GetHash 获取 hash
-func (rediz *Redis) GetHash(hash string, key string) *string {
+func (rediz *Redis) GetHash(hash string, key string) (value *string, ok bool) {
 	pool := rediz.Pool.Get()
 	defer func() {
 		_ = pool.Close()
@@ -164,27 +117,37 @@ func (rediz *Redis) GetHash(hash string, key string) *string {
 	if reply, err := pool.Do("HGET", hash, key); err != nil {
 		panic(err.Error())
 	} else if reply == nil {
-		return nil
+		return nil, false
 	} else {
-		replyString := fmt.Sprintf("%s", reply)
-		return &replyString
+		dst := fmt.Sprintf("%s", reply)
+		return &dst, true
 	}
 }
 
-// GetHashJson 获取 hash
-func (rediz *Redis) GetHashJson(hash string, key string, dst any) bool {
+// Exists 是否存在
+func (rediz *Redis) Exists(key string) bool {
 	pool := rediz.Pool.Get()
 	defer func() {
 		_ = pool.Close()
 	}()
 
-	if reply, err := pool.Do("HGET", hash, key); err != nil {
-		panic(err.Error())
-	} else if reply == nil {
-		return false
-	} else if err = json.Unmarshal(reply.([]uint8), dst); err != nil {
+	if reply, err := pool.Do("EXISTS", key); err != nil {
 		panic(err.Error())
 	} else {
-		return true
+		return reply.(int64) == 1
+	}
+}
+
+// Del 删除
+func (rediz *Redis) Del(key string) bool {
+	pool := rediz.Pool.Get()
+	defer func() {
+		_ = pool.Close()
+	}()
+
+	if reply, err := pool.Do("DEL", key); err != nil {
+		panic(err.Error())
+	} else {
+		return reply.(int64) == 1
 	}
 }
