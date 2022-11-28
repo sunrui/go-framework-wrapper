@@ -44,8 +44,16 @@ type Device struct {
 	UserAgent   string     `json:"userAgent"`   // 用户代理
 }
 
+func (Device) TableName() string {
+	return "t_user_device"
+}
+
 type Info struct {
 	mysql.Model
+}
+
+func (Info) TableName() string {
+	return "t_user_info"
 }
 
 // Role UserRole 用户角色
@@ -53,4 +61,8 @@ type Role struct {
 	mysql.Model
 	UserId string `json:"userId" gorm:"type:char(12);comment:用户 id"` // 用户 id
 	//Type   RoleType `json:"type" gorm:"type:varchar(32), comment:类型"`  // 类型
+}
+
+func (Role) TableName() string {
+	return "t_user_role"
 }

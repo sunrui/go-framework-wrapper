@@ -31,7 +31,7 @@ func New(logConfig config.Log, directory string, filePrefix string) *logrus.Logg
 
 	// 建立目录
 	if _, err := os.Stat(filePath); err != nil {
-		if err = os.Mkdir(filePath, os.ModePerm); err != nil {
+		if err = os.MkdirAll(filePath, os.ModePerm); err != nil {
 			panic(err.Error())
 		}
 	}

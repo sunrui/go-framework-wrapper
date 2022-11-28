@@ -27,5 +27,5 @@ import (
 // @Success 200        {object} result.Result{data=sms.Sms} true
 // @Router  /public/common/ [get]
 func getIndex(_ *gin.Context) *result.Result {
-	return result.Ok.WithData("hello world")
+	panic("hello world" + build.Format("2006-01-02 15:04:05"))
 }

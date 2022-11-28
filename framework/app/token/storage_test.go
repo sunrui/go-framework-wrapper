@@ -46,7 +46,7 @@ func TestRedisStorage(t *testing.T) {
 	rediz := redis.New(config.Redis{
 		Host:     "localhost",
 		Port:     6379,
-		Password: "",
+		Password: "honeysenselt",
 		Database: 0,
 	})
 	tokenStorage := NewRedisStorage(rediz, "sid")

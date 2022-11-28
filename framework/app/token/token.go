@@ -67,7 +67,7 @@ func (token Token) GetPayload(ctx *gin.Context) (payload *Payload, ttl int64, er
 
 		return
 	} else {
-		return nil, 0, errors.New("not value")
+		return nil, 0, errors.New("no value")
 	}
 }
 

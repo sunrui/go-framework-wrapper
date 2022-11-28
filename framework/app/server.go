@@ -9,7 +9,10 @@ package app
 import (
 	"framework/app/middleware"
 	"framework/config"
+	"framework/context"
 	"github.com/gin-gonic/gin"
+	"io"
+	"os"
 	"strconv"
 )
 
@@ -20,12 +23,14 @@ type Server struct {
 
 // New 创建服务
 func New() *Server {
-	// 如果非调式环境注册 release 模式
-	if !config.IsDev() {
-		gin.SetMode(gin.ReleaseMode)
-	}
-
 	engine := gin.New()
+
+	if config.IsDev() {
+		gin.DefaultWriter = io.MultiWriter(context.Log.HttpAccess.Out, os.Stdout)
+	} else {
+		gin.SetMode(gin.ReleaseMode)
+		gin.DefaultWriter = io.MultiWriter(context.Log.HttpAccess.Out)
+	}
 
 	// 注册 404 回调
 	engine.NoRoute(routerFunc(middleware.NotFound))

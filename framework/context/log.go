@@ -9,10 +9,7 @@ package context
 import (
 	"framework/app/log"
 	"framework/config"
-	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
-	"io"
-	"os"
 )
 
 // Logs 日志
@@ -36,13 +33,6 @@ func NewLogs(logConfig config.Log) *Logs {
 	// http 访问
 	if logConfig.Switch.HttpAccess {
 		HttpAccessLogger = log.New(logConfig, "http", "access")
-
-		// 开启 gin 日志
-		if config.IsDev() {
-			gin.DefaultWriter = io.MultiWriter(HttpAccessLogger.Out, os.Stdout)
-		} else {
-			gin.DefaultWriter = io.MultiWriter(HttpAccessLogger.Out)
-		}
 	}
 
 	// http 错误

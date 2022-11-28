@@ -6,8 +6,8 @@
       "database": "medium_dev",
       "user": "root",
       "password": "honeysenselt",
-      "MaxOpenConns": 100,
-      "maxIdleConns": 10
+      "MaxOpenConns": 1,
+      "maxIdleConns": 1
     },
     "redis": {
       "host": "localhost",
@@ -34,8 +34,8 @@
     "token": {
       "jwtSecret": "123456",
       "key": "token",
-      "maxAge": 1209600,
-      "autoRefresh": 3600
+      "maxAge": 300,
+      "autoRefresh": 60
     }
   },
   "prod": {
