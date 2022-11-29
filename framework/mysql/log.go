@@ -36,22 +36,19 @@ func (m myLog) Printf(format string, v ...interface{}) {
 
 // 获取日志
 func getLogger(log *logrus.Logger) logger.Interface {
-	// 慢日志打印
-	var slowThreshold time.Duration
-
-	if config.IsDev() {
-		slowThreshold = 10 * time.Millisecond // 10 毫秒
-	} else {
-		slowThreshold = 100 * time.Millisecond // 100 毫秒
-	}
-
 	return logger.New(
 		&myLog{
 			log: log,
 		},
 		logger.Config{
-			SlowThreshold: slowThreshold,
-			LogLevel:      logger.Info,
+			SlowThreshold: 50 * time.Millisecond,
+			LogLevel: func() logger.LogLevel {
+				if config.IsDev() {
+					return logger.Info
+				} else {
+					return logger.Warn
+				}
+			}(),
 		},
 	)
 }

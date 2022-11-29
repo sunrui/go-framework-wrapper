@@ -26,6 +26,7 @@ func New() *Server {
 	engine := gin.New()
 
 	if config.IsDev() {
+		gin.SetMode(gin.DebugMode)
 		gin.DefaultWriter = io.MultiWriter(context.Log.HttpAccess.Out, os.Stdout)
 	} else {
 		gin.SetMode(gin.ReleaseMode)
