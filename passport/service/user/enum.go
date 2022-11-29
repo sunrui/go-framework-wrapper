@@ -10,26 +10,26 @@ package user
 type DeviceType string
 
 const (
-	AndroidType DeviceType = "AndroidType" // 安卓
-	iOSType     DeviceType = "iOSType"     // 苹果
-	WebType     DeviceType = "WebType"     // 网页
+	AndroidType DeviceType = "ANDROID" // 安卓
+	iOSType     DeviceType = "IOS"     // 苹果
+	WebType     DeviceType = "WEB"     // 网页
 )
 
 // LoginType 登录类型
 type LoginType string
 
 const (
-	PhoneType  LoginType = "phone"      // 手机号
-	NameType   LoginType = "name"       // 用户名
-	WechatType LoginType = "wechat"     // 微信
-	AlipayType LoginType = "alipayType" // 阿里云
+	PhoneType  LoginType = "PHONE"  // 手机号
+	NameType   LoginType = "NAME"   // 用户名
+	WechatType LoginType = "WECHAT" // 微信
+	AlipayType LoginType = "ALIPAY" // 阿里云
 )
 
 // RoleType 类型
 type RoleType string
 
 const (
-	AdminType     RoleType = "Admin"     // 管理员
-	OperationType RoleType = "Operation" // 运营
-	CockpitType   RoleType = "Cockpit"   // 驾驶仓
+	AdminType     RoleType = "ADMIN"     // 管理员
+	OperationType RoleType = "OPERATION" // 运营
+	CockpitType   RoleType = "COCKPIT"   // 驾驶仓
 )
