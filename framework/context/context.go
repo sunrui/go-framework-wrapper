@@ -7,7 +7,6 @@
 package context
 
 import (
-	"framework/app/token"
 	"framework/config"
 	"framework/mysql"
 	"framework/redis"
@@ -17,7 +16,7 @@ var Config *config.Config // 配置
 var Log *Logs             // 日志
 var Mysql *mysql.Mysql    // 数据库
 var Redis *redis.Redis    // 缓存
-var Token *token.Token    // 令牌
+var Token *Tokens         // 令牌
 
 // Init 初始化
 func Init(jsonFile string) error {
@@ -29,7 +28,7 @@ func Init(jsonFile string) error {
 	}
 
 	// 初始化日志
-	Log = NewLogs(Config.Log)
+	Log = newLogs(Config.Log)
 
 	// 初始化 mysql 数据库
 	Mysql = mysql.New(Config.Mysql, Log.Mysql)
@@ -38,8 +37,7 @@ func Init(jsonFile string) error {
 	Redis = redis.New(Config.Redis)
 
 	// 初始化令牌
-	tokenStorage := token.NewRedisStorage(Redis, Config.Token.Key)
-	Token = token.New(Config.Token, tokenStorage)
+	Token = newTokens()
 
 	return nil
 }

@@ -61,6 +61,7 @@ func (result *Result) WithDataAndPagination(data any, pagination *Pagination) *R
 	return result
 }
 
+// 创建
 func newResult(code string, message string) Result {
 	return Result{
 		Code:    code,

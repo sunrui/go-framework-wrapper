@@ -19,8 +19,8 @@ type Logs struct {
 	Mysql      *logrus.Logger // mysql
 }
 
-// NewLogs 创建日志
-func NewLogs(logConfig config.Log) *Logs {
+// 创建日志
+func newLogs(logConfig config.Log) *Logs {
 	// HttpAccess 日志实例
 	var HttpAccessLogger *logrus.Logger
 

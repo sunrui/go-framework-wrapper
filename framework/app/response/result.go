@@ -22,7 +22,7 @@ func getResultString(ctx *gin.Context, r *result.Result) string {
 	buffer := req.Method + " " + req.Uri + " " + req.Proto
 
 	// userId
-	if payload, _, err := context.Token.GetPayload(ctx); err == nil {
+	if payload, _, err := context.Token.Jwt.GetPayload(ctx); err == nil {
 		buffer += " - userId(" + payload.UserId + ")"
 	}
 
