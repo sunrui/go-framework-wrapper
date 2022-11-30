@@ -19,8 +19,8 @@ import (
 type Runner struct {
 }
 
-// GetConfigJson 获取配置文件
-func (Runner) GetConfigJson() string {
+// GetConfigJsonFile 获取配置文件
+func (Runner) GetConfigJsonFile() string {
 	_, file, _, _ := runtime.Caller(0)
 	path := filepath.Dir(file)
 
@@ -32,8 +32,8 @@ func (Runner) Mirage() {
 	service.Mirage()
 }
 
-// GetHttp 获取 app
-func (Runner) GetHttp() (groupName string, routerGroups []app.RouterGroup, port int) {
+// GetHttpConfig 获取 http 配置
+func (Runner) GetHttpConfig() (groupName string, routerGroups []app.RouterGroup, port int) {
 	return "/public", []app.RouterGroup{
 		common.GetRouter(),
 		user.GetRouter(),
