@@ -7,8 +7,8 @@
 package context
 
 import (
-	"framework/app/token"
 	"framework/config"
+	"framework/http/token"
 	"framework/mysql"
 	"framework/redis"
 )

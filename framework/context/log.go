@@ -7,8 +7,8 @@
 package context
 
 import (
-	"framework/app/log"
 	"framework/config"
+	"framework/http/log"
 	"github.com/sirupsen/logrus"
 )
 
