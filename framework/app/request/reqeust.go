@@ -16,7 +16,7 @@ type Request struct {
 	Proto   string   `json:"proto"`   // 协议
 	Method  string   `json:"method"`  // 请求方式
 	Uri     string   `json:"uri"`     // 访问地址
-	Headers []string `json:"headers"` // http 首部
+	Headers []string `json:"headers"` // app 首部
 	Body    *string  `json:"body"`    // 请求体
 }
 

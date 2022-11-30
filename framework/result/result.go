@@ -8,7 +8,7 @@ package result
 
 import (
 	"encoding/json"
-	"framework/http/request"
+	"framework/app/request"
 )
 
 type M map[string]any

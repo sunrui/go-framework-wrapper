@@ -8,9 +8,9 @@ package response
 
 import (
 	"fmt"
+	"framework/app/request"
 	"framework/config"
 	"framework/context"
-	"framework/http/request"
 	"framework/result"
 	"github.com/gin-gonic/gin"
 	"net/http"

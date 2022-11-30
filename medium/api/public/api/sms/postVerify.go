@@ -7,7 +7,7 @@
 package sms
 
 import (
-	"framework/http"
+	"framework/app"
 	"framework/result"
 	"github.com/gin-gonic/gin"
 	"medium/service/user"
@@ -39,7 +39,7 @@ func postVerify(ctx *gin.Context) *result.Result {
 	var r postVerifyReq
 
 	// 较验参数
-	http.ValidateParameter(ctx, &r)
+	app.ValidateParameter(ctx, &r)
 
 	// 返回结果
 	return nil

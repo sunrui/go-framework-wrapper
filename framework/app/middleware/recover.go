@@ -8,7 +8,7 @@ package middleware
 
 import (
 	"fmt"
-	"framework/http/response"
+	"framework/app/response"
 	"framework/result"
 	"framework/util"
 	"github.com/gin-gonic/gin"

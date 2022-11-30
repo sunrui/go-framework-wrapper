@@ -7,7 +7,7 @@
 package common
 
 import (
-	"framework/http"
+	"framework/app"
 	"framework/result"
 	"github.com/gin-gonic/gin"
 	"medium/service/user"
@@ -37,7 +37,7 @@ func postSend(ctx *gin.Context) *result.Result {
 	var r postSendReq
 
 	// 较验参数
-	http.ValidateParameter(ctx, &r)
+	app.ValidateParameter(ctx, &r)
 
 	// 返回结果
 	return nil

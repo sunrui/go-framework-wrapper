@@ -7,8 +7,8 @@
 package response
 
 import (
+	"framework/app/request"
 	"framework/context"
-	"framework/http/request"
 	"framework/result"
 	"github.com/gin-gonic/gin"
 )

@@ -4,10 +4,10 @@
  * Date: 2022-11-14 22:30:23
  */
 
-package http
+package app
 
 import (
-	"framework/http/response"
+	"framework/app/response"
 	"framework/result"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -60,7 +60,7 @@ func registerRouter(engine *gin.Engine, routerGroup RouterGroup) {
 		case http.MethodDelete:
 			group.DELETE(routerPath.RelativePath, routerFunc(routerPath.RouterFunc))
 		default:
-			panic("http method not supported")
+			panic("app method not supported")
 		}
 	}
 }

@@ -39,8 +39,8 @@ type Redis struct {
 
 // LogSwitch 日志开关
 type LogSwitch struct {
-	HttpAccess bool `json:"httpAccess"` // http 访问
-	HttpError  bool `json:"httpError"`  // http 错误
+	HttpAccess bool `json:"httpAccess"` // app 访问
+	HttpError  bool `json:"httpError"`  // app 错误
 	Mysql      bool `json:"Mysql"`      // Mysql 数据库
 }
 

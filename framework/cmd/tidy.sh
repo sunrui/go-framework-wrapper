@@ -1,7 +1,7 @@
 #!/bin/bash
-cd ../framework || exit
+cd ../../framework || exit
 pwd
 go mod tidy -v
-cd ../passport || exit
+cd ../medium || exit
 pwd
 go mod tidy -v

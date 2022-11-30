@@ -4,12 +4,12 @@
  * Date: 2022/01/01
  */
 
-package http
+package app
 
 import (
+	"framework/app/middleware"
 	"framework/config"
 	"framework/context"
-	"framework/http/middleware"
 	"github.com/gin-gonic/gin"
 	"io"
 	"os"

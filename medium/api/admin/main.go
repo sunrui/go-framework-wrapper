@@ -7,7 +7,7 @@ package main
 
 import (
 	"framework"
-	"framework/http"
+	"framework/app"
 	"medium/service"
 	"path/filepath"
 	"runtime"
@@ -30,9 +30,9 @@ func (Runner) Mirage() {
 	service.Mirage()
 }
 
-// GetHttp 获取 http
-func (Runner) GetHttp() (groupName string, routerGroups []http.RouterGroup, port int) {
-	return "/public", []http.RouterGroup{
+// GetHttp 获取 app
+func (Runner) GetHttp() (groupName string, routerGroups []app.RouterGroup, port int) {
+	return "/public", []app.RouterGroup{
 		//common.GetRouter(),
 		//user.GetRouter(),
 	}, 8080

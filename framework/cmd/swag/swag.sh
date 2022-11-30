@@ -7,7 +7,7 @@
 swag="$PWD/swag"
 
 # shellcheck disable=SC2164
-cd ../../passport/api/public
+cd ../../medium/api/public
 
 $swag fmt
 $swag init --parseDependency

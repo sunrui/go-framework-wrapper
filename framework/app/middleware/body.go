@@ -7,8 +7,8 @@
 package middleware
 
 import (
-	"framework/http/request"
-	"framework/http/response"
+	"framework/app/request"
+	"framework/app/response"
 	"github.com/gin-gonic/gin"
 )
 

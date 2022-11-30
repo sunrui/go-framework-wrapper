@@ -7,14 +7,14 @@
 package user
 
 import (
-	"framework/http"
+	"framework/app"
 )
 
 // GetRouter 获取路由
-func GetRouter() http.RouterGroup {
-	return http.RouterGroup{
+func GetRouter() app.RouterGroup {
+	return app.RouterGroup{
 		GroupName:  "/user",
 		Middleware: nil,
-		Routers:    []http.Router{},
+		Routers:    []app.Router{},
 	}
 }
