@@ -1,0 +1,80 @@
+{
+  "dev": {
+    "mysql": {
+      "host": "localhost",
+      "port": 3306,
+      "database": "medium_dev",
+      "user": "root",
+      "password": "honeysenselt",
+      "MaxOpenConns": 1,
+      "maxIdleConns": 1
+    },
+    "redis": {
+      "host": "localhost",
+      "port": 6379,
+      "password": "honeysenselt",
+      "database": 0
+    },
+    "rateLimit": {
+      "capacity": 1,
+      "quantum": 5
+    },
+    "log": {
+      "switch": {
+        "httpAccess": true,
+        "httpError": true,
+        "mysql": true
+      },
+      "directory": "log",
+      "level": "trace"
+    },
+    "request": {
+      "dump": true
+    },
+    "token": {
+      "jwtSecret": "123456",
+      "key": "token",
+      "maxAge": 300,
+      "autoRefresh": 60
+    }
+  },
+  "prod": {
+    "mysql": {
+      "host": "localhost",
+      "port": 3306,
+      "database": "medium_dev",
+      "user": "root",
+      "password": "honeysenselt",
+      "maxOpenConns": 100,
+      "maxIdleConns": 10
+    },
+    "redis": {
+      "host": "localhost",
+      "port": 6379,
+      "password": "honeysenselt",
+      "database": 0
+    },
+    "rateLimit": {
+      "capacity": 5,
+      "quantum": 5
+    },
+    "log": {
+      "switch": {
+        "httpAccess": true,
+        "httpError": true,
+        "mysql": true
+      },
+      "directory": "log",
+      "level": "debug"
+    },
+    "request": {
+      "dump": true
+    },
+    "token": {
+      "jwtSecret": "123456",
+      "key": "C96C528F-A819-420C-9D15-CABC6B648A62",
+      "maxAge": 1209600,
+      "autoRefresh": 3600
+    }
+  }
+}

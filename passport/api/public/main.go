@@ -20,7 +20,7 @@ func initContext() {
 	_, file, _, _ := runtime.Caller(0)
 	path := filepath.Dir(file)
 
-	if err := context.Init(path + "/../config.json"); err != nil {
+	if err := context.Init(path + "/../../config.json"); err != nil {
 		panic(err.Error())
 	}
 }
@@ -40,9 +40,9 @@ func startServer() {
 	server.Run(8080)
 }
 
-// @title   Medium 公用接口文档
-// @version 1.0
-// @host    127.0.0.1:8080
+// @title    Medium 公用接口文档
+// @version  1.0
+// @host     127.0.0.1:8080
 // @BasePath
 func main() {
 	// 初始化上下文

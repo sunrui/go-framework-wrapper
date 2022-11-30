@@ -14,11 +14,11 @@ import (
 
 var build = time.Now()
 
-// @Summary 编译时间
-// @Tags    通用
-// @Produce json
-// @Success 200 {object} result.Result{data=string} true {"status":"Ok","description":"成功"}
-// @Router  /public/common/build [get]
+// @Summary  编译时间
+// @Tags     通用
+// @Produce  json
+// @Success  200  {object}  result.Result{data=string}  true  {"status":"Ok","description":"成功"}
+// @Router   /public/common/build [get]
 func getBuild(_ *gin.Context) *result.Result {
 	return result.Ok.WithData(build.Format("2006-01-02 15:04:05"))
 }

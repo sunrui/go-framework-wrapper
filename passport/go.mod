@@ -42,4 +42,4 @@ require (
 	gorm.io/driver/mysql v1.3.3 // indirect
 )
 
-replace framework => ../framework
+replace framework => ./../framework
