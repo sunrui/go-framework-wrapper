@@ -27,6 +27,11 @@ func GetRouter() app.RouterGroup {
 				RelativePath: "/build",
 				RouterFunc:   getBuild,
 			},
+			{
+				HttpMethod:   http.MethodPost,
+				RelativePath: "/send",
+				RouterFunc:   postSend,
+			},
 		},
 	}
 }

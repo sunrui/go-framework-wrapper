@@ -14,13 +14,18 @@ import (
 // GetRouter 获取路由
 func GetRouter() app.RouterGroup {
 	return app.RouterGroup{
-		GroupName:  "/user",
+		GroupName:  "/sms",
 		Middleware: nil,
 		Routers: []app.Router{
 			{
 				HttpMethod:   http.MethodPost,
-				RelativePath: "login/phone",
+				RelativePath: "send",
 				RouterFunc:   postSend,
+			},
+			{
+				HttpMethod:   http.MethodPost,
+				RelativePath: "verify",
+				RouterFunc:   postVerify,
 			},
 		},
 	}

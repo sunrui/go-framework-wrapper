@@ -11,6 +11,7 @@ import (
 	"passport/service"
 	"path/filepath"
 	"public/api/common"
+	"public/api/sms"
 	"public/api/user"
 	"runtime"
 )
@@ -33,6 +34,7 @@ func startServer() {
 	// 注册路由
 	server.RouterGroup("/public", []app.RouterGroup{
 		common.GetRouter(),
+		sms.GetRouter(),
 		user.GetRouter(),
 	})
 

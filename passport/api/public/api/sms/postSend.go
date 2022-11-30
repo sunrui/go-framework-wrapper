@@ -27,14 +27,14 @@ type postSendRes struct {
 	UserId string `json:"userId"` // 用户 id
 }
 
-// @Summary         登录 - 手机
+// @Summary         短信 - 发送
 // @Tags            认证
 // @Accept          json
 // @Produce         json
 // @Param           "req"  body  postSendReq  true  "req"
 // @ApprovalSuccess 200    {object}  postSendRes
 // @Failure         400 {object} result.Result
-// @RouterGroup     /auth/login/phone [post]
+// @Router          /auth/sms/send [post]
 func postSend(ctx *gin.Context) *result.Result {
 	var r postSendReq
 

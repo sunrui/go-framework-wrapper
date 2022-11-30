@@ -34,7 +34,7 @@ type postVerifyRes struct {
 // @Param           "req"  body  postVerifyReq  true  "req"
 // @ApprovalSuccess 200    {object}  postVerifyRes
 // @Failure         400 {object} result.Result
-// @RouterGroup     /auth/login/phone [post]
+// @Router          /auth/sms/verify [post]
 func postVerify(ctx *gin.Context) *result.Result {
 	var r postVerifyReq
 
