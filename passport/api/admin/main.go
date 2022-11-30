@@ -38,10 +38,10 @@ func startServer() {
 	server.Run(8082)
 }
 
-// @title   Medium 管理后台接口文档
-// @version 1.0
-// @host    127.0.0.1:8082
-// @BasePath
+//	@title		Medium 管理后台接口文档
+//	@version	1.0
+//	@host		127.0.0.1:8082
+//	@BasePath
 func main() {
 	// 初始化上下文
 	initContext()

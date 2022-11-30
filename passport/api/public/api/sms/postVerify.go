@@ -27,14 +27,14 @@ type postVerifyRes struct {
 	UserId string `json:"userId"` // 用户 id
 }
 
-// @Summary          登录 - 手机
-// @Tags             认证
-// @Accept           json
-// @Produce          json
-// @Param            "req"  body  postLoginByPhoneReq  true  "req"
-// @ApprovalSuccess  200    {object}  postLoginByPhoneRes
-// @Failure          400  {object}  result.Result
-// @RouterGroup      /auth/login/phone [post]
+// @Summary         登录 - 手机
+// @Tags            认证
+// @Accept          json
+// @Produce         json
+// @Param           "req"  body  postVerifyReq  true  "req"
+// @ApprovalSuccess 200    {object}  postVerifyRes
+// @Failure         400 {object} result.Result
+// @RouterGroup     /auth/login/phone [post]
 func postVerify(ctx *gin.Context) *result.Result {
 	var r postVerifyReq
 

@@ -16,8 +16,8 @@
       "database": 0
     },
     "rateLimit": {
-      "capacity": 1,
-      "quantum": 5
+      "capacity": 50,
+      "quantum": 1
     },
     "log": {
       "switch": {
@@ -55,8 +55,8 @@
       "database": 0
     },
     "rateLimit": {
-      "capacity": 5,
-      "quantum": 5
+      "capacity": 10000,
+      "quantum": 10
     },
     "log": {
       "switch": {
