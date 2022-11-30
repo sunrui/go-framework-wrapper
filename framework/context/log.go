@@ -14,8 +14,8 @@ import (
 
 // Logs 日志
 type Logs struct {
-	HttpAccess *logrus.Logger // app 访问
-	HttpError  *logrus.Logger // app 错误
+	HttpAccess *logrus.Logger // http 访问
+	HttpError  *logrus.Logger // http 错误
 	Mysql      *logrus.Logger // mysql
 }
 
@@ -30,14 +30,14 @@ func NewLogs(logConfig config.Log) *Logs {
 	// Mysql 日志实例
 	var MysqlLogger *logrus.Logger
 
-	// app 访问
+	// http 访问
 	if logConfig.Switch.HttpAccess {
-		HttpAccessLogger = log.New(logConfig, "app", "access")
+		HttpAccessLogger = log.New(logConfig, "http", "access")
 	}
 
-	// app 错误
+	// http 错误
 	if logConfig.Switch.HttpError {
-		HttpErrorLogger = log.New(logConfig, "app", "error")
+		HttpErrorLogger = log.New(logConfig, "http", "error")
 	}
 
 	// mysql
