@@ -58,7 +58,7 @@ func New(config Config, directory string, filePrefix string) (*Log, error) {
 	log.SetLevel(config.Level)
 	log.SetOutput(file)
 
-	// 可循环的配置
+	// 日志配置
 	logWriter, _ := rotatelogs.New(
 		// 分割后的文件名称
 		path.Join(filePath, filePrefix)+".%Y-%m-%d.log",
@@ -70,7 +70,7 @@ func New(config Config, directory string, filePrefix string) (*Log, error) {
 		rotatelogs.WithRotationTime(rotationTime),
 	)
 
-	// hook 机制的设置
+	// hook 设置
 	writerMap := lfshook.WriterMap{
 		logrus.InfoLevel:  logWriter,
 		logrus.FatalLevel: logWriter,
