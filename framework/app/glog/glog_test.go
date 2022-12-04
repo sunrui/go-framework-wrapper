@@ -7,16 +7,15 @@
 package glog
 
 import (
-	"framework/app/build"
 	"framework/app/glog/log"
 	"github.com/sirupsen/logrus"
 	"testing"
 )
 
 func TestGLog(t *testing.T) {
-	var err error
-	// 初始化 test 日志
 	var testFileLog *log.Log
+	var err error
+
 	if testFileLog, err = log.New(log.Config{
 		Directory: "logs",
 		Level:     logrus.DebugLevel,
@@ -27,6 +26,7 @@ func TestGLog(t *testing.T) {
 	gLog := GLog{
 		Layout: DefaultLayout{},
 		Appenders: []Appender{
+			&ConsoleAppender{},
 			&FileAppender{
 				Debug: testFileLog,
 				Info:  testFileLog,
@@ -34,10 +34,6 @@ func TestGLog(t *testing.T) {
 				Error: testFileLog,
 			},
 		},
-	}
-
-	if build.IsDev() {
-		gLog.Appenders = append(gLog.Appenders, &ConsoleAppender{})
 	}
 
 	gLog.Debug("hello world")
