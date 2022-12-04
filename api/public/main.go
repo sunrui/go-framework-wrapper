@@ -9,6 +9,7 @@ import (
 	"framework/server"
 	"medium/service"
 	"public/api/common"
+	"public/api/log"
 )
 
 // @title   Medium 公用接口文档
@@ -28,6 +29,7 @@ func main() {
 	// 注册路由
 	router.RouterGroup("/public", []server.RouterGroup{
 		common.GetRouter(),
+		log.NewController(service.Ctx.Mysql).GetRouter(),
 	})
 
 	port := 8080
