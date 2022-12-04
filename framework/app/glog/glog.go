@@ -20,18 +20,19 @@ func (level Level) String() string {
 }
 
 const (
-	Debug Level = "Debug" // 调试
-	Info  Level = "Info"  // 信息
-	Warn  Level = "Warn"  // 警告
-	Error Level = "Error" // 错误
+	DebugLevel Level = "Debug" // 调试
+	InfoLevel  Level = "Info"  // 信息
+	WarnLevel  Level = "Warn"  // 警告
+	ErrorLevel Level = "Error" // 错误
 )
 
+// Format 格式化
 type Format struct {
-	Request *request.Request
-	Level   Level
-	Message string
-	Elapsed int64
-	UserId  *string
+	Request *request.Request // 请求
+	Level   Level            // 日志级别
+	Message string           // 消息
+	Elapsed int64            // 耗时
+	UserId  *string          // 用户 id
 }
 
 // GLog 日志
@@ -43,7 +44,7 @@ type GLog struct {
 // Write 写入
 func (gLog GLog) Write(p []byte) (n int, err error) {
 	for _, appender := range gLog.Appenders {
-		appender.Print(Debug, gLog.Layout.getLayout(Debug, string(p)))
+		appender.Print(DebugLevel, gLog.Layout.getLayout(DebugLevel, string(p)))
 	}
 
 	return len(p), nil
@@ -74,20 +75,20 @@ func (gLog GLog) PrintMessage(format Format) {
 
 // Debug 调试
 func (gLog GLog) Debug(format string, v ...interface{}) {
-	gLog.Println(Debug, format, v...)
+	gLog.Println(DebugLevel, format, v...)
 }
 
 // Info 信息
 func (gLog GLog) Info(format string, v ...interface{}) {
-	gLog.Println(Info, format, v...)
+	gLog.Println(InfoLevel, format, v...)
 }
 
 // Warn 警告
 func (gLog GLog) Warn(format string, v ...interface{}) {
-	gLog.Println(Warn, format, v...)
+	gLog.Println(WarnLevel, format, v...)
 }
 
 // Error 错误
 func (gLog GLog) Error(format string, v ...interface{}) {
-	gLog.Println(Error, format, v...)
+	gLog.Println(ErrorLevel, format, v...)
 }

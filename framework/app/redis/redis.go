@@ -12,7 +12,7 @@ import (
 	"time"
 )
 
-// Redis 缓存
+// Config 配置
 type Config struct {
 	Host     string `json:"host"`     // 主机
 	Port     int    `json:"port"`     // 端口

@@ -20,7 +20,7 @@ type myLog struct {
 
 // Printf 序列化
 func (log myLog) Printf(format string, v ...interface{}) {
-	log.gLog.Print(glog.Debug, format, v...)
+	log.gLog.Print(glog.DebugLevel, format, v...)
 }
 
 // 获取日志

@@ -8,7 +8,7 @@ package user
 
 import (
 	"fmt"
-	"framework/result"
+	"framework/app/result"
 	"github.com/gin-gonic/gin"
 )
 

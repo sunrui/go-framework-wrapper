@@ -7,7 +7,7 @@
 package sms
 
 import (
-	"framework/app"
+	"framework/server"
 	"net/http"
 )
 

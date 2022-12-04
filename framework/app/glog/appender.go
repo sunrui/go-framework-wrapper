@@ -26,13 +26,13 @@ type ConsoleAppender struct {
 // Print 打印
 func (consoleAppender ConsoleAppender) Print(level Level, message string) {
 	switch level {
-	case Debug:
+	case DebugLevel:
 		message = fmt.Sprintf("\x1b[0;%dm%s\x1b[0m", 30, message)
-	case Info:
+	case InfoLevel:
 		message = fmt.Sprintf("\x1b[0;%dm%s\x1b[0m", 32, message)
-	case Warn:
+	case WarnLevel:
 		message = fmt.Sprintf("\x1b[0;%dm%s\x1b[0m", 33, message)
-	case Error:
+	case ErrorLevel:
 		message = fmt.Sprintf("\x1b[0;%dm%s\x1b[0m", 31, message)
 	}
 
@@ -46,28 +46,28 @@ func (consoleAppender ConsoleAppender) PrintMessage(format Format) {
 
 // FileAppender 文件附加器
 type FileAppender struct {
-	Debug *log.Log
-	Info  *log.Log
-	Warn  *log.Log
-	Error *log.Log
+	Debug *log.Log // 调试
+	Info  *log.Log // 信息
+	Warn  *log.Log // 警告
+	Error *log.Log // 错误
 }
 
 // Print 打印
 func (fileAppender FileAppender) Print(level Level, message string) {
 	switch level {
-	case Debug:
+	case DebugLevel:
 		if fileAppender.Debug != nil {
 			fileAppender.Debug.Debug(message)
 		}
-	case Info:
+	case InfoLevel:
 		if fileAppender.Info != nil {
 			fileAppender.Info.Info(message)
 		}
-	case Warn:
+	case WarnLevel:
 		if fileAppender.Warn != nil {
 			fileAppender.Warn.Warn(message)
 		}
-	case Error:
+	case ErrorLevel:
 		if fileAppender.Error != nil {
 			fileAppender.Error.Error(message)
 		}

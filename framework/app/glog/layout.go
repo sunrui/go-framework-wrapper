@@ -39,6 +39,6 @@ func (defaultLayout DefaultLayout) getMessageLayout(format Format) string {
 		UserId = ""
 	}
 
-	return fmt.Sprintf("%s - %5s - %s - %dms%s\n%s",
-		timeNow, format.Level.String(), format.Request.Ip, format.Elapsed, UserId, format.Message)
+	return fmt.Sprintf("%s - %5s - %dms - %s%s\n%s",
+		timeNow, format.Level.String(), format.Elapsed, format.Request.Ip, UserId, format.Message)
 }

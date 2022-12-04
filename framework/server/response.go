@@ -59,9 +59,9 @@ func (server Server) getFormat(ctx *gin.Context, r *result.Result) glog.Format {
 		Request: r.Request,
 		Level: func() glog.Level {
 			if r.Code == result.Ok.Code {
-				return glog.Debug
+				return glog.DebugLevel
 			} else {
-				return glog.Error
+				return glog.ErrorLevel
 			}
 		}(),
 		Message: func() string {

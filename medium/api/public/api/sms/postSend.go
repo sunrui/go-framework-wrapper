@@ -7,8 +7,8 @@
 package sms
 
 import (
-	"framework/app"
-	"framework/result"
+	"framework/app/result"
+	"framework/server"
 	"github.com/gin-gonic/gin"
 	"medium/service/user"
 )
