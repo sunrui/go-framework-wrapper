@@ -90,7 +90,8 @@ func NewRedisStorage(redis *redis.Redis, keyPrefix string) RedisStorage {
 // Set 设置负荷
 func (redisStorage RedisStorage) Set(payload Payload, maxAge int64) (value string, err error) {
 	key := redisStorage.KeyPrefix + "_" + util.CreateNanoid(16)
-	redisStorage.Redis.Set(key, payload.toJson(), time.Duration(maxAge))
+	marshal, _ := json.MarshalIndent(payload, "", "\t")
+	redisStorage.Redis.Set(key, marshal, time.Duration(maxAge))
 	return key, nil
 }
 

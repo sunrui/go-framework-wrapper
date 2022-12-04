@@ -10,7 +10,7 @@ import (
 	"fmt"
 	"framework/app/env"
 	"framework/app/result"
-	"framework/app/server/request"
+	request2 "framework/server/request"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -18,7 +18,7 @@ import (
 // 获取结果数据
 func (server Server) getResultBuffer(ctx *gin.Context, r *result.Result) string {
 	// 获取 request
-	req := request.Get(ctx)
+	req := request2.Get(ctx)
 
 	// method http://host:port?query protocol
 	buffer := req.Method + " " + req.Uri + " " + req.Proto
@@ -61,8 +61,8 @@ func (server Server) getResultBuffer(ctx *gin.Context, r *result.Result) string 
 // response 返回
 func (server Server) response(ctx *gin.Context, r *result.Result) {
 	// 结果导出请求
-	if request.IsCopyBody(ctx) {
-		req := request.Get(ctx)
+	if request2.IsCopyBody(ctx) {
+		req := request2.Get(ctx)
 		r.Request = &req
 	}
 

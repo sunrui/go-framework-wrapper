@@ -8,7 +8,7 @@ package common
 
 import (
 	"framework/app/result"
-	"framework/app/server"
+	"framework/server"
 	"github.com/gin-gonic/gin"
 	"medium/service/user"
 )

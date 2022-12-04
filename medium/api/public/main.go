@@ -6,7 +6,7 @@
 package main
 
 import (
-	"framework/app/server"
+	"framework/server"
 	"medium/service"
 	"public/api/common"
 )
@@ -20,10 +20,10 @@ func main() {
 	service.Mirage()
 
 	// 创建服务
-	router := server.New(service.Context.Config.Server,
-		service.Context.HttpAccessLog,
-		service.Context.HttpErrorLog,
-		service.Context.JwtToken)
+	router := server.New(service.Ctx.Config.Server,
+		service.Ctx.HttpAccessLog,
+		service.Ctx.HttpErrorLog,
+		service.Ctx.JwtToken)
 
 	// 注册路由
 	router.RouterGroup("/public", []server.RouterGroup{

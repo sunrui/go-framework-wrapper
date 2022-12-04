@@ -7,7 +7,7 @@
 package common
 
 import (
-	"framework/app/server"
+	"framework/server"
 	"net/http"
 )
 

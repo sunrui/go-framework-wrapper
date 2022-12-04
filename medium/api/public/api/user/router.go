@@ -7,7 +7,7 @@
 package user
 
 import (
-	"framework/app/server"
+	"framework/server"
 )
 
 // GetRouter 获取路由

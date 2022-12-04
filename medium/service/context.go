@@ -12,7 +12,7 @@ import (
 	"runtime"
 )
 
-var Context *context.Context // Context 上下文
+var Ctx *context.Context // Ctx 上下文
 
 // 初始化
 func init() {
@@ -21,7 +21,7 @@ func init() {
 	_, file, _, _ := runtime.Caller(0)
 	path := filepath.Dir(file)
 
-	if Context, err = context.New(path + "/config.json"); err != nil {
+	if Ctx, err = context.New(path + "/config.json"); err != nil {
 		panic(err.Error())
 	}
 }

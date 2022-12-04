@@ -12,8 +12,8 @@ import (
 
 // Mirage 数据库初始化
 func Mirage() {
-	Context.Mysql.AutoMigrate(&user.User{})
-	Context.Mysql.AutoMigrate(&user.Info{})
-	Context.Mysql.AutoMigrate(&user.Device{})
-	Context.Mysql.AutoMigrate(&user.Role{})
+	Ctx.Mysql.AutoMigrate(&user.User{})
+	Ctx.Mysql.AutoMigrate(&user.Info{})
+	Ctx.Mysql.AutoMigrate(&user.Device{})
+	Ctx.Mysql.AutoMigrate(&user.Role{})
 }

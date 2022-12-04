@@ -7,18 +7,18 @@
 package context
 
 import (
+	"framework/app/config"
 	"framework/app/log"
 	"framework/app/mysql"
 	"framework/app/redis"
 	"framework/app/token"
-	"framework/config"
 )
 
 // Context 上下文
 type Context struct {
 	Config        *config.Config // 配置
-	HttpAccessLog *log.Log       // http 访问日志
-	HttpErrorLog  *log.Log       // http 错误日志
+	HttpAccessLog *log.Log       // api 访问日志
+	HttpErrorLog  *log.Log       // api 错误日志
 	MysqlLog      *log.Log       // mysql 访问日志
 	Mysql         *mysql.Mysql   // 数据库
 	Redis         *redis.Redis   // 缓存
@@ -36,12 +36,12 @@ func New(jsonFile string) (*Context, error) {
 		return nil, err
 	}
 
-	// 初始化 http 访问日志
+	// 初始化 api 访问日志
 	if context.HttpAccessLog, err = log.New(context.Config.Log, "http", "access"); err != nil {
 		return nil, err
 	}
 
-	// 初始化 http 错误日志
+	// 初始化 api 错误日志
 	if context.HttpErrorLog, err = log.New(context.Config.Log, "http", "error"); err != nil {
 		return nil, err
 	}

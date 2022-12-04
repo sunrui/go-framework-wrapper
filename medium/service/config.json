@@ -17,7 +17,7 @@
     },
     "server": {
       "rateLimitCapacity": 1,
-      "rateLimitQuantum": 1,
+      "rateLimitQuantum": 2,
       "enableDoc": true
     },
     "log": {

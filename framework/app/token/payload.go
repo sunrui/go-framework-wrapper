@@ -6,14 +6,7 @@
 
 package token
 
-import "encoding/json"
-
 // Payload 负荷
 type Payload struct {
 	UserId string `json:"userId"` // 用户 id
-}
-
-func (payload Payload) toJson() []byte {
-	marshal, _ := json.MarshalIndent(payload, "", "\t")
-	return marshal
 }

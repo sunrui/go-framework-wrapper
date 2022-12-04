@@ -12,8 +12,8 @@ import (
 	"framework/app/log"
 	"framework/app/mysql"
 	"framework/app/redis"
-	"framework/app/server"
 	"framework/app/token"
+	"framework/server"
 	"os"
 )
 
