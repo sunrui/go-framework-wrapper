@@ -8,7 +8,7 @@ package config
 
 import (
 	"encoding/json"
-	env2 "framework/app/env"
+	"framework/app/build"
 	"framework/app/glog/log"
 	"framework/app/mysql"
 	"framework/app/redis"
@@ -29,8 +29,8 @@ type Config struct {
 // New 创建
 func New(jsonFile string) (*Config, error) {
 	type env struct {
-		Dev  Config `json:"dev"`
-		Prod Config `json:"prod"`
+		Dev  Config `json:"dev"`  // 开发环境
+		Prod Config `json:"prod"` // 生产环境
 	}
 
 	var e env
@@ -40,7 +40,7 @@ func New(jsonFile string) (*Config, error) {
 		return nil, err
 	}
 
-	if env2.IsDev() {
+	if build.IsDev() {
 		return &e.Dev, nil
 	} else {
 		return &e.Prod, nil

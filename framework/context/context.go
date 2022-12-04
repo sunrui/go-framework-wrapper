@@ -7,8 +7,8 @@
 package context
 
 import (
+	"framework/app/build"
 	"framework/app/config"
-	"framework/app/env"
 	"framework/app/glog"
 	"framework/app/glog/log"
 	"framework/app/mysql"
@@ -66,7 +66,7 @@ func New(jsonFile string) (*Context, error) {
 		},
 	}
 
-	if env.IsDev() {
+	if build.IsDev() {
 		context.Log.HttpAccess.Appenders = append(context.Log.HttpAccess.Appenders, &glog.ConsoleAppender{})
 	}
 
@@ -85,7 +85,7 @@ func New(jsonFile string) (*Context, error) {
 		},
 	}
 
-	if env.IsDev() {
+	if build.IsDev() {
 		context.Log.HttpError.Appenders = append(context.Log.HttpError.Appenders, &glog.ConsoleAppender{})
 	}
 
@@ -104,7 +104,7 @@ func New(jsonFile string) (*Context, error) {
 		},
 	}
 
-	if env.IsDev() {
+	if build.IsDev() {
 		context.Log.Mysql.Appenders = append(context.Log.Mysql.Appenders, &glog.ConsoleAppender{})
 	}
 
@@ -126,7 +126,7 @@ func New(jsonFile string) (*Context, error) {
 		},
 	}
 
-	if env.IsDev() {
+	if build.IsDev() {
 		context.Log.Service.Appenders = append(context.Log.Service.Appenders, &glog.ConsoleAppender{})
 	}
 
@@ -149,7 +149,7 @@ func New(jsonFile string) (*Context, error) {
 	context.Token.Redis = token.New(context.Config.Token, redisStorage)
 
 	// gin 环境
-	if env.IsDev() {
+	if build.IsDev() {
 		gin.SetMode(gin.DebugMode)
 	} else {
 		gin.SetMode(gin.ReleaseMode)
@@ -170,7 +170,7 @@ func New(jsonFile string) (*Context, error) {
 		},
 	}
 
-	if env.IsDev() {
+	if build.IsDev() {
 		ginDefaultLog.Appenders = append(ginDefaultLog.Appenders, &glog.ConsoleAppender{})
 	}
 
@@ -191,7 +191,7 @@ func New(jsonFile string) (*Context, error) {
 		},
 	}
 
-	if env.IsDev() {
+	if build.IsDev() {
 		ginDefaultErrorLog.Appenders = append(ginDefaultErrorLog.Appenders, &glog.ConsoleAppender{})
 	}
 

@@ -15,6 +15,7 @@ import (
 type Layout interface {
 	// 获取布局
 	getLayout(level Level, message string) string
+	// 获取消息布局
 	getMessageLayout(message Format) string
 }
 

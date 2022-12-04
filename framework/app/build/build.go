@@ -1,10 +1,10 @@
 /*
  * Copyright (c) 2022 honeysense.com All rights reserved.
  * Author: sunrui
- * Date: 2022-12-04 09:17:22
+ * Date: 2022-12-04 20:01:01
  */
 
-package env
+package build
 
 import (
 	"flag"

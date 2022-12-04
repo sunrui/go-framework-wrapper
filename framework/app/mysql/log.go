@@ -7,7 +7,7 @@
 package mysql
 
 import (
-	"framework/app/env"
+	"framework/app/build"
 	"framework/app/glog"
 	"gorm.io/gorm/logger"
 	"time"
@@ -32,7 +32,7 @@ func getLogger(gLog *glog.GLog) logger.Interface {
 		logger.Config{
 			SlowThreshold: 50 * time.Millisecond, // 慢查询仅在 warn 级别时才会生效，默认 info 级别下全部输出
 			LogLevel: func() logger.LogLevel {
-				if env.IsDev() {
+				if build.IsDev() {
 					return logger.Info
 				} else {
 					return logger.Warn
