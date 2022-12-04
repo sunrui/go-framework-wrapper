@@ -21,8 +21,6 @@ func Elapsed(ctx *gin.Context) {
 
 // GetElapsed 获取耗时
 func GetElapsed(ctx *gin.Context) int64 {
-	time.Sleep(time.Duration(1) * time.Second)
-
 	elapsed, _ := ctx.Get(elapsedTag)
 	elapsed = time.Now().UnixMilli() - elapsed.(int64)
 	return elapsed.(int64)

@@ -8,6 +8,7 @@ package glog
 
 import (
 	"fmt"
+	"framework/server/request"
 )
 
 // Level 级别
@@ -24,6 +25,14 @@ const (
 	Warn  Level = "Warn"  // 警告
 	Error Level = "Error" // 错误
 )
+
+type Format struct {
+	Request *request.Request
+	Level   Level
+	Message string
+	Elapsed int64
+	UserId  *string
+}
 
 // GLog 日志
 type GLog struct {
@@ -53,6 +62,13 @@ func (gLog GLog) Println(level Level, format string, v ...interface{}) {
 	for _, appender := range gLog.Appenders {
 		message := fmt.Sprintf(format, v...)
 		appender.Print(level, gLog.Layout.getLayout(level, message)+"\n")
+	}
+}
+
+// PrintMessage 打印并换行
+func (gLog GLog) PrintMessage(format Format) {
+	for _, appender := range gLog.Appenders {
+		appender.Print(format.Level, gLog.Layout.getMessageLayout(format))
 	}
 }
 

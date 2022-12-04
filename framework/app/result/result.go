@@ -27,6 +27,7 @@ type Result struct {
 	Code       string           `json:"code" example:"Ok"`    // 代码
 	Message    string           `json:"message" example:"成功"` // 消息
 	Data       any              `json:"data,omitempty"`       // 数据
+	Elapsed    int64            `json:"elapsed"`              // 耗时
 	Pagination *Pagination      `json:"pagination,omitempty"` // 分页config
 	Request    *request.Request `json:"request,omitempty"`    // 请求config
 }
