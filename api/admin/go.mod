@@ -44,6 +44,6 @@ require (
 	gorm.io/gorm v1.23.4 // indirect
 )
 
-replace framework => ./../../../framework
+replace framework => ./../../framework
 
-replace medium => ./../..
+replace medium => ./../../medium

@@ -57,6 +57,7 @@ func (server Server) getResultBuffer(ctx *gin.Context, r *result.Result) string 
 func (server Server) getFormat(ctx *gin.Context, r *result.Result) glog.Format {
 	return glog.Format{
 		Request: r.Request,
+		Result:  r,
 		Level: func() glog.Level {
 			if r.Code == result.Ok.Code {
 				return glog.DebugLevel

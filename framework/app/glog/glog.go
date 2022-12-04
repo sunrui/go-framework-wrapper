@@ -8,6 +8,7 @@ package glog
 
 import (
 	"fmt"
+	"framework/app/result"
 	"framework/server/request"
 )
 
@@ -28,9 +29,10 @@ const (
 
 // Format 格式化
 type Format struct {
-	Request *request.Request // 请求
 	Level   Level            // 日志级别
 	Message string           // 消息
+	Request *request.Request // 请求
+	Result  *result.Result   // 结果
 	Elapsed int64            // 耗时
 	UserId  *string          // 用户 id
 }
@@ -69,7 +71,7 @@ func (gLog GLog) Println(level Level, format string, v ...interface{}) {
 // PrintMessage 打印并换行
 func (gLog GLog) PrintMessage(format Format) {
 	for _, appender := range gLog.Appenders {
-		appender.Print(format.Level, gLog.Layout.getMessageLayout(format))
+		appender.PrintMessage(format)
 	}
 }
 

@@ -4,9 +4,9 @@ go 1.19
 
 require framework v0.0.0-00010101000000-000000000000
 
-replace framework => ./../../../framework
+replace framework => ./../../framework
 
-replace medium => ./../..
+replace medium => ./../../medium
 
 require (
 	github.com/gin-gonic/gin v1.8.1

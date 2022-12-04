@@ -8,6 +8,7 @@ package service
 
 import (
 	"framework/context"
+	"medium/service/log"
 	"path/filepath"
 	"runtime"
 )
@@ -24,4 +25,9 @@ func init() {
 	if Ctx, err = context.New(path + "/config.json"); err != nil {
 		panic(err.Error())
 	}
+
+	// 为 Ctx 加入日志记录
+	appender := log.NewAppender(Ctx.Mysql)
+	Ctx.Log.HttpAccess.Appenders = append(Ctx.Log.HttpAccess.Appenders, appender)
+	Ctx.Log.HttpError.Appenders = append(Ctx.Log.HttpError.Appenders, appender)
 }

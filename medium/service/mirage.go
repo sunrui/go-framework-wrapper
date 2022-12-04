@@ -7,11 +7,13 @@
 package service
 
 import (
+	"medium/service/log"
 	"medium/service/user"
 )
 
 // Mirage 数据库初始化
 func Mirage() {
+	Ctx.Mysql.AutoMigrate(&log.Http{})
 	Ctx.Mysql.AutoMigrate(&user.User{})
 	Ctx.Mysql.AutoMigrate(&user.Info{})
 	Ctx.Mysql.AutoMigrate(&user.Device{})
