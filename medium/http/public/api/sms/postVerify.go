@@ -39,7 +39,7 @@ func postVerify(ctx *gin.Context) *result.Result {
 	var r postVerifyReq
 
 	// 较验参数
-	app.ValidateParameter(ctx, &r)
+	server.ValidateParameter(ctx, &r)
 
 	// 返回结果
 	return nil

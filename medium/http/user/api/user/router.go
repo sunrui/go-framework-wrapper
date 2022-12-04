@@ -7,17 +7,16 @@
 package user
 
 import (
-	"framework/app"
 	"medium/middleware"
 	"net/http"
 )
 
 // GetRouter 获取路由
-func GetRouter() app.RouterGroup {
-	return app.RouterGroup{
-		GroupName:  "/http-user",
+func GetRouter() server.RouterGroup {
+	return server.RouterGroup{
+		GroupName:  "/server-user",
 		Middleware: middleware.Auth,
-		Routers: []app.Router{
+		Routers: []server.Router{
 			{
 				HttpMethod:   http.MethodPost,
 				RelativePath: "/:id",

@@ -9,8 +9,8 @@ package token
 import (
 	"encoding/json"
 	"errors"
-	"framework/redis"
-	"framework/util"
+	"framework/app/redis"
+	"framework/app/util"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
 	"time"

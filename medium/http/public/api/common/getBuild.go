@@ -7,7 +7,7 @@
 package common
 
 import (
-	"framework/result"
+	"framework/app/result"
 	"github.com/gin-gonic/gin"
 	"time"
 )

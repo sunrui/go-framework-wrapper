@@ -7,7 +7,7 @@
 package user
 
 import (
-	"framework/mysql"
+	"framework/app/mysql"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )

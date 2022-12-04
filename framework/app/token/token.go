@@ -8,32 +8,40 @@ package token
 
 import (
 	"errors"
-	"framework/config"
-	"framework/result"
+	"framework/app/result"
 	"github.com/gin-gonic/gin"
 	"strings"
 )
 
+// Config 配置
+type Config struct {
+	JwtSecret      string `json:"jwtSecret"`  // jwt 密钥
+	Key            string `json:"key"`        // 键名
+	MaxAge         int64  `json:"maxAge"`     // 过期时间（秒）
+	AutoRefreshAge int64  `json:"refreshAge"` // 自动重新刷新时间（秒）
+}
+
 // Token 令牌
 type Token struct {
-	Config  config.Token
-	Storage Storage
+	Config  Config  // 配置
+	Storage Storage // 存储
 }
 
 // New 创建
-func New(tokenConfig config.Token, storage Storage) *Token {
+func New(config Config, storage Storage) *Token {
 	return &Token{
-		Config:  tokenConfig,
+		Config:  config,
 		Storage: storage,
 	}
 }
 
 // Write 写入 cookie 令牌
-func (token Token) Write(ctx *gin.Context, payload Payload) {
+func (token Token) Write(ctx *gin.Context, payload Payload) error {
 	if value, err := token.Storage.Set(payload, token.Config.MaxAge); err != nil {
-		panic(err.Error())
+		return err
 	} else {
 		ctx.SetCookie(token.Config.Key, value, int(token.Config.MaxAge), "/", "", false, true)
+		return nil
 	}
 }
 
@@ -62,7 +70,7 @@ func (token Token) GetPayload(ctx *gin.Context) (payload *Payload, ttl int64, er
 
 		// 判断是否需要刷新令牌
 		if ttl <= token.Config.AutoRefreshAge {
-			token.Write(ctx, *payload)
+			err = token.Write(ctx, *payload)
 		}
 
 		return

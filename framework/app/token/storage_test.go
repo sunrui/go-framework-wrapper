@@ -8,8 +8,7 @@ package token
 
 import (
 	"encoding/json"
-	"framework/config"
-	"framework/redis"
+	"framework/app/redis"
 	"testing"
 )
 
@@ -43,12 +42,13 @@ func TestJwtStorage(t *testing.T) {
 }
 
 func TestRedisStorage(t *testing.T) {
-	rediz := redis.New(config.Redis{
+	rediz, _ := redis.New(redis.Config{
 		Host:     "localhost",
 		Port:     6379,
 		Password: "honeysenselt",
 		Database: 0,
 	})
+
 	tokenStorage := NewRedisStorage(rediz, "sid")
 
 	if tokenString, err := tokenStorage.Set(Payload{UserId: "userId"}, 60); err != nil {

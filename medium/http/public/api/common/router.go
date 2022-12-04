@@ -7,20 +7,20 @@
 package common
 
 import (
-	"framework/app"
+	"framework/app/server"
 	"net/http"
 )
 
 // GetRouter 获取路由
-func GetRouter() app.RouterGroup {
-	return app.RouterGroup{
+func GetRouter() server.RouterGroup {
+	return server.RouterGroup{
 		GroupName:  "/common",
 		Middleware: nil,
-		Routers: []app.Router{
+		Routers: []server.Router{
 			{
 				HttpMethod:   http.MethodGet,
-				RelativePath: "/",
-				RouterFunc:   getIndex,
+				RelativePath: "/error",
+				RouterFunc:   getError,
 			},
 			{
 				HttpMethod:   http.MethodGet,

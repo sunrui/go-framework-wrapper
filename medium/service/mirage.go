@@ -7,14 +7,13 @@
 package service
 
 import (
-	"framework/context"
 	"medium/service/user"
 )
 
 // Mirage 数据库初始化
 func Mirage() {
-	context.Mysql.AutoMigrate(&user.User{})
-	context.Mysql.AutoMigrate(&user.Info{})
-	context.Mysql.AutoMigrate(&user.Device{})
-	context.Mysql.AutoMigrate(&user.Role{})
+	Context.Mysql.AutoMigrate(&user.User{})
+	Context.Mysql.AutoMigrate(&user.Info{})
+	Context.Mysql.AutoMigrate(&user.Device{})
+	Context.Mysql.AutoMigrate(&user.Role{})
 }

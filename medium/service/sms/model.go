@@ -6,7 +6,7 @@
 
 package sms
 
-import "framework/mysql"
+import "framework/app/mysql"
 
 // Sms 短信
 type Sms struct {
