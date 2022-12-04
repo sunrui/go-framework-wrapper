@@ -9,7 +9,7 @@ package mysql
 import (
 	"errors"
 	"fmt"
-	"framework/app/log"
+	"framework/app/glog"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
@@ -32,7 +32,7 @@ type Mysql struct {
 }
 
 // New 创建
-func New(config Config, log *log.Log) (*Mysql, error) {
+func New(config Config, glog *glog.GLog) (*Mysql, error) {
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local",
 		config.User,
 		config.Password,
@@ -41,7 +41,7 @@ func New(config Config, log *log.Log) (*Mysql, error) {
 		config.Database)
 
 	if db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
-		Logger: getLogger(log),
+		Logger: getLogger(glog),
 		NamingStrategy: schema.NamingStrategy{
 			TablePrefix:   "t_", // 表名前缀
 			SingularTable: true, // 使用单数表名

@@ -22,7 +22,7 @@
     },
     "log": {
       "directory": "log",
-      "level": "trace"
+      "level": "debug"
     },
     "token": {
       "jwtSecret": "123456",

@@ -9,7 +9,7 @@ package config
 import (
 	"encoding/json"
 	env2 "framework/app/env"
-	"framework/app/log"
+	"framework/app/glog/log"
 	"framework/app/mysql"
 	"framework/app/redis"
 	"framework/app/token"

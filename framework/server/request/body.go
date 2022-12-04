@@ -12,8 +12,8 @@ import (
 	"io"
 )
 
-// BodyTag 上下文 body 标记
-const BodyTag = "BodyTag"
+// 上下文 body 标记
+const bodyTag = "bodyTag"
 
 // IsCopyBody 是否导出对象
 func IsCopyBody(ctx *gin.Context) bool {
@@ -27,13 +27,13 @@ func CopyBody(ctx *gin.Context) {
 		panic(err.Error())
 	} else if len(data) != 0 {
 		ctx.Request.Body = io.NopCloser(bytes.NewBuffer(data))
-		ctx.Set(BodyTag, string(data))
+		ctx.Set(bodyTag, string(data))
 	}
 }
 
 // GetBody 获取 body
 func GetBody(ctx *gin.Context) *string {
-	if body, ok := ctx.Get(BodyTag); ok {
+	if body, ok := ctx.Get(bodyTag); ok {
 		bodyString := body.(string)
 		return &bodyString
 	} else {

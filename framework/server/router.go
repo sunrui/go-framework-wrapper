@@ -59,7 +59,7 @@ func (server Server) registerRouter(engine *gin.Engine, routerGroup RouterGroup)
 		case http.MethodDelete:
 			group.DELETE(routerPath.RelativePath, server.routerFunc(routerPath.RouterFunc))
 		default:
-			panic("app method not supported")
+			panic("http method not supported")
 		}
 	}
 }

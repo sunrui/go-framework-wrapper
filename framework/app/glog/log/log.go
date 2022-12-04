@@ -28,7 +28,7 @@ type Config struct {
 
 // Log 日志
 type Log struct {
-	*logrus.Logger
+	*logrus.Logger // log
 }
 
 // New 创建

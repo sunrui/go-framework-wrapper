@@ -21,17 +21,20 @@ func main() {
 
 	// 创建服务
 	router := server.New(service.Ctx.Config.Server,
-		service.Ctx.HttpAccessLog,
-		service.Ctx.HttpErrorLog,
-		service.Ctx.JwtToken)
+		service.Ctx.Log.HttpAccess,
+		service.Ctx.Log.HttpError,
+		service.Ctx.Token.Jwt)
 
 	// 注册路由
 	router.RouterGroup("/public", []server.RouterGroup{
 		common.GetRouter(),
 	})
 
+	port := 8080
+	service.Ctx.Log.Service.Info("service start: http://127.0.0.1:%d", port)
+
 	// 启动服务
-	if err := router.Run(8080); err != nil {
+	if err := router.Run(port); err != nil {
 		panic(err.Error())
 	}
 }

@@ -7,13 +7,10 @@
 package server
 
 import (
-	"framework/app/env"
-	"framework/app/log"
+	"framework/app/glog"
 	"framework/app/token"
-	middleware2 "framework/server/middleware"
+	"framework/server/middleware"
 	"github.com/gin-gonic/gin"
-	"io"
-	"os"
 	"strconv"
 )
 
@@ -27,13 +24,13 @@ type Config struct {
 // Server 服务
 type Server struct {
 	engine        *gin.Engine  // gin config
-	httpAccessLog *log.Log     // api 访问日志
-	httpErrorLog  *log.Log     // api 错误日志
+	httpAccessLog *glog.GLog   // api 访问日志
+	httpErrorLog  *glog.GLog   // api 错误日志
 	token         *token.Token // 令牌
 }
 
 // New 创建服务
-func New(config Config, httpAccessLog *log.Log, httpErrorLog *log.Log, token *token.Token) *Server {
+func New(config Config, httpAccessLog *glog.GLog, httpErrorLog *glog.GLog, token *token.Token) *Server {
 	engine := gin.New()
 
 	server := &Server{
@@ -43,38 +40,33 @@ func New(config Config, httpAccessLog *log.Log, httpErrorLog *log.Log, token *to
 		token:         token,
 	}
 
-	if env.IsDev() {
-		gin.SetMode(gin.DebugMode)
-		gin.DefaultWriter = io.MultiWriter(httpAccessLog.Out, os.Stdout)
-	} else {
-		gin.SetMode(gin.ReleaseMode)
-		gin.DefaultWriter = io.MultiWriter(httpAccessLog.Out)
-	}
+	// 注册耗时中件间
+	engine.Use(middleware.Elapsed)
+
+	// 注册异常中间件
+	engine.Use(server.routerFunc(middleware.Recover))
 
 	// 注册 404 回调
-	engine.NoRoute(server.routerFunc(middleware2.NotFound))
+	engine.NoRoute(server.routerFunc(middleware.NotFound))
 
 	// 注册 405 回调
 	engine.HandleMethodNotAllowed = true
-	engine.NoMethod(server.routerFunc(middleware2.MethodNotAllowed))
+	engine.NoMethod(server.routerFunc(middleware.MethodNotAllowed))
 
 	// 注册限流中间件
-	rateLimit := middleware2.NewRateLimit(config.RateLimitCapacity, config.RateLimitQuantum)
+	rateLimit := middleware.NewRateLimit(config.RateLimitCapacity, config.RateLimitQuantum)
 	engine.Use(server.routerFunc(rateLimit.Take))
 
 	// 注册令牌中间件
-	engine.Use(middleware2.Token)
+	engine.Use(middleware.Token)
 
 	// 注册文档中间件
 	if config.EnableDoc {
 		// 注册 body 中间件
-		engine.Use(middleware2.Body)
+		engine.Use(middleware.Body)
 
-		engine.GET("/doc/*any", middleware2.Swagger)
+		engine.GET("/doc/*any", middleware.Swagger)
 	}
-
-	// 注册异常中间件
-	engine.Use(server.routerFunc(middleware2.Recover))
 
 	return &Server{
 		engine:        engine,

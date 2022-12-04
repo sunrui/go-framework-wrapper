@@ -7,50 +7,37 @@
 package mysql
 
 import (
-	"fmt"
 	"framework/app/env"
-	"framework/app/log"
-	"github.com/sirupsen/logrus"
+	"framework/app/glog"
 	"gorm.io/gorm/logger"
 	"time"
 )
 
 // 日志
 type myLog struct {
-	log *logrus.Logger
+	gLog *glog.GLog // log
 }
 
 // Printf 序列化
-func (m myLog) Printf(format string, v ...interface{}) {
-	str := fmt.Sprintf(format, v...)
-
-	// 写入日志
-	if m.log != nil {
-		m.log.Print(str)
-	}
-
-	// 写入控制台
-	if env.IsDev() {
-		fmt.Print(str)
-	}
+func (log myLog) Printf(format string, v ...interface{}) {
+	log.gLog.Print(glog.Debug, format, v...)
 }
 
 // 获取日志
-func getLogger(log *log.Log) logger.Interface {
-	var logLevel logger.LogLevel
-	if env.IsDev() {
-		logLevel = logger.Info
-	} else {
-		logLevel = logger.Warn
-	}
-
+func getLogger(gLog *glog.GLog) logger.Interface {
 	return logger.New(
 		&myLog{
-			log: log.Logger,
+			gLog: gLog,
 		},
 		logger.Config{
-			SlowThreshold: 50 * time.Millisecond,
-			LogLevel:      logLevel,
+			SlowThreshold: 50 * time.Millisecond, // 慢查询仅在 warn 级别时才会生效，默认 info 级别下全部输出
+			LogLevel: func() logger.LogLevel {
+				if env.IsDev() {
+					return logger.Info
+				} else {
+					return logger.Warn
+				}
+			}(),
 		},
 	)
 }
