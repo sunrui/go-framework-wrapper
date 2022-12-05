@@ -9,8 +9,8 @@ package log
 import (
 	"framework/app/glog"
 	"framework/app/result"
-	"framework/server"
-	"framework/server/request"
+	"framework/app/server"
+	"framework/app/server/request"
 	"github.com/gin-gonic/gin"
 	"medium/service/log"
 )

@@ -7,7 +7,7 @@
 package user
 
 import (
-	"framework/server"
+	"framework/app/server"
 	"medium/middleware"
 	"net/http"
 )

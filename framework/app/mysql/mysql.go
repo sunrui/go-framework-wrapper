@@ -11,6 +11,7 @@ import (
 	"framework/app/glog"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
 )
 
@@ -40,7 +41,13 @@ func New(config Config, glog *glog.GLog) (*Mysql, error) {
 		config.Database)
 
 	if db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
-		Logger: getLogger(glog),
+		Logger: func() logger.Interface {
+			if glog != nil {
+				return getLogger(glog)
+			} else {
+				return nil
+			}
+		}(),
 		NamingStrategy: schema.NamingStrategy{
 			TablePrefix:   "t_", // 表名前缀
 			SingularTable: true, // 使用单数表名

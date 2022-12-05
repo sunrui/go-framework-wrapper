@@ -6,7 +6,7 @@
 package main
 
 import (
-	"framework/server"
+	"framework/app/server"
 	"medium/service"
 	"public/api/common"
 	"public/api/log"

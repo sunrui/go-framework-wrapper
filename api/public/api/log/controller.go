@@ -8,7 +8,7 @@ package log
 
 import (
 	"framework/app/mysql"
-	"framework/server"
+	"framework/app/server"
 	"medium/service/log"
 	"net/http"
 )

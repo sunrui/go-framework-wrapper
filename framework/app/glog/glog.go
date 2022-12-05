@@ -9,7 +9,7 @@ package glog
 import (
 	"fmt"
 	"framework/app/result"
-	"framework/server/request"
+	"framework/app/server/request"
 )
 
 // Level 级别
@@ -39,8 +39,16 @@ type Format struct {
 
 // GLog 日志
 type GLog struct {
-	Layout    Layout
-	Appenders []Appender
+	Layout    Layout     // 布局
+	Appenders []Appender // 附加者
+}
+
+// NewGLog 创建
+func NewGLog(layout Layout, appenders []Appender) *GLog {
+	return &GLog{
+		Layout:    layout,
+		Appenders: appenders,
+	}
 }
 
 // Write 写入

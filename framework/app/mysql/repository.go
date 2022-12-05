@@ -12,9 +12,16 @@ import (
 	"gorm.io/gorm"
 )
 
-// Repository 对象库
+// Repository 操作对象
 type Repository[T any] struct {
 	Mysql *Mysql
+}
+
+// NewRepository 创建操作对象
+func NewRepository[T any](mysql *Mysql) Repository[T] {
+	return Repository[T]{
+		Mysql: mysql,
+	}
 }
 
 // FindById 根据 id 查找

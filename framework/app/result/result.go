@@ -8,7 +8,7 @@ package result
 
 import (
 	"encoding/json"
-	"framework/server/request"
+	"framework/app/server/request"
 )
 
 // M 键值

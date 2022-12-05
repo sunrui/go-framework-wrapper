@@ -57,14 +57,11 @@ func New(jsonFile string) (*Context, error) {
 		return nil, err
 	}
 
-	context.Log.HttpAccess = &glog.GLog{
-		Layout: glog.DefaultLayout{},
-		Appenders: []glog.Appender{
-			&glog.FileAppender{
-				Debug: httpDebugFileLog,
-			},
+	context.Log.HttpAccess = glog.NewGLog(glog.DefaultLayout{}, []glog.Appender{
+		&glog.FileAppender{
+			Debug: httpDebugFileLog,
 		},
-	}
+	})
 
 	if build.IsDev() {
 		context.Log.HttpAccess.Appenders = append(context.Log.HttpAccess.Appenders, &glog.ConsoleAppender{})
@@ -76,14 +73,11 @@ func New(jsonFile string) (*Context, error) {
 		return nil, err
 	}
 
-	context.Log.HttpError = &glog.GLog{
-		Layout: glog.DefaultLayout{},
-		Appenders: []glog.Appender{
-			&glog.FileAppender{
-				Error: httpErrorFileLog,
-			},
+	context.Log.HttpError = glog.NewGLog(glog.DefaultLayout{}, []glog.Appender{
+		&glog.FileAppender{
+			Error: httpErrorFileLog,
 		},
-	}
+	})
 
 	if build.IsDev() {
 		context.Log.HttpError.Appenders = append(context.Log.HttpError.Appenders, &glog.ConsoleAppender{})
@@ -95,14 +89,11 @@ func New(jsonFile string) (*Context, error) {
 		return nil, err
 	}
 
-	context.Log.Mysql = &glog.GLog{
-		Layout: glog.DefaultLayout{},
-		Appenders: []glog.Appender{
-			&glog.FileAppender{
-				Debug: mysqlFileLog,
-			},
+	context.Log.Mysql = glog.NewGLog(glog.DefaultLayout{}, []glog.Appender{
+		&glog.FileAppender{
+			Debug: mysqlFileLog,
 		},
-	}
+	})
 
 	if build.IsDev() {
 		context.Log.Mysql.Appenders = append(context.Log.Mysql.Appenders, &glog.ConsoleAppender{})
@@ -114,17 +105,14 @@ func New(jsonFile string) (*Context, error) {
 		return nil, err
 	}
 
-	context.Log.Service = &glog.GLog{
-		Layout: glog.DefaultLayout{},
-		Appenders: []glog.Appender{
-			&glog.FileAppender{
-				Debug: serviceFileLog,
-				Info:  serviceFileLog,
-				Warn:  serviceFileLog,
-				Error: serviceFileLog,
-			},
+	context.Log.Service = glog.NewGLog(glog.DefaultLayout{}, []glog.Appender{
+		&glog.FileAppender{
+			Debug: serviceFileLog,
+			Info:  serviceFileLog,
+			Warn:  serviceFileLog,
+			Error: serviceFileLog,
 		},
-	}
+	})
 
 	if build.IsDev() {
 		context.Log.Service.Appenders = append(context.Log.Service.Appenders, &glog.ConsoleAppender{})
@@ -161,14 +149,11 @@ func New(jsonFile string) (*Context, error) {
 		return nil, err
 	}
 
-	ginDefaultLog := &glog.GLog{
-		Layout: glog.DefaultLayout{},
-		Appenders: []glog.Appender{
-			&glog.FileAppender{
-				Debug: ginDefaultFileLog,
-			},
+	ginDefaultLog := glog.NewGLog(glog.DefaultLayout{}, []glog.Appender{
+		&glog.FileAppender{
+			Debug: ginDefaultFileLog,
 		},
-	}
+	})
 
 	if build.IsDev() {
 		ginDefaultLog.Appenders = append(ginDefaultLog.Appenders, &glog.ConsoleAppender{})
@@ -182,14 +167,11 @@ func New(jsonFile string) (*Context, error) {
 		return nil, err
 	}
 
-	ginDefaultErrorLog := &glog.GLog{
-		Layout: glog.DefaultLayout{},
-		Appenders: []glog.Appender{
-			&glog.FileAppender{
-				Debug: ginErrorFileLog,
-			},
+	ginDefaultErrorLog := glog.NewGLog(glog.DefaultLayout{}, []glog.Appender{
+		&glog.FileAppender{
+			Debug: ginErrorFileLog,
 		},
-	}
+	})
 
 	if build.IsDev() {
 		ginDefaultErrorLog.Appenders = append(ginDefaultErrorLog.Appenders, &glog.ConsoleAppender{})
