@@ -7,21 +7,21 @@
 package log
 
 import (
-	"framework/app/mysql"
 	"framework/app/server"
+	"medium/service"
 	"medium/service/log"
 	"net/http"
 )
 
 type Controller struct {
-	Mysql          *mysql.Mysql
+	Ctx            *service.Context
 	HttpRepository log.HttpRepository
 }
 
-func NewController(mysql *mysql.Mysql) Controller {
+func NewController(ctx *service.Context) Controller {
 	return Controller{
-		Mysql:          mysql,
-		HttpRepository: log.NewHttpRepository(mysql),
+		Ctx:            ctx,
+		HttpRepository: log.NewHttpRepository(ctx.Mysql),
 	}
 }
 
