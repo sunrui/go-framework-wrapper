@@ -15,7 +15,7 @@ func TestRedis(t *testing.T) {
 	rediz, _ := New(Config{
 		Host:     "localhost",
 		Port:     6379,
-		Password: "",
+		Password: "honeysenselt",
 		Database: 0,
 	})
 

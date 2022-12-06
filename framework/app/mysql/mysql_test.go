@@ -21,7 +21,7 @@ type User struct {
 	Model
 	Basic `gorm:"embedded"`
 	Age   int    `json:"age"  gorm:"default:18; comment:年龄"` // 年龄
-	Class string `json:"class" gorm:"not null;comment:班级"`
+	Class string `json:"class" gorm:"type:varchar(32); not null;comment:班级"`
 }
 
 func (User) TableName() string {
@@ -33,8 +33,8 @@ type UserScore struct {
 	Basic `gorm:"embedded"`
 	Score int `json:"score" gorm:"not null;check:score>=0&&score<=100;comment:分数"` // 分数
 
-	User   User   `json:"User" gorm:"foreignKey:UserId"`
-	UserId string `json:"UserId" gorm:"comment:用户 id"`
+	User   *User  `json:"user,omitempty" gorm:"foreignKey:UserId"`
+	UserId string `json:"userId" gorm:"comment:用户 id"`
 }
 
 func (UserScore) TableName() string {
@@ -69,6 +69,8 @@ func TestMysql(t *testing.T) {
 	db.Where("1 = 1").Delete(&UserScore{})
 	db.Exec("DELETE FROM _t_user")
 	db.Exec("DELETE FROM _t_user_score")
+	db.Exec("OPTIMIZE TABLE _t_user")
+	db.Exec("OPTIMIZE TABLE _t_user_score")
 	db.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
 	db.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&UserScore{})
 
@@ -81,7 +83,7 @@ func TestMysql(t *testing.T) {
 		Basic: Basic{
 			Name: "语文",
 		},
-		User: User{
+		User: &User{
 			Basic: Basic{
 				Name: "张三",
 			},
@@ -106,6 +108,6 @@ func TestMysql(t *testing.T) {
 		t.Fatal("have this id")
 	} else {
 		userJson, _ := json.Marshal(user)
-		t.Log(string(userJson))
+		t.Log("\n" + string(userJson) + "\n")
 	}
 }
