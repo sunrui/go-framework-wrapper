@@ -9,25 +9,57 @@ package service
 import (
 	"framework/context"
 	"medium/service/log"
+	"medium/service/user"
 	"path/filepath"
 	"runtime"
 )
 
-var Ctx *context.Context // Ctx 上下文
+// Context 上下文
+type Context struct {
+	*context.Context // 上下文
+}
 
-// 初始化
-func init() {
-	var err error
-
+// 初始化配置
+func (service *Context) initConfig(jsonFile string) (err error) {
 	_, file, _, _ := runtime.Caller(0)
 	path := filepath.Dir(file)
 
-	if Ctx, err = context.New(path + "/config.json"); err != nil {
-		panic(err.Error())
+	service.Context, err = context.New(path + "/" + jsonFile)
+
+	return
+}
+
+// 初始化日志附加者
+func (service *Context) initLogAppender() {
+	appender := log.NewAppender(service.Mysql)
+	service.Log.HttpAccess.Appenders = append(service.Log.HttpAccess.Appenders, appender)
+	service.Log.HttpError.Appenders = append(service.Log.HttpError.Appenders, appender)
+}
+
+// 初始化数据库
+func (service *Context) initMirage() {
+	service.Mysql.AutoMigrate(
+		&log.Http{},
+		&user.User{},
+		&user.Info{},
+		&user.Device{},
+		&user.Role{})
+}
+
+// NewContext 创建上下文
+func NewContext(jsonFile string) (service *Context, err error) {
+	var ctx *context.Context
+
+	service = &Context{
+		ctx,
 	}
 
-	// 为 Ctx 加入日志记录
-	appender := log.NewAppender(Ctx.Mysql)
-	Ctx.Log.HttpAccess.Appenders = append(Ctx.Log.HttpAccess.Appenders, appender)
-	Ctx.Log.HttpError.Appenders = append(Ctx.Log.HttpError.Appenders, appender)
+	if err = service.initConfig(jsonFile); err != nil {
+		return nil, err
+	}
+
+	service.initLogAppender()
+	service.initMirage()
+
+	return service, nil
 }

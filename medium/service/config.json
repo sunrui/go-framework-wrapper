@@ -21,6 +21,7 @@
       "enableDoc": true
     },
     "log": {
+      "enable": true,
       "directory": "log",
       "level": "debug"
     },
@@ -53,6 +54,7 @@
       "enableDoc": true
     },
     "log": {
+      "enable": true,
       "directory": "log",
       "level": "debug"
     },

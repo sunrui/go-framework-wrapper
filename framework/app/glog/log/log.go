@@ -22,6 +22,7 @@ const (
 
 // Config 配置
 type Config struct {
+	Enable    bool         `json:"enable"`    //  启用
 	Directory string       `json:"directory"` // 路径
 	Level     logrus.Level `json:"level"`     // 等级
 }

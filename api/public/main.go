@@ -17,26 +17,32 @@ import (
 // @host    127.0.0.1:8080
 // @BasePath
 func main() {
-	// 初始化数据库
-	service.Mirage()
+	var context *service.Context
+	var err error
+
+	// 创建上下文
+	if context, err = service.NewContext("config.json"); err != nil {
+		panic(err.Error())
+	}
 
 	// 创建服务
-	router := server.New(service.Ctx.Config.Server,
-		service.Ctx.Log.HttpAccess,
-		service.Ctx.Log.HttpError,
-		service.Ctx.Token.Jwt)
+	router := server.New(context.Config.Server,
+		context.Log.HttpAccess,
+		context.Log.HttpError,
+		context.Token.Jwt)
 
 	// 注册路由
 	router.RouterGroup("/public", []server.RouterGroup{
 		common.GetRouter(),
-		log.NewController(service.Ctx.Mysql).GetRouter(),
+		log.NewController(context.Mysql).GetRouter(),
 	})
 
-	port := 8080
-	service.Ctx.Log.Service.Info("service start: http://127.0.0.1:%d", port)
+	// 端口
+	const port = 8080
+	context.Log.Service.Info("service start: http://127.0.0.1:%d", port)
 
 	// 启动服务
-	if err := router.Run(port); err != nil {
+	if err = router.Run(port); err != nil {
 		panic(err.Error())
 	}
 }
