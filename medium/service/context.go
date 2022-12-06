@@ -20,25 +20,25 @@ type Context struct {
 }
 
 // 初始化配置
-func (service *Context) initConfig(jsonFile string) (err error) {
+func (ctx *Context) initConfig(jsonFile string) (err error) {
 	_, file, _, _ := runtime.Caller(0)
 	path := filepath.Dir(file)
 
-	service.Context, err = context.New(path + "/" + jsonFile)
+	ctx.Context, err = context.New(path + "/" + jsonFile)
 
 	return
 }
 
 // 初始化日志附加者
-func (service *Context) initLogAppender() {
-	appender := log.NewAppender(service.Mysql)
-	service.Log.HttpAccess.Appenders = append(service.Log.HttpAccess.Appenders, appender)
-	service.Log.HttpError.Appenders = append(service.Log.HttpError.Appenders, appender)
+func (ctx *Context) initLogAppender() {
+	appender := log.NewAppender(ctx.Mysql)
+	ctx.Log.HttpAccess.Appenders = append(ctx.Log.HttpAccess.Appenders, appender)
+	ctx.Log.HttpError.Appenders = append(ctx.Log.HttpError.Appenders, appender)
 }
 
 // 初始化数据库
-func (service *Context) initMirage() {
-	service.Mysql.AutoMigrate(
+func (ctx *Context) initMirage() {
+	ctx.Mysql.AutoMigrate(
 		&log.Http{},
 		&user.User{},
 		&user.Info{},
@@ -47,19 +47,15 @@ func (service *Context) initMirage() {
 }
 
 // NewContext 创建上下文
-func NewContext(jsonFile string) (service *Context, err error) {
-	var ctx *context.Context
+func NewContext(jsonFile string) (ctx *Context, err error) {
+	ctx = &Context{}
 
-	service = &Context{
-		ctx,
-	}
-
-	if err = service.initConfig(jsonFile); err != nil {
+	if err = ctx.initConfig(jsonFile); err != nil {
 		return nil, err
 	}
 
-	service.initLogAppender()
-	service.initMirage()
+	ctx.initLogAppender()
+	ctx.initMirage()
 
-	return service, nil
+	return ctx, nil
 }
