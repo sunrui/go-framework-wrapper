@@ -28,7 +28,7 @@ type getIndexRes struct {
 // @Tags    日志
 // @Produce json
 // @Success 200 {object} result.Result{data=log.Http}
-// @Router  /public/common/build [get]
+// @Router  /public/log [get]
 func (controller Controller) getIndex(ctx *gin.Context) *result.Result {
 	var req getIndexReq
 

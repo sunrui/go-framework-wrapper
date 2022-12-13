@@ -11,10 +11,11 @@ import (
 	"framework/app/glog"
 	"gorm.io/gorm"
 	"testing"
+	"time"
 )
 
 type Basic struct {
-	Name string `json:"name"  gorm:"primaryKey;unique;type:varchar(6); comment:名称"`
+	Name string `json:"name"  gorm:"primaryKey;unique;type:varchar(32); comment:名称"`
 }
 
 type User struct {
@@ -41,14 +42,20 @@ func (UserScore) TableName() string {
 	return "_t_user_score"
 }
 
-func TestMysql(t *testing.T) {
+var log *glog.GLog
+var db *Mysql
+
+// TestMain 初始化前准备
+func TestMain(m *testing.M) {
+	var err error
+
 	// 启动控制台日志
-	log := glog.NewGLog(glog.DefaultLayout{}, []glog.Appender{
+	log = glog.NewGLog(glog.DefaultLayout{}, []glog.Appender{
 		glog.ConsoleAppender{},
 	})
 
 	// 测试数据库连接
-	db, err := New(Config{
+	db, err = New(Config{
 		User:         "root",
 		Password:     "honeysenselt",
 		Host:         "127.0.0.1",
@@ -58,13 +65,13 @@ func TestMysql(t *testing.T) {
 		MaxIdleConns: 1,
 	}, log)
 	if err != nil {
-		t.Fatal(err.Error())
+		panic(err.Error())
 	}
 
 	// 测试多个数据库初始化
 	db.AutoMigrate(User{}, UserScore{})
 
-	// 软删除两个数据库
+	// 删除两个数据库
 	db.Where("1 = 1").Delete(&User{})
 	db.Where("1 = 1").Delete(&UserScore{})
 	db.Exec("DELETE FROM _t_user")
@@ -78,33 +85,51 @@ func TestMysql(t *testing.T) {
 	db.Unscoped().Delete(&User{})
 	db.Unscoped().Delete(&UserScore{})
 
-	// 测试 beyond to
-	user := UserScore{
-		Basic: Basic{
-			Name: "语文",
-		},
-		User: &User{
-			Basic: Basic{
-				Name: "张三",
-			},
-			Age: 19,
-		},
-		Score: 80,
-	}
-	db.Save(&user)
+	m.Run()
+}
 
-	// 测试外键
-	score := UserScore{
+func TestMysql_Insert(t *testing.T) {
+	tm := time.Now().Format("2006-01-02 15:04:05")
+
+	user := User{
 		Basic: Basic{
-			Name: "数学",
+			Name: "张三",
 		},
-		Score:  100,
-		UserId: user.User.Id,
+		Age: 19,
 	}
-	db.Save(&score)
 
 	userScoreRepository := NewRepository[UserScore](db)
-	if user := userScoreRepository.FindById(score.Id); user == nil {
+	if user := userScoreRepository.FindOne(&User{
+		Basic: Basic{
+			Name: "张三",
+		},
+	}); user == nil {
+		t.Fatal("have this id")
+	} else {
+		userJson, _ := json.Marshal(user)
+		t.Log("\n" + string(userJson) + "\n")
+	}
+
+	db.Save(&user)
+
+	// 测试 beyond to
+	score := UserScore{
+		Basic: Basic{
+			Name: "语文-" + tm,
+		},
+		UserId: user.Id,
+		Score:  80,
+	}
+	db.Save(&score)
+}
+
+func TestMysql_Find(t *testing.T) {
+	userScoreRepository := NewRepository[UserScore](db)
+	if user := userScoreRepository.FindOne(&User{
+		Basic: Basic{
+			Name: "张三",
+		},
+	}); user == nil {
 		t.Fatal("have this id")
 	} else {
 		userJson, _ := json.Marshal(user)
