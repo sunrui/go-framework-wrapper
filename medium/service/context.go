@@ -20,11 +20,11 @@ type Context struct {
 }
 
 // 初始化配置
-func (ctx *Context) initConfig(jsonFile string) (err error) {
+func (ctx *Context) initConfig() (err error) {
 	_, file, _, _ := runtime.Caller(0)
 	path := filepath.Dir(file)
 
-	ctx.Context, err = context.New(path + "/" + jsonFile)
+	ctx.Context, err = context.New(path + "/config.json")
 
 	return
 }
@@ -47,10 +47,10 @@ func (ctx *Context) initMirage() {
 }
 
 // NewContext 创建上下文
-func NewContext(jsonFile string) (ctx *Context, err error) {
+func NewContext() (ctx *Context, err error) {
 	ctx = &Context{}
 
-	if err = ctx.initConfig(jsonFile); err != nil {
+	if err = ctx.initConfig(); err != nil {
 		return nil, err
 	}
 

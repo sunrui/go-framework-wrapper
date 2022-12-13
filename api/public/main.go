@@ -21,7 +21,7 @@ func main() {
 	var err error
 
 	// 创建上下文
-	if ctx, err = service.NewContext("config.json"); err != nil {
+	if ctx, err = service.NewContext(); err != nil {
 		panic(err.Error())
 	}
 
