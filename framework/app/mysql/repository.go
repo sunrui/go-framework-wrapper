@@ -41,7 +41,7 @@ func (repository Repository[T]) FindById(id string) *T {
 func (repository Repository[T]) FindOne(query interface{}, args ...interface{}) *T {
 	var dst []T
 
-	if db := repository.Mysql.DB.Limit(2).Where(query, args).Find(&dst); db.Error != nil {
+	if db := repository.Mysql.DB.Limit(2).Where(query, args...).Find(&dst); db.Error != nil {
 		panic(db.Error.Error())
 	} else if db.RowsAffected > 1 {
 		panic(errors.New(fmt.Sprintf("find %d record", db.RowsAffected)))
@@ -59,7 +59,7 @@ func (repository Repository[T]) FindPage(page int, pageSize int, order string, q
 	var db *gorm.DB
 
 	if query != nil {
-		db = repository.Mysql.DB.Order(order).Offset(page*pageSize).Limit(pageSize).Offset(page*pageSize).Where(query, args).Find(&dst)
+		db = repository.Mysql.DB.Order(order).Offset(page*pageSize).Limit(pageSize).Offset(page*pageSize).Where(query, args...).Find(&dst)
 	} else {
 		db = repository.Mysql.DB.Order(order).Offset(page * pageSize).Limit(pageSize).Offset(page * pageSize).Find(&dst)
 	}

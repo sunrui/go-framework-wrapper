@@ -9,7 +9,6 @@ package mysql
 import (
 	"encoding/json"
 	"framework/app/glog"
-	"gorm.io/gorm"
 	"testing"
 	"time"
 )
@@ -26,7 +25,7 @@ type User struct {
 }
 
 func (User) TableName() string {
-	return "_t_user"
+	return "t_user"
 }
 
 type UserScore struct {
@@ -39,7 +38,7 @@ type UserScore struct {
 }
 
 func (UserScore) TableName() string {
-	return "_t_user_score"
+	return "t_user_score"
 }
 
 var log *glog.GLog
@@ -72,45 +71,26 @@ func TestMain(m *testing.M) {
 	db.AutoMigrate(User{}, UserScore{})
 
 	// 删除两个数据库
-	db.Where("1 = 1").Delete(&User{})
-	db.Where("1 = 1").Delete(&UserScore{})
-	db.Exec("DELETE FROM _t_user")
-	db.Exec("DELETE FROM _t_user_score")
-	db.Exec("OPTIMIZE TABLE _t_user")
-	db.Exec("OPTIMIZE TABLE _t_user_score")
-	db.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
-	db.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&UserScore{})
-
-	// 强制删除数据库
-	db.Unscoped().Delete(&User{})
-	db.Unscoped().Delete(&UserScore{})
+	db.Exec("DELETE FROM t_user")
 
 	m.Run()
 }
 
 func TestMysql_Insert(t *testing.T) {
 	tm := time.Now().Format("2006-01-02 15:04:05")
-
 	user := User{
 		Basic: Basic{
-			Name: "张三",
+			Name: "张三" + tm,
 		},
 		Age: 19,
 	}
 
-	userScoreRepository := NewRepository[UserScore](db)
-	if user := userScoreRepository.FindOne(&User{
-		Basic: Basic{
-			Name: "张三",
-		},
-	}); user == nil {
-		t.Fatal("have this id")
+	userRepository := NewRepository[User](db)
+	if u := userRepository.FindOne("name = ? And age = ?", "张三", 19); u == nil {
+		db.Save(&user)
 	} else {
-		userJson, _ := json.Marshal(user)
-		t.Log("\n" + string(userJson) + "\n")
+		user = *u
 	}
-
-	db.Save(&user)
 
 	// 测试 beyond to
 	score := UserScore{
@@ -121,18 +101,32 @@ func TestMysql_Insert(t *testing.T) {
 		Score:  80,
 	}
 	db.Save(&score)
+
+	t.Log("ok")
 }
 
 func TestMysql_Find(t *testing.T) {
-	userScoreRepository := NewRepository[UserScore](db)
-	if user := userScoreRepository.FindOne(&User{
+	userRepository := NewRepository[User](db)
+	if user := userRepository.FindOne(&User{
 		Basic: Basic{
 			Name: "张三",
 		},
 	}); user == nil {
-		t.Fatal("have this id")
+		t.Log("not have this id")
 	} else {
 		userJson, _ := json.Marshal(user)
 		t.Log("\n" + string(userJson) + "\n")
 	}
+}
+
+type NamePage struct {
+	Name string `json:"name"`
+}
+
+func (NamePage) TableName() string {
+	return "t_name_page"
+}
+
+func TestMysql_Page(t *testing.T) {
+
 }
