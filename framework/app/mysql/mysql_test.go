@@ -8,13 +8,13 @@ package mysql
 
 import (
 	"encoding/json"
+	"fmt"
 	"framework/app/glog"
 	"testing"
-	"time"
 )
 
 type Basic struct {
-	Name string `json:"name"  gorm:"primaryKey;unique;type:varchar(32); comment:名称"`
+	Name string `json:"name"  gorm:"primaryKey;unique;type:varchar(256); comment:名称"`
 }
 
 type User struct {
@@ -77,10 +77,9 @@ func TestMain(m *testing.M) {
 }
 
 func TestMysql_Insert(t *testing.T) {
-	tm := time.Now().Format("2006-01-02 15:04:05")
 	user := User{
 		Basic: Basic{
-			Name: "张三" + tm,
+			Name: "张三",
 		},
 		Age: 19,
 	}
@@ -92,15 +91,19 @@ func TestMysql_Insert(t *testing.T) {
 		user = *u
 	}
 
-	// 测试 beyond to
-	score := UserScore{
-		Basic: Basic{
-			Name: "语文-" + tm,
-		},
-		UserId: user.Id,
-		Score:  80,
+	userScoreRepository := NewRepository[UserScore](db)
+	count := userScoreRepository.Count()
+	for i := count + 1; i < count+1+10; i++ {
+		// 测试 beyond to
+		score := UserScore{
+			Basic: Basic{
+				Name: fmt.Sprintf("语文 - %03d", +i),
+			},
+			UserId: user.Id,
+			Score:  80,
+		}
+		db.Save(&score)
 	}
-	db.Save(&score)
 
 	t.Log("ok")
 }
@@ -119,14 +122,9 @@ func TestMysql_Find(t *testing.T) {
 	}
 }
 
-type NamePage struct {
-	Name string `json:"name"`
-}
-
-func (NamePage) TableName() string {
-	return "t_name_page"
-}
-
 func TestMysql_Page(t *testing.T) {
+	userScoreRepository := NewRepository[UserScore](db)
 
+	userScorePage := userScoreRepository.FindPage(1, 20, "ASC", nil)
+	t.Log(userScorePage)
 }

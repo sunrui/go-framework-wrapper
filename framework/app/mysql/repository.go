@@ -24,6 +24,16 @@ func NewRepository[T any](mysql *Mysql) Repository[T] {
 	}
 }
 
+// Count 总数
+func (repository Repository[T]) Count() (count int64) {
+	var dst T
+	if db := repository.Mysql.Model(dst).Count(&count); db.Error != nil {
+		panic(db.Error.Error())
+	}
+
+	return
+}
+
 // FindById 根据 id 查找
 func (repository Repository[T]) FindById(id string) *T {
 	var dst T
