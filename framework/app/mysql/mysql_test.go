@@ -70,8 +70,8 @@ func TestMain(m *testing.M) {
 	// 测试多个数据库初始化
 	db.AutoMigrate(User{}, UserScore{})
 
-	// 删除两个数据库
-	db.Exec("DELETE FROM t_user")
+	// 删除数据库
+	//db.Exec("DELETE FROM t_user")
 
 	m.Run()
 }
@@ -115,7 +115,7 @@ func TestMysql_Find(t *testing.T) {
 			Name: "张三",
 		},
 	}); user == nil {
-		t.Log("not have this id")
+		t.Error("not have this id")
 	} else {
 		userJson, _ := json.Marshal(user)
 		t.Log("\n" + string(userJson) + "\n")
@@ -131,7 +131,7 @@ func TestMysql_Page(t *testing.T) {
 			Name: "张三",
 		},
 	}); user == nil {
-		t.Log("not have this id")
+		t.Error("not have this id")
 		return
 	} else {
 		userId = user.Id
@@ -148,4 +148,12 @@ func TestMysql_Page(t *testing.T) {
 
 	userScoreJson, _ := json.Marshal(userScorePage)
 	t.Log("\n" + string(userScoreJson) + "\n")
+
+	for _, userScore := range userScorePage {
+		var r bool
+		//r = userScoreRepository.SoftDeleteById(userScore.Id)
+		//t.Log("\n"+"SoftDeleteById userScore by id "+userScore.Id+", result =", r)
+		r = userScoreRepository.DeleteById(userScore.Id)
+		t.Log("\n"+"DeleteById userScore by id "+userScore.Id+", result =", r)
+	}
 }
