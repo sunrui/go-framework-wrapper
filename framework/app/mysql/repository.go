@@ -51,6 +51,10 @@ func (repository Repository[T]) FindById(id string) *T {
 func (repository Repository[T]) FindOne(query interface{}, args ...interface{}) *T {
 	var dst []T
 
+	if query == nil {
+		panic(errors.New("query param cannot be nil"))
+	}
+
 	if db := repository.Mysql.DB.Limit(2).Where(query, args...).Find(&dst); db.Error != nil {
 		panic(db.Error.Error())
 	} else if db.RowsAffected > 1 {
@@ -62,17 +66,25 @@ func (repository Repository[T]) FindOne(query interface{}, args ...interface{}) 
 	}
 }
 
+// Page 分页
+type Page struct {
+	Page     int `json:"page" form:"page" validate:"required,gte=1,lte=9999"`        // 分页，从 1 开始
+	PageSize int `json:"pageSize" form:"pageSize" validate:"required,gte=1,lte=100"` // 分页大小，最大 100
+}
+
 // FindPage 根据条件查找分页一个或多个
-func (repository Repository[T]) FindPage(page int, pageSize int, order string, query interface{}, args ...interface{}) []T {
+func (repository Repository[T]) FindPage(page Page, order string, query interface{}, args ...interface{}) []T {
 	var dst []T
 
 	var db *gorm.DB
 
+	db = repository.Mysql.DB.Order(order).Offset((page.Page - 1) * page.PageSize).Limit(page.PageSize)
+
 	if query != nil {
-		db = repository.Mysql.DB.Order(order).Offset(page*pageSize).Limit(pageSize).Offset(page*pageSize).Where(query, args...).Find(&dst)
-	} else {
-		db = repository.Mysql.DB.Order(order).Offset(page * pageSize).Limit(pageSize).Offset(page * pageSize).Find(&dst)
+		db = db.Where(query, args...)
 	}
+
+	db = db.Find(&dst)
 
 	if db.Error != nil {
 		panic(db.Error.Error())

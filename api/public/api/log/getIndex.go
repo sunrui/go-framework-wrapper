@@ -8,15 +8,15 @@ package log
 
 import (
 	"framework/app/glog"
-	"framework/app/mysql"
 	"framework/app/result"
 	"framework/app/server"
+	"framework/app/server/request"
 	"github.com/gin-gonic/gin"
 	"medium/service/log"
 )
 
 type getIndexReq struct {
-	mysql.Page
+	request.Page
 	Level *glog.Level
 }
 

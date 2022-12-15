@@ -123,8 +123,29 @@ func TestMysql_Find(t *testing.T) {
 }
 
 func TestMysql_Page(t *testing.T) {
+	var userId string
+
+	userRepository := NewRepository[User](db)
+	if user := userRepository.FindOne(&User{
+		Basic: Basic{
+			Name: "张三",
+		},
+	}); user == nil {
+		t.Log("not have this id")
+		return
+	} else {
+		userId = user.Id
+	}
+
 	userScoreRepository := NewRepository[UserScore](db)
 
-	userScorePage := userScoreRepository.FindPage(1, 20, "ASC", nil)
-	t.Log(userScorePage)
+	userScorePage := userScoreRepository.FindPage(Page{
+		Page:     1,
+		PageSize: 10,
+	}, "name ASC", &UserScore{
+		UserId: userId,
+	})
+
+	userScoreJson, _ := json.Marshal(userScorePage)
+	t.Log("\n" + string(userScoreJson) + "\n")
 }
