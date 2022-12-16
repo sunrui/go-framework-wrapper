@@ -15,8 +15,8 @@ import (
 type Appender interface {
 	// Print 打印
 	Print(level Level, message string)
-	// PrintMessage 打印消息
-	PrintMessage(format Format)
+	// PrintHttp 打印 http
+	PrintHttp(level Level, http Http)
 }
 
 // ConsoleAppender 控制台附加器
@@ -39,9 +39,9 @@ func (consoleAppender ConsoleAppender) Print(level Level, message string) {
 	fmt.Print(message)
 }
 
-// PrintMessage 打印消息
-func (consoleAppender ConsoleAppender) PrintMessage(format Format) {
-	consoleAppender.Print(format.Level, format.Message)
+// PrintHttp 打印 http
+func (consoleAppender ConsoleAppender) PrintHttp(level Level, http Http) {
+	consoleAppender.Print(level, http.LineString())
 }
 
 // FileAppender 文件附加器
@@ -74,7 +74,7 @@ func (fileAppender FileAppender) Print(level Level, message string) {
 	}
 }
 
-// PrintMessage 打印消息
-func (fileAppender FileAppender) PrintMessage(format Format) {
-	fileAppender.Print(format.Level, format.Message)
+// PrintHttp 打印 http
+func (fileAppender FileAppender) PrintHttp(level Level, http Http) {
+	fileAppender.Print(level, http.LineString())
 }

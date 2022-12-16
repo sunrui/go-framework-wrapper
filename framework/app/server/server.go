@@ -8,7 +8,7 @@ package server
 
 import (
 	"framework/app/glog"
-	middleware2 "framework/app/server/middleware"
+	"framework/app/server/middleware"
 	"framework/app/token"
 	"github.com/gin-gonic/gin"
 	"strconv"
@@ -41,31 +41,31 @@ func New(config Config, httpAccessLog *glog.GLog, httpErrorLog *glog.GLog, token
 	}
 
 	// 注册耗时中件间
-	engine.Use(middleware2.Elapsed)
+	engine.Use(middleware.Elapsed)
 
 	// 注册异常中间件
-	engine.Use(server.routerFunc(middleware2.Recover))
+	engine.Use(server.routerFunc(middleware.Recover))
 
 	// 注册 404 回调
-	engine.NoRoute(server.routerFunc(middleware2.NotFound))
+	engine.NoRoute(server.routerFunc(middleware.NotFound))
 
 	// 注册 405 回调
 	engine.HandleMethodNotAllowed = true
-	engine.NoMethod(server.routerFunc(middleware2.MethodNotAllowed))
+	engine.NoMethod(server.routerFunc(middleware.MethodNotAllowed))
 
 	// 注册限流中间件
-	rateLimit := middleware2.NewRateLimit(config.RateLimitCapacity, config.RateLimitQuantum)
+	rateLimit := middleware.NewRateLimit(config.RateLimitCapacity, config.RateLimitQuantum)
 	engine.Use(server.routerFunc(rateLimit.Take))
 
 	// 注册令牌中间件
-	engine.Use(middleware2.Token)
+	engine.Use(middleware.Token)
 
 	// 注册文档中间件
 	if config.EnableDoc {
 		// 注册 body 中间件
-		engine.Use(middleware2.Body)
+		engine.Use(middleware.Body)
 
-		engine.GET("/doc/*any", middleware2.Swagger)
+		engine.GET("/doc/*any", middleware.Swagger)
 	}
 
 	return &Server{

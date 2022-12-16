@@ -8,7 +8,7 @@ package result
 
 import (
 	"encoding/json"
-	"framework/app/server/request"
+	"net/http"
 )
 
 // M 键值
@@ -22,14 +22,23 @@ type Pagination struct {
 	TotalSize int64 `json:"totalSize"` // 总大小
 }
 
+// Request 请求
+type Request struct {
+	Ip     string      `json:"ip"`     // ip 地址
+	Method string      `json:"method"` // 请求方式
+	Uri    string      `json:"uri"`    // 访问地址
+	Header http.Header `json:"header"` // server 首部
+	Body   *string     `json:"body"`   // 请求体
+}
+
 // Result 结果
 type Result struct {
-	Code       string           `json:"code" example:"Ok"`    // 代码
-	Message    string           `json:"message" example:"成功"` // 消息
-	Data       any              `json:"data,omitempty"`       // 数据
-	Elapsed    int64            `json:"elapsed"`              // 耗时
-	Pagination *Pagination      `json:"pagination,omitempty"` // 分页config
-	Request    *request.Request `json:"request,omitempty"`    // 请求config
+	Code       string      `json:"code" example:"Ok"`      // 代码
+	Message    string      `json:"message" example:"成功"` // 消息
+	Data       any         `json:"data,omitempty"`         // 数据
+	Elapsed    int64       `json:"elapsed"`                // 耗时
+	Pagination *Pagination `json:"pagination,omitempty"`   // 分页config
+	Request    *Request    `json:"request,omitempty"`      // 请求config
 }
 
 // String 数据
@@ -45,7 +54,7 @@ func (result *Result) WithMessage(message string) *Result {
 }
 
 // WithRequest 设置请求
-func (result *Result) WithRequest(request request.Request) *Result {
+func (result *Result) WithRequest(request Request) *Result {
 	result.Request = &request
 	return result
 }

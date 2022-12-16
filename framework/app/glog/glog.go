@@ -8,8 +8,6 @@ package glog
 
 import (
 	"fmt"
-	"framework/app/result"
-	"framework/app/server/request"
 )
 
 // Level 级别
@@ -26,16 +24,6 @@ const (
 	WarnLevel  Level = "Warn"  // 警告
 	ErrorLevel Level = "Error" // 错误
 )
-
-// Format 格式化
-type Format struct {
-	Level   Level            // 日志级别
-	Message string           // 消息
-	Request *request.Request // 请求
-	Result  *result.Result   // 结果
-	Elapsed int64            // 耗时
-	UserId  *string          // 用户 id
-}
 
 // GLog 日志
 type GLog struct {
@@ -76,10 +64,10 @@ func (gLog GLog) Println(level Level, format string, v ...interface{}) {
 	}
 }
 
-// PrintMessage 打印并换行
-func (gLog GLog) PrintMessage(format Format) {
+// PrintHttp 打印并换行
+func (gLog GLog) PrintHttp(level Level, http Http) {
 	for _, appender := range gLog.Appenders {
-		appender.PrintMessage(format)
+		appender.PrintHttp(level, http)
 	}
 }
 

@@ -11,6 +11,7 @@ import (
 	"framework/app/mysql"
 )
 
+// Http
 type Http struct {
 	mysql.Model            // 通用参数
 	Level       glog.Level `json:"level"  gorm:"type:char(5); comment:日志级别"`     // 日志级别
@@ -21,6 +22,7 @@ type Http struct {
 	Response    *string    `json:"response"  gorm:"type:text; comment:返回结果"`     // 返回结果
 	UserId      *string    `json:"userId"  gorm:"type:char(12); comment:用户 id"`  // 用户 id
 	Elapsed     int64      `json:"elapsed"  gorm:"comment:耗时"`                   // 耗时
+
 }
 
 func (Http) TableName() string {

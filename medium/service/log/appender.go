@@ -31,32 +31,25 @@ func (appender Appender) Print(_ glog.Level, _ string) {
 	panic("cannot invoke this method")
 }
 
-// PrintMessage 打印消息
-func (appender Appender) PrintMessage(format glog.Format) {
-	http := Http{
-		Level:  format.Level,
-		Ip:     format.Request.Ip,
-		Method: format.Request.Method,
-		Uri:    format.Request.Uri,
+// PrintHttp 打印消息
+func (appender Appender) PrintHttp(level glog.Level, http glog.Http) {
+	appender.Mysql.Save(&Http{
+		Level:  level,
+		Ip:     http.Result.Request.Ip,
+		Method: http.Result.Request.Method,
+		Uri:    http.Result.Request.Uri,
 		Body: func() *string {
-			if format.Request.Body == nil {
-				return nil
-			} else {
-				body := util.TirmString(*format.Request.Body)
+			if http.Result.Request.Body != nil {
+				body := util.TirmString(*http.Result.Request.Body)
 				return &body
 			}
+			return nil
 		}(),
 		Response: func() *string {
-			if format.Result == nil {
-				return nil
-			} else {
-				result := util.TirmString(format.Result.String())
-				return &result
-			}
+			response := util.TirmString(http.Result.String())
+			return &response
 		}(),
-		UserId:  format.UserId,
-		Elapsed: format.Elapsed,
-	}
-
-	appender.Mysql.Save(&http)
+		UserId:  http.UserId,
+		Elapsed: http.Elapsed,
+	})
 }

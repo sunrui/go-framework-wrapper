@@ -16,7 +16,7 @@ type Layout interface {
 	// 获取布局
 	getLayout(level Level, message string) string
 	// 获取消息布局
-	getMessageLayout(message Format) string
+	getHttpLayout(level Level, http Http) string
 }
 
 // DefaultLayout 默认布局
@@ -30,16 +30,16 @@ func (defaultLayout DefaultLayout) getLayout(level Level, message string) string
 }
 
 // 获取消息布局
-func (defaultLayout DefaultLayout) getMessageLayout(format Format) string {
+func (defaultLayout DefaultLayout) getHttpLayout(level Level, http Http) string {
 	timeNow := time.Now().Format("2006-01-02 15:04:05")
 
 	var UserId string
-	if format.UserId != nil {
-		UserId = fmt.Sprintf(" - userId(%s)", *format.UserId)
+	if http.UserId != nil {
+		UserId = fmt.Sprintf(" - userId(%s)", *http.UserId)
 	} else {
 		UserId = ""
 	}
 
 	return fmt.Sprintf("%s - %-5s - %dms - %s%s\n%s",
-		timeNow, format.Level.String(), format.Elapsed, format.Request.Ip, UserId, format.Message)
+		timeNow, level.String(), http.Elapsed, http.Result.Request.Ip, UserId, http.LineString())
 }

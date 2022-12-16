@@ -7,13 +7,13 @@
 package middleware
 
 import (
-	"framework/app/server/request"
+	"framework/app/server/body"
 	"github.com/gin-gonic/gin"
 )
 
 // Body 中间件
 func Body(ctx *gin.Context) {
-	request.CopyBody(ctx)
+	body.CopyBody(ctx)
 
 	ctx.Writer.Header().Set("Content-Type", "application/json; charset=utf-8")
 	ctx.Next()
