@@ -15,12 +15,6 @@ import (
 // 上下文 body 标记
 const bodyTag = "bodyTag"
 
-// IsCopyBody 是否导出对象
-func IsCopyBody(ctx *gin.Context) bool {
-	dump := ctx.DefaultQuery("dump", "")
-	return dump != "false" && dump != "0"
-}
-
 // CopyBody 复制 body
 func CopyBody(ctx *gin.Context) {
 	if data, err := ctx.GetRawData(); err != nil {

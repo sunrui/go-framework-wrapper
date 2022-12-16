@@ -70,6 +70,7 @@ func (repository Repository[T]) FindOne(query interface{}, args ...interface{}) 
 type Page struct {
 	Page     int `json:"page" form:"page" validate:"required,gte=1,lte=9999"`        // 分页，从 1 开始
 	PageSize int `json:"pageSize" form:"pageSize" validate:"required,gte=1,lte=100"` // 分页大小，最大 100
+	//Level      *glog.Level `json:"level" form:"level" validate:"omitempty,oneof=Debug Info Warn Error"` // 日志级别
 }
 
 // FindPage 根据条件查找分页一个或多个

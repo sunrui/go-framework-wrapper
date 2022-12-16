@@ -7,10 +7,11 @@
 package server
 
 import (
+	"framework/app/build"
 	"framework/app/glog"
 	"framework/app/result"
 	"framework/app/server/middleware"
-	request2 "framework/app/server/request"
+	"framework/app/server/request"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -18,7 +19,7 @@ import (
 // 获取结果数据
 func (server Server) getResultBuffer(ctx *gin.Context, r *result.Result) string {
 	// 获取 request
-	req := request2.Get(ctx)
+	req := request.Get(ctx)
 
 	// method http://host:port?query protocol
 	buffer := req.Method + " " + req.Uri + " " + req.Proto
@@ -82,21 +83,22 @@ func (server Server) getFormat(ctx *gin.Context, r *result.Result) glog.Format {
 // response 返回
 func (server Server) response(ctx *gin.Context, r *result.Result) {
 	// 结果导出请求
-	if request2.IsCopyBody(ctx) {
-		req := request2.Get(ctx)
-		r.Request = &req
-	}
+	req := request.Get(ctx)
+	r.Request = &req
 
 	// 记录日志
-	go func() {
-		r.Elapsed = middleware.GetElapsed(ctx)
+	r.Elapsed = middleware.GetElapsed(ctx)
+	if r.Code == result.Ok.Code && server.httpAccessLog != nil {
+		server.httpAccessLog.PrintMessage(server.getFormat(ctx, r))
+	} else if server.httpErrorLog != nil {
+		server.httpErrorLog.PrintMessage(server.getFormat(ctx, r))
+	}
 
-		if r.Code == result.Ok.Code && server.httpAccessLog != nil {
-			server.httpAccessLog.PrintMessage(server.getFormat(ctx, r))
-		} else if server.httpErrorLog != nil {
-			server.httpErrorLog.PrintMessage(server.getFormat(ctx, r))
-		}
-	}()
+	// 返回客户端的时候不返回  request
+	dump := ctx.DefaultQuery("request", "")
+	if !build.IsDev() || dump == "false" || dump == "0" {
+		r.Request = nil
+	}
 
 	// 返回客户端
 	ctx.AbortWithStatusJSON(http.StatusOK, r)

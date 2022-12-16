@@ -13,7 +13,6 @@ import (
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/validator/v10"
 	"net/http"
-	"strings"
 )
 
 // ValidateParameter 请求参数过滤
@@ -38,8 +37,8 @@ func ValidateParameter(ctx *gin.Context, req any) {
 	if err = validator.New().Struct(req); err != nil {
 		// 参数错误
 		type ParamError struct {
-			Field    string `json:"field"`    // 变量名
-			Validate string `json:"validate"` // 较验值
+			Field string `json:"field"` // 变量名
+			Error string `json:"error"` // 较验值
 		}
 
 		// 解析内容出错
@@ -48,14 +47,9 @@ func ValidateParameter(ctx *gin.Context, req any) {
 
 			// 遍历解析参数
 			for _, e := range validationErrors {
-				validate := e.Tag()
-				if len(e.Param()) != 0 {
-					validate += "=" + e.Param()
-				}
-
 				parameter = append(parameter, ParamError{
-					Field:    strings.ToLower(e.Field()),
-					Validate: validate,
+					Field: e.Field(),
+					Error: e.Error(),
 				})
 			}
 

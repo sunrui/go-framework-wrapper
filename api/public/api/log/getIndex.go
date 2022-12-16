@@ -8,16 +8,16 @@ package log
 
 import (
 	"framework/app/glog"
+	"framework/app/mysql"
 	"framework/app/result"
 	"framework/app/server"
-	"framework/app/server/request"
 	"github.com/gin-gonic/gin"
 	"medium/service/log"
 )
 
 type getIndexReq struct {
-	request.Page
-	Level *glog.Level
+	mysql.Page             // 分页
+	Level      *glog.Level `json:"level" form:"level" validate:"omitempty,oneof=Debug Info Warn Error"` // 日志级别
 }
 
 type getIndexRes struct {
@@ -34,16 +34,19 @@ func (controller Controller) getIndex(ctx *gin.Context) *result.Result {
 
 	server.ValidateParameter(ctx, &req)
 
-	var query log.Http
-	if req.Level != nil {
-		query = log.Http{
-			Level: *req.Level,
-		}
-	} else {
-		query = log.Http{}
-	}
+	return result.Ok.WithData(req)
 
-	var res []log.Http
-	res = controller.HttpRepository.FindPage(req.Page.Page, req.PageSize, "ASC", query)
-	return result.Ok.WithData(res)
+	//var query log.Http
+	//if req.Level != nil {
+	//	query = log.Http{
+	//		Level: *req.Level,
+	//	}
+	//} else {
+	//	query = log.Http{}
+	//}
+
+	//var res []log.Http
+	//res = controller.HttpRepository.FindPage(req.Page, req.Page.PageSize, "ASC", query)
+	//return result.Ok.WithData(res)
+	return nil
 }

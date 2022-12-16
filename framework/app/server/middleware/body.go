@@ -13,10 +13,7 @@ import (
 
 // Body 中间件
 func Body(ctx *gin.Context) {
-	// 保存 body 的复本
-	if request.IsCopyBody(ctx) {
-		request.CopyBody(ctx)
-	}
+	request.CopyBody(ctx)
 
 	ctx.Writer.Header().Set("Content-Type", "application/json; charset=utf-8")
 	ctx.Next()
