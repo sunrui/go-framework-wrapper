@@ -12,10 +12,11 @@ import (
 	"framework/app/util"
 )
 
+// Http
 type Http struct {
-	Result  *result.Result `gorm:"embedded"`
-	UserId  *string        `json:"userId" gorm:"type:char(16); not null;comment:用户 id"` // 用户 id
-	Elapsed int64          `json:"elapsed" gorm:"type:int64; not null;comment:耗时"`      // 耗时
+	Result  *result.Result `json:"result"`  // 结果
+	UserId  *string        `json:"userId"`  // 用户 id
+	Elapsed int64          `json:"elapsed"` // 耗时
 }
 
 // String 数据

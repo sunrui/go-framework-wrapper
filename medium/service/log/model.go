@@ -21,8 +21,7 @@ type Http struct {
 	Body        *string    `json:"body"  gorm:"type:text; comment:请求体"`          // 请求体
 	Response    *string    `json:"response"  gorm:"type:text; comment:返回结果"`     // 返回结果
 	UserId      *string    `json:"userId"  gorm:"type:char(12); comment:用户 id"`  // 用户 id
-	Elapsed     int64      `json:"elapsed"  gorm:"comment:耗时"`                   // 耗时
-
+	Elapsed     int64      `json:"elapsed"  gorm:"type:bigint; comment:耗时"`      // 耗时
 }
 
 func (Http) TableName() string {

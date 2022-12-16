@@ -8,7 +8,6 @@ package log
 
 import (
 	"framework/app/glog"
-	"framework/app/mysql"
 	"framework/app/result"
 	"framework/app/server"
 	"github.com/gin-gonic/gin"
@@ -16,8 +15,8 @@ import (
 )
 
 type getIndexReq struct {
-	mysql.Page             // 分页
-	Level      *glog.Level `json:"level" form:"level" validate:"omitempty,oneof=Debug Info Warn Error"` // 日志级别
+	result.Page             // 分页
+	Level       *glog.Level `json:"level" form:"level" validate:"omitempty,oneof=Debug Info Warn Error"` // 日志级别
 }
 
 type getIndexRes struct {

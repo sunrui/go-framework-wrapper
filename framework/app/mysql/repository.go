@@ -9,6 +9,7 @@ package mysql
 import (
 	"errors"
 	"fmt"
+	"framework/app/result"
 	"gorm.io/gorm"
 )
 
@@ -66,15 +67,29 @@ func (repository Repository[T]) FindOne(query interface{}, args ...interface{}) 
 	}
 }
 
-// Page 分页
-type Page struct {
-	Page     int `json:"page" form:"page" validate:"required,gte=1,lte=9999"`        // 分页，从 1 开始
-	PageSize int `json:"pageSize" form:"pageSize" validate:"required,gte=1,lte=100"` // 分页大小，最大 100
-	//Level      *glog.Level `json:"level" form:"level" validate:"omitempty,oneof=Debug Info Warn Error"` // 日志级别
+// FindAll 根据条件查找一个或多个
+func (repository Repository[T]) FindAll(order string, query interface{}, args ...interface{}) []T {
+	var dst []T
+
+	var db *gorm.DB
+
+	db = repository.Mysql.DB.Order(order)
+
+	if query != nil {
+		db = db.Where(query, args...)
+	}
+
+	db = db.Find(&dst)
+
+	if db.Error != nil {
+		panic(db.Error.Error())
+	} else {
+		return dst
+	}
 }
 
-// FindPage 根据条件查找分页一个或多个
-func (repository Repository[T]) FindPage(page Page, order string, query interface{}, args ...interface{}) []T {
+// FindPage 根据条件分页查找一个或多个
+func (repository Repository[T]) FindPage(page result.Page, order string, query interface{}, args ...interface{}) (t []T, pagination result.Pagination) {
 	var dst []T
 
 	var db *gorm.DB
@@ -90,7 +105,19 @@ func (repository Repository[T]) FindPage(page Page, order string, query interfac
 	if db.Error != nil {
 		panic(db.Error.Error())
 	} else {
-		return dst
+		t = dst
+
+		count := repository.Count()
+		pagination = result.Pagination{
+			Page: result.Page{
+				Page:     page.Page,
+				PageSize: len(t),
+			},
+			TotalPage: count / int64(page.PageSize),
+			TotalSize: count,
+		}
+
+		return
 	}
 }
 

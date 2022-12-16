@@ -10,6 +10,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"framework/app/glog"
+	"framework/app/result"
 	"testing"
 )
 
@@ -108,7 +109,7 @@ func TestMysql_Insert(t *testing.T) {
 	t.Log("ok")
 }
 
-func TestMysql_Find(t *testing.T) {
+func TestRepository_FindOne(t *testing.T) {
 	userRepository := NewRepository[User](db)
 	if user := userRepository.FindOne(&User{
 		Basic: Basic{
@@ -122,7 +123,31 @@ func TestMysql_Find(t *testing.T) {
 	}
 }
 
-func TestMysql_Page(t *testing.T) {
+func TestRepository_FindAll(t *testing.T) {
+	var userId string
+
+	userRepository := NewRepository[User](db)
+	if user := userRepository.FindOne(&User{
+		Basic: Basic{
+			Name: "张三",
+		},
+	}); user == nil {
+		t.Error("not have this id")
+		return
+	} else {
+		userId = user.Id
+	}
+
+	userScoreRepository := NewRepository[UserScore](db)
+	userScoreList := userScoreRepository.FindAll("name ASC", &UserScore{
+		UserId: userId,
+	})
+
+	userScoreJson, _ := json.Marshal(userScoreList)
+	t.Log("\n" + string(userScoreJson) + "\n")
+}
+
+func TestRepository_FindPage(t *testing.T) {
 	var userId string
 
 	userRepository := NewRepository[User](db)
@@ -139,7 +164,45 @@ func TestMysql_Page(t *testing.T) {
 
 	userScoreRepository := NewRepository[UserScore](db)
 
-	userScorePage := userScoreRepository.FindPage(Page{
+	for i := 0; ; i++ {
+		userScorePage, pagination := userScoreRepository.FindPage(result.Page{
+			Page:     i,
+			PageSize: 4,
+		}, "name ASC", &UserScore{
+			UserId: userId,
+		})
+
+		userScoreJson, _ := json.Marshal(userScorePage)
+		t.Log("\n" + string(userScoreJson) + "\n")
+
+		paginationJson, _ := json.Marshal(pagination)
+		t.Log("\n" + string(paginationJson) + "\n")
+
+		if int64(pagination.Page.Page) == pagination.TotalPage {
+			break
+		}
+
+	}
+}
+
+func TestRepository_DeleteById(t *testing.T) {
+	var userId string
+
+	userRepository := NewRepository[User](db)
+	if user := userRepository.FindOne(&User{
+		Basic: Basic{
+			Name: "张三",
+		},
+	}); user == nil {
+		t.Error("not have this id")
+		return
+	} else {
+		userId = user.Id
+	}
+
+	userScoreRepository := NewRepository[UserScore](db)
+
+	userScorePage, pagination := userScoreRepository.FindPage(result.Page{
 		Page:     1,
 		PageSize: 10,
 	}, "name ASC", &UserScore{
@@ -149,10 +212,13 @@ func TestMysql_Page(t *testing.T) {
 	userScoreJson, _ := json.Marshal(userScorePage)
 	t.Log("\n" + string(userScoreJson) + "\n")
 
+	paginationJson, _ := json.Marshal(pagination)
+	t.Log("\n" + string(paginationJson) + "\n")
+
 	for _, userScore := range userScorePage {
 		var r bool
-		//r = userScoreRepository.SoftDeleteById(userScore.Id)
-		//t.Log("\n"+"SoftDeleteById userScore by id "+userScore.Id+", result =", r)
+		r = userScoreRepository.SoftDeleteById(userScore.Id)
+		t.Log("\n"+"SoftDeleteById userScore by id "+userScore.Id+", result =", r)
 		r = userScoreRepository.DeleteById(userScore.Id)
 		t.Log("\n"+"DeleteById userScore by id "+userScore.Id+", result =", r)
 	}
