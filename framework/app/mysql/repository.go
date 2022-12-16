@@ -113,7 +113,7 @@ func (repository Repository[T]) FindPage(page result.Page, order string, query i
 				Page:     page.Page,
 				PageSize: len(t),
 			},
-			TotalPage: count / int64(page.PageSize),
+			TotalPage: (count + (int64(page.PageSize) - 1)) / int64(page.PageSize),
 			TotalSize: count,
 		}
 
