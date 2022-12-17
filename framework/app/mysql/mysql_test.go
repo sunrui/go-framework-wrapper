@@ -181,7 +181,6 @@ func TestRepository_FindPage(t *testing.T) {
 		if int64(pagination.Page.Page) == pagination.TotalPage {
 			break
 		}
-
 	}
 }
 

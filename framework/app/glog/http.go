@@ -12,7 +12,7 @@ import (
 	"framework/app/util"
 )
 
-// Http
+// Http 协议
 type Http struct {
 	Result  *result.Result `json:"result"`  // 结果
 	UserId  *string        `json:"userId"`  // 用户 id

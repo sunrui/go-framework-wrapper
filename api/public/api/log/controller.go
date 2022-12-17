@@ -13,11 +13,13 @@ import (
 	"net/http"
 )
 
+// Controller 控制器
 type Controller struct {
-	Ctx            *service.Context
-	HttpRepository log.HttpRepository
+	Ctx            *service.Context   // 上下文
+	HttpRepository log.HttpRepository // Http 日志访问
 }
 
+// NewController 创建控制器
 func NewController(ctx *service.Context) Controller {
 	return Controller{
 		Ctx:            ctx,

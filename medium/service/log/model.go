@@ -11,7 +11,7 @@ import (
 	"framework/app/mysql"
 )
 
-// Http
+// Http 日志
 type Http struct {
 	mysql.Model            // 通用参数
 	Level       glog.Level `json:"level"  gorm:"type:char(5); comment:日志级别"`     // 日志级别

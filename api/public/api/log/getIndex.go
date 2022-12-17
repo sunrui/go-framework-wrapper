@@ -47,5 +47,4 @@ func (controller Controller) getIndex(ctx *gin.Context) *result.Result {
 	//var res []log.Http
 	//res = controller.HttpRepository.FindPage(req.Page, req.Page.PageSize, "ASC", query)
 	//return result.Ok.WithData(res)
-	return nil
 }
