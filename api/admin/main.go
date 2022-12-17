@@ -6,6 +6,7 @@
 package main
 
 import (
+	"admin/api/channel"
 	"framework/app/server"
 	"medium/service"
 )
@@ -30,13 +31,12 @@ func main() {
 		ctx.Token.Jwt)
 
 	// 注册路由
-	svr.RouterGroup("/public", []server.RouterGroup{
-		//common.GetRouter(),
-		//log.NewController(ctx).GetRouter(),
+	svr.RouterGroup("/admin", []server.RouterGroup{
+		channel.NewController(ctx).GetRouter(),
 	})
 
 	// 端口
-	const port = 8080
+	const port = 8082
 	ctx.Log.Service.Info("service start: http://127.0.0.1:%d", port)
 
 	// 启动服务

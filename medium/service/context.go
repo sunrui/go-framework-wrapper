@@ -8,6 +8,7 @@ package service
 
 import (
 	"framework/context"
+	"medium/service/channel"
 	"medium/service/log"
 	"medium/service/user"
 	"path/filepath"
@@ -39,7 +40,8 @@ func (ctx *Context) initLogAppender() {
 // 初始化数据库
 func (ctx *Context) initMirage() {
 	ctx.Mysql.AutoMigrate(
-		&log.Http{},
+		&channel.Channel{},
+		&log.LogHttp{},
 		&user.User{},
 		&user.Info{},
 		&user.Device{},

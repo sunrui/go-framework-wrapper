@@ -33,7 +33,7 @@ func (appender Appender) Print(_ glog.Level, _ string) {
 
 // PrintHttp 打印消息
 func (appender Appender) PrintHttp(level glog.Level, http glog.Http) {
-	appender.Mysql.Save(&Http{
+	appender.Mysql.Save(&LogHttp{
 		Level:  level,
 		Ip:     http.Result.Request.Ip,
 		Method: http.Result.Request.Method,

@@ -16,7 +16,7 @@ import (
 // Controller 控制器
 type Controller struct {
 	Ctx            *service.Context   // 上下文
-	HttpRepository log.HttpRepository // Http 日志访问
+	HttpRepository log.HttpRepository // LogHttp 日志访问
 }
 
 // NewController 创建控制器

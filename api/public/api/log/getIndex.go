@@ -20,13 +20,13 @@ type getIndexReq struct {
 }
 
 type getIndexRes struct {
-	Http []log.Http
+	Http []log.LogHttp
 }
 
 // @Summary 列表
 // @Tags    日志
 // @Produce json
-// @Success 200 {object} result.Result{data=log.Http}
+// @Success 200 {object} result.Result{data=log.LogHttp}
 // @Router  /public/log [get]
 func (controller Controller) getIndex(ctx *gin.Context) *result.Result {
 	var req getIndexReq
@@ -35,16 +35,16 @@ func (controller Controller) getIndex(ctx *gin.Context) *result.Result {
 
 	return result.Ok.WithData(req)
 
-	//var query log.Http
+	//var query log.LogHttp
 	//if req.Level != nil {
-	//	query = log.Http{
+	//	query = log.LogHttp{
 	//		Level: *req.Level,
 	//	}
 	//} else {
-	//	query = log.Http{}
+	//	query = log.LogHttp{}
 	//}
 
-	//var res []log.Http
+	//var res []log.LogHttp
 	//res = controller.HttpRepository.FindPage(req.Page, req.Page.PageSize, "ASC", query)
 	//return result.Ok.WithData(res)
 }
