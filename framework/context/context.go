@@ -250,7 +250,7 @@ func New(jsonFile string) (ctx *Context, err error) {
 		return nil, err
 	}
 
-	// 初始化其它
+	// 初始化聚合
 	type initFunc func() error
 	for _, init := range []initFunc{
 		ctx.initLogHttpAccess,

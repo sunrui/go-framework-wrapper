@@ -25,7 +25,7 @@ func (ctx *Context) initConfig() (err error) {
 	_, file, _, _ := runtime.Caller(0)
 	path := filepath.Dir(file)
 
-	ctx.Context, err = context.New(path + "/config.json")
+	ctx.Context, err = context.New(path + "/context.json")
 
 	return
 }

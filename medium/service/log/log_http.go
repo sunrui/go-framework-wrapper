@@ -24,15 +24,15 @@ type LogHttp struct {
 	Elapsed     int64      `json:"elapsed"  gorm:"type:bigint; comment:耗时"`      // 耗时
 }
 
-// HttpRepository http 仓库
-type HttpRepository struct {
+// LogHttpRepository http 仓库
+type LogHttpRepository struct {
 	Mysql                     *mysql.Mysql // 数据库
 	mysql.Repository[LogHttp]              // 通用仓库
 }
 
-// NewHttpRepository 创建 http 仓库
-func NewHttpRepository(mysql *mysql.Mysql) HttpRepository {
-	return HttpRepository{
+// NewLogHttpRepository 创建 http 仓库
+func NewLogHttpRepository(mysql *mysql.Mysql) LogHttpRepository {
+	return LogHttpRepository{
 		Mysql: mysql,
 	}
 }

@@ -31,3 +31,32 @@ func (user *User) BeforeSave(tx *gorm.DB) error {
 
 	return nil
 }
+
+//
+// func IsValidateNameAndPassword(name string, password string) bool {
+//	if user := mysql.FindOne[User](context.Mysql, User{
+//		Name: name,
+//	}); user == nil {
+//		return false
+//	} else {
+//		if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password)); err == nil {
+//			return true
+//		}
+//	}
+//
+//	return false
+// }
+//
+// func IsValidatePhoneAndPassword(phone string, password string) bool {
+//	if user := mysql.FindOne[User](context.Mysql, User{
+//		Phone: phone,
+//	}); user == nil {
+//		return false
+//	} else {
+//		if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password)); err == nil {
+//			return true
+//		}
+//	}
+//
+//	return false
+// }

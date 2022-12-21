@@ -14,15 +14,15 @@ import (
 
 // Appender 附加者
 type Appender struct {
-	HttpRepository HttpRepository
-	Mysql          *mysql.Mysql
+	LogHttpRepository LogHttpRepository
+	Mysql             *mysql.Mysql
 }
 
 // NewAppender 创建附加者
 func NewAppender(mysql *mysql.Mysql) Appender {
 	return Appender{
-		Mysql:          mysql,
-		HttpRepository: NewHttpRepository(mysql),
+		Mysql:             mysql,
+		LogHttpRepository: NewLogHttpRepository(mysql),
 	}
 }
 

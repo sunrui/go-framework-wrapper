@@ -35,16 +35,16 @@ func (controller Controller) getIndex(ctx *gin.Context) *result.Result {
 
 	return result.Ok.WithData(req)
 
-	//var query log.LogHttp
-	//if req.Level != nil {
+	// var query log.LogHttp
+	// if req.Level != nil {
 	//	query = log.LogHttp{
 	//		Level: *req.Level,
 	//	}
-	//} else {
+	// } else {
 	//	query = log.LogHttp{}
-	//}
+	// }
 
-	//var res []log.LogHttp
-	//res = controller.HttpRepository.FindPage(req.Page, req.Page.PageSize, "ASC", query)
-	//return result.Ok.WithData(res)
+	// var res []log.LogHttp
+	// res = controller.LogHttpRepository.FindPage(req.Page, req.Page.PageSize, "ASC", query)
+	// return result.Ok.WithData(res)
 }
