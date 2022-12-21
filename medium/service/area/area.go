@@ -13,16 +13,46 @@ import (
 	"runtime"
 )
 
-// 国家对象
-var country Country
+// Area 地区
+type Area struct {
+	Id   int    `json:"id"`   // 编码
+	Name string `json:"name"` // 名称
+}
 
-// GetCountry 获取国家
-func GetCountry() Country {
-	return country
+// Province 省
+type Province struct {
+	Area          // 地区
+	Cities []City `json:"cities"` // 市
+}
+
+// City 市
+type City struct {
+	Area         // 地区
+	Areas []Area `json:"areas"` // 地区
+}
+
+// Country 国家
+type Country struct {
+	Area                 // 地区
+	Provinces []Province `json:"provinces"` // 省
+}
+
+// NewCountry 创建国家
+func NewCountry() (country Country) {
+	_, file, _, _ := runtime.Caller(0)
+	path := filepath.Dir(file)
+
+	if stream, err := os.ReadFile(path + "/area.json"); err != nil {
+		panic(err.Error())
+	} else if err = json.Unmarshal(stream, &country); err != nil {
+		panic(err.Error())
+	}
+
+	return
 }
 
 // GetProvinces 获取省
-func GetProvinces() []Province {
+func (country Country) GetProvinces() []Province {
 	var provinces []Province
 
 	for _, province := range country.Provinces {
@@ -34,7 +64,7 @@ func GetProvinces() []Province {
 }
 
 // GetCity 获取市
-func GetCity(provinceId int) []City {
+func (country Country) GetCity(provinceId int) []City {
 	// 根据省 id 获取省节点
 	var province *Province
 	for _, one := range country.Provinces {
@@ -59,7 +89,7 @@ func GetCity(provinceId int) []City {
 }
 
 // GetArea 获取地区
-func GetArea(cityId int) []Area {
+func (country Country) GetArea(cityId int) []Area {
 	// 根据市 id 获取市节点
 	var city *City
 	for _, province := range country.Provinces {
@@ -76,17 +106,5 @@ func GetArea(cityId int) []Area {
 		return nil
 	} else {
 		return city.Areas
-	}
-}
-
-// 加载当前配置
-func init() {
-	_, file, _, _ := runtime.Caller(0)
-	path := filepath.Dir(file)
-
-	if stream, err := os.ReadFile(path + "/area.json"); err != nil {
-		panic(err.Error())
-	} else if err = json.Unmarshal(stream, &country); err != nil {
-		panic(err.Error())
 	}
 }

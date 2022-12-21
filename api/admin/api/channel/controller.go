@@ -37,32 +37,32 @@ func (controller Controller) GetRouter() server.RouterGroup {
 		Routers: []server.Router{
 			{
 				HttpMethod:   http.MethodPost,
-				RelativePath: "channel/group",
+				RelativePath: "group",
 				RouterFunc:   controller.postChannelGroup,
 			},
 			{
 				HttpMethod:   http.MethodDelete,
-				RelativePath: "channel/group/:channelGroupId",
+				RelativePath: "group/:channelGroupId",
 				RouterFunc:   controller.deleteChannelGroup,
 			},
 			{
 				HttpMethod:   http.MethodGet,
-				RelativePath: "channel/group",
+				RelativePath: "group",
 				RouterFunc:   controller.getChannelGroup,
 			},
 			{
 				HttpMethod:   http.MethodPost,
-				RelativePath: "channel/",
+				RelativePath: "/",
 				RouterFunc:   controller.postChannel,
 			},
 			{
 				HttpMethod:   http.MethodDelete,
-				RelativePath: "channel/:channelId",
+				RelativePath: "/:channelId",
 				RouterFunc:   controller.deleteChannel,
 			},
 			{
 				HttpMethod:   http.MethodGet,
-				RelativePath: "channel/",
+				RelativePath: "/",
 				RouterFunc:   controller.getChannel,
 			},
 		},

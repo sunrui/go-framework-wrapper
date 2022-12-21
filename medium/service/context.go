@@ -43,9 +43,9 @@ func (ctx *Context) initMirage() {
 		&channel.Channel{},
 		&log.LogHttp{},
 		&user.User{},
-		&user.Info{},
-		&user.Device{},
-		&user.Role{})
+		&user.UserInfo{},
+		&user.UserDevice{},
+		&user.UserRole{})
 }
 
 // NewContext 创建上下文
