@@ -10,9 +10,12 @@ import (
 	"fmt"
 	"framework/app/result"
 	"github.com/gin-gonic/gin"
+	"medium/service/channel"
 )
 
+// 请求
 type postChannelGroupReq struct {
+	channel.ChannelGroupModel
 }
 
 // 获取当前用户

@@ -7,7 +7,7 @@
 package result
 
 import (
-	"encoding/json"
+	"framework/app/util"
 	"net/http"
 )
 
@@ -27,7 +27,7 @@ type Request struct {
 type Page struct {
 	Page     int `json:"page" form:"page" validate:"required,gte=1,lte=9999"`        // 分页，从 1 开始
 	PageSize int `json:"pageSize" form:"pageSize" validate:"required,gte=1,lte=100"` // 分页大小，最大 100
-	//Level      *glog.Level `json:"level" form:"level" validate:"omitempty,oneof=Debug Info Warn Error"` // 日志级别
+	// Level      *glog.Level `json:"level" form:"level" validate:"omitempty,oneof=Debug Info Warn Error"` // 日志级别
 }
 
 // Pagination 分页
@@ -39,18 +39,17 @@ type Pagination struct {
 
 // Result 结果
 type Result struct {
-	Code       string      `json:"code" example:"Ok"`      // 代码
+	Code       string      `json:"code" example:"Ok"`    // 代码
 	Message    string      `json:"message" example:"成功"` // 消息
-	Data       any         `json:"data,omitempty"`         // 数据
-	Elapsed    int64       `json:"elapsed"`                // 耗时
-	Pagination *Pagination `json:"pagination,omitempty"`   // 分页
-	Request    *Request    `json:"request,omitempty"`      // 请求
+	Data       any         `json:"data,omitempty"`       // 数据
+	Elapsed    int64       `json:"elapsed"`              // 耗时
+	Pagination *Pagination `json:"pagination,omitempty"` // 分页
+	Request    *Request    `json:"request,omitempty"`    // 请求
 }
 
 // String 数据
 func (result *Result) String() string {
-	marshal, _ := json.MarshalIndent(result, "", "\t")
-	return string(marshal)
+	return util.ToJson(result, true)
 }
 
 // WithMessage 设置消息

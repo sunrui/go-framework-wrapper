@@ -7,27 +7,9 @@
 package token
 
 import (
-	"encoding/json"
 	"framework/app/redis"
 	"testing"
 )
-
-func TestJson(t *testing.T) {
-	if jsonString, err := json.MarshalIndent(Payload{
-		UserId: "userId",
-	}, "", "\t"); err != nil {
-		t.Fatalf(err.Error())
-	} else {
-		t.Log(string(jsonString))
-
-		var payload Payload
-		if err = json.Unmarshal(jsonString, &payload); err != nil {
-			t.Fatalf(err.Error())
-		} else {
-			t.Log(payload)
-		}
-	}
-}
 
 func TestJwtStorage(t *testing.T) {
 	tokenStorage := NewJwtStorage([]byte("123456"))

@@ -7,7 +7,6 @@
 package glog
 
 import (
-	"encoding/json"
 	"framework/app/result"
 	"framework/app/util"
 )
@@ -17,12 +16,6 @@ type Http struct {
 	Result  *result.Result // 结果
 	UserId  *string        // 用户 id
 	Elapsed int64          // 耗时
-}
-
-// String 数据
-func (http Http) String() string {
-	marshal, _ := json.MarshalIndent(http, "", "\t")
-	return string(marshal)
 }
 
 // LineString 行数据

@@ -12,7 +12,7 @@ import (
 	"time"
 )
 
-// Model 数据库
+// Model 模型
 type Model struct {
 	Id        string         `json:"id" gorm:"primaryKey;type:char(16);comment:主键 id"`    // 主键 id
 	CreatedAt time.Time      `json:"created_at" gorm:"autoCreateTime:milli;comment:创建时间"` // 创建时间

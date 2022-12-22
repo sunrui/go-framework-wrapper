@@ -13,28 +13,33 @@ import (
 	"runtime"
 )
 
-// Area 地区
-type Area struct {
-	Id   int    `json:"id"`   // 编码
-	Name string `json:"name"` // 名称
-}
-
-// Province 省
-type Province struct {
-	Area          // 地区
-	Cities []City `json:"cities"` // 市
-}
-
-// City 市
-type City struct {
-	Area         // 地区
-	Areas []Area `json:"areas"` // 地区
+// 地区
+type areaBase struct {
+	Id   int    `json:"id,omitempty"`   // 编码
+	Name string `json:"name,omitempty"` // 名称
 }
 
 // Country 国家
 type Country struct {
-	Area                 // 地区
-	Provinces []Province `json:"provinces"` // 省
+	areaBase             // 地区
+	Provinces []Province `json:"provinces,omitempty"` // 省
+}
+
+// Province 省
+type Province struct {
+	areaBase        // 地区
+	Cities   []City `json:"cities,omitempty"` // 市
+}
+
+// City 市
+type City struct {
+	areaBase          // 地区
+	Counties []County `json:"counties,omitempty"` // 区县
+}
+
+// County 区县
+type County struct {
+	areaBase // 地区
 }
 
 // NewCountry 创建国家
@@ -54,22 +59,20 @@ func NewCountry() (country Country) {
 // GetProvinces 获取省
 func (country Country) GetProvinces() []Province {
 	var provinces []Province
-
-	for _, province := range country.Provinces {
-		province.Cities = nil
-		provinces = append(provinces, province)
+	for _, provinceOne := range country.Provinces {
+		provinceOne.Cities = nil
+		provinces = append(provinces, provinceOne)
 	}
 
 	return provinces
 }
 
-// GetCity 获取市
-func (country Country) GetCity(provinceId int) []City {
-	// 根据省 id 获取省节点
+// GetCities 获取市
+func (country Country) GetCities(provinceId int) []City {
 	var province *Province
-	for _, one := range country.Provinces {
-		if one.Id == provinceId {
-			province = &one
+	for _, provinceOne := range country.Provinces {
+		if provinceOne.Id == provinceId {
+			province = &provinceOne
 			break
 		}
 	}
@@ -80,22 +83,26 @@ func (country Country) GetCity(provinceId int) []City {
 	}
 
 	var cities []City
-	for _, city := range province.Cities {
-		city.Areas = nil
-		cities = append(cities, city)
+	for _, cityOne := range province.Cities {
+		cityOne.Counties = nil
+		cities = append(cities, cityOne)
 	}
 
 	return cities
 }
 
-// GetArea 获取地区
-func (country Country) GetArea(cityId int) []Area {
-	// 根据市 id 获取市节点
+// GetCounties 获取地区
+func (country Country) GetCounties(cityId int) []County {
 	var city *City
-	for _, province := range country.Provinces {
-		for _, one := range province.Cities {
-			if one.Id == cityId {
-				city = &one
+	for _, provinceOne := range country.Provinces {
+		//  用前两位过滤掉省
+		if provinceOne.Id/10000 != cityId/10000 {
+			continue
+		}
+
+		for _, cityOne := range provinceOne.Cities {
+			if cityOne.Id == cityId {
+				city = &cityOne
 				break
 			}
 		}
@@ -105,6 +112,45 @@ func (country Country) GetArea(cityId int) []Area {
 	if city == nil {
 		return nil
 	} else {
-		return city.Areas
+		return city.Counties
 	}
+}
+
+// Get 获取省、市、区
+func (country Country) Get(areaId int) (province *Province, city *City, county *County) {
+	for _, provinceOne := range country.Provinces {
+		//  用前两位过滤掉省
+		if provinceOne.Id/10000 != areaId/10000 {
+			continue
+		}
+
+		if provinceOne.Id == areaId {
+			province = &provinceOne
+			return
+		}
+
+		for _, cityOne := range provinceOne.Cities {
+			//  用前四位过滤掉市
+			if cityOne.Id/100 != areaId/100 {
+				continue
+			}
+
+			if cityOne.Id == areaId {
+				province = &provinceOne
+				city = &cityOne
+				return
+			}
+
+			for _, countyOne := range cityOne.Counties {
+				if countyOne.Id == areaId {
+					province = &provinceOne
+					city = &cityOne
+					county = &countyOne
+					return
+				}
+			}
+		}
+	}
+
+	return
 }

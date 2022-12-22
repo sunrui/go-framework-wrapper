@@ -7,10 +7,10 @@
 package mysql
 
 import (
-	"encoding/json"
 	"fmt"
 	"framework/app/glog"
 	"framework/app/result"
+	"framework/app/util"
 	"testing"
 )
 
@@ -72,7 +72,7 @@ func TestMain(m *testing.M) {
 	db.AutoMigrate(User{}, UserScore{})
 
 	// 删除数据库
-	//db.Exec("DELETE FROM t_user")
+	// db.Exec("DELETE FROM t_user")
 
 	m.Run()
 }
@@ -118,8 +118,7 @@ func TestRepository_FindOne(t *testing.T) {
 	}); user == nil {
 		t.Error("not have this id")
 	} else {
-		userJson, _ := json.Marshal(user)
-		t.Log("\n" + string(userJson) + "\n")
+		t.Log("\n" + util.ToJson(user, true) + "\n")
 	}
 }
 
@@ -143,8 +142,7 @@ func TestRepository_FindAll(t *testing.T) {
 		UserId: userId,
 	})
 
-	userScoreJson, _ := json.Marshal(userScoreList)
-	t.Log("\n" + string(userScoreJson) + "\n")
+	t.Log("\n" + util.ToJson(userScoreList, true) + "\n")
 }
 
 func TestRepository_FindPage(t *testing.T) {
@@ -172,11 +170,8 @@ func TestRepository_FindPage(t *testing.T) {
 			UserId: userId,
 		})
 
-		userScoreJson, _ := json.Marshal(userScorePage)
-		t.Log("\n" + string(userScoreJson) + "\n")
-
-		paginationJson, _ := json.Marshal(pagination)
-		t.Log("\n" + string(paginationJson) + "\n")
+		t.Log("\n" + util.ToJson(userScorePage, true) + "\n")
+		t.Log("\n" + util.ToJson(pagination, true) + "\n")
 
 		if int64(pagination.Page.Page) == pagination.TotalPage {
 			break
@@ -208,11 +203,8 @@ func TestRepository_DeleteById(t *testing.T) {
 		UserId: userId,
 	})
 
-	userScoreJson, _ := json.Marshal(userScorePage)
-	t.Log("\n" + string(userScoreJson) + "\n")
-
-	paginationJson, _ := json.Marshal(pagination)
-	t.Log("\n" + string(paginationJson) + "\n")
+	t.Log("\n" + util.ToJson(userScorePage, true) + "\n")
+	t.Log("\n" + util.ToJson(pagination, true) + "\n")
 
 	for _, userScore := range userScorePage {
 		var r bool
