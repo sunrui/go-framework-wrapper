@@ -11,7 +11,7 @@ import "framework/app/mysql"
 // ChannelGroupModel 渠道组 - 模型
 type ChannelGroupModel struct {
 	Name   string `json:"name" gorm:"type:varchar(32); unique; comment:名称" validate:"required, max=32"` // 名称
-	AreaId int    `json:"areaId" gorm:"type:int; comment:区 id" validate:"required"`                     // 区 id
+	AreaId int    `json:"areaId" gorm:"type:int; comment:区域 id" validate:"required"`                     // 区 id
 }
 
 // ChannelGroup 渠道组

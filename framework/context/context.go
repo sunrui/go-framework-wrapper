@@ -41,6 +41,39 @@ type Context struct {
 	Token  Token          // 令牌
 }
 
+// New 创建
+func New(jsonFile string) (ctx *Context, err error) {
+	ctx = &Context{}
+
+	// 初始化配置文件
+	if err = ctx.initConfig(jsonFile); err != nil {
+		return nil, err
+	}
+
+	// 初始化聚合
+	type initFunc func() error
+	for _, init := range []initFunc{
+		ctx.initLogHttpAccess,
+		ctx.initLogHttpError,
+		ctx.initLogMysql,
+		ctx.initService,
+		ctx.initMysql,
+		ctx.initRedis,
+		ctx.initJwtToken,
+		ctx.initRedisToken,
+		ctx.initRedisStorage,
+		ctx.initGinMode,
+		ctx.initGinDefaultLog,
+		ctx.initGinErrorLog,
+	} {
+		if err = init(); err != nil {
+			return nil, err
+		}
+	}
+
+	return
+}
+
 // 初始化配置文件
 func (ctx *Context) initConfig(jsonFile string) (err error) {
 	if ctx.Config, err = config.New(jsonFile); err != nil {
@@ -231,6 +264,7 @@ func (ctx *Context) initGinErrorLog() (err error) {
 		if ginErrorFileLog, err = log.New(ctx.Config.Log, "gin", "error"); err != nil {
 			return err
 		}
+
 		ginDefaultErrorLog.Appenders = append(ginDefaultErrorLog.Appenders, &glog.FileAppender{
 			Debug: ginErrorFileLog,
 		})
@@ -239,37 +273,4 @@ func (ctx *Context) initGinErrorLog() (err error) {
 	gin.DefaultErrorWriter = io.MultiWriter(ginDefaultErrorLog)
 
 	return nil
-}
-
-// New 创建
-func New(jsonFile string) (ctx *Context, err error) {
-	ctx = &Context{}
-
-	// 初始化配置文件
-	if err = ctx.initConfig(jsonFile); err != nil {
-		return nil, err
-	}
-
-	// 初始化聚合
-	type initFunc func() error
-	for _, init := range []initFunc{
-		ctx.initLogHttpAccess,
-		ctx.initLogHttpError,
-		ctx.initLogMysql,
-		ctx.initService,
-		ctx.initMysql,
-		ctx.initRedis,
-		ctx.initJwtToken,
-		ctx.initRedisToken,
-		ctx.initRedisStorage,
-		ctx.initGinMode,
-		ctx.initGinDefaultLog,
-		ctx.initGinErrorLog,
-	} {
-		if err = init(); err != nil {
-			return nil, err
-		}
-	}
-
-	return
 }

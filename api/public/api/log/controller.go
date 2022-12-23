@@ -23,7 +23,7 @@ type Controller struct {
 func NewController(ctx *service.Context) Controller {
 	return Controller{
 		Ctx:            ctx,
-		HttpRepository: log.NewHttpRepository(ctx.Mysql),
+		HttpRepository: log.NewLogHttpRepository(ctx.Mysql),
 	}
 }
 
