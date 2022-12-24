@@ -15,15 +15,15 @@ import (
 
 // Controller 控制器
 type Controller struct {
-	Ctx            *service.Context      // 上下文
-	HttpRepository log.LogHttpRepository // LogHttp 日志访问
+	ctx               *service.Context      // 上下文
+	logHttpRepository log.LogHttpRepository // LogHttp 日志访问
 }
 
 // NewController 创建控制器
 func NewController(ctx *service.Context) Controller {
 	return Controller{
-		Ctx:            ctx,
-		HttpRepository: log.NewLogHttpRepository(ctx.Mysql),
+		ctx:               ctx,
+		logHttpRepository: log.NewLogHttpRepository(ctx.Mysql),
 	}
 }
 

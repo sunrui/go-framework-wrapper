@@ -33,16 +33,12 @@ func main() {
 
 	// 注册路由
 	svr.RouterGroup("/public", []server.RouterGroup{
-		common.GetRouter(),
+		common.NewController(ctx).GetRouter(),
 		log.NewController(ctx).GetRouter(),
 	})
 
-	// 端口
-	const port = 8080
-	ctx.Log.Service.Info("service start: http://127.0.0.1:%d", port)
-
 	// 启动服务
-	if err = svr.Run(port); err != nil {
+	if err = svr.Run(8080); err != nil {
 		panic(err.Error())
 	}
 }

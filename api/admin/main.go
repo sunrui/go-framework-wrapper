@@ -13,7 +13,7 @@ import (
 
 // @title   Medium 公用接口文档
 // @version 1.0
-// @host    127.0.0.1:8080
+// @host    127.0.0.1:8082
 // @BasePath
 func main() {
 	var ctx *service.Context
@@ -35,12 +35,8 @@ func main() {
 		channel.NewController(ctx).GetRouter(),
 	})
 
-	// 端口
-	const port = 8082
-	ctx.Log.Service.Info("service start: http://127.0.0.1:%d", port)
-
 	// 启动服务
-	if err = svr.Run(port); err != nil {
+	if err = svr.Run(8082); err != nil {
 		panic(err.Error())
 	}
 }

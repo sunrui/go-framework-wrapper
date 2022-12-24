@@ -15,17 +15,17 @@ import (
 
 // Controller 控制器
 type Controller struct {
-	Ctx                    *service.Context               // 上下文
-	ChannelRepository      channel.ChannelRepository      // 渠道仓库
-	ChannelGroupRepository channel.ChannelGroupRepository // 渠道组仓库
+	ctx                    *service.Context               // 上下文
+	channelRepository      channel.ChannelRepository      // 渠道仓库
+	channelGroupRepository channel.ChannelGroupRepository // 渠道组仓库
 }
 
 // NewController 创建控制器
 func NewController(ctx *service.Context) Controller {
 	return Controller{
-		Ctx:                    ctx,
-		ChannelRepository:      channel.NewChannelRepository(ctx.Mysql),
-		ChannelGroupRepository: channel.NewChannelGroupRepository(ctx.Mysql),
+		ctx:                    ctx,
+		channelRepository:      channel.NewChannelRepository(ctx.Mysql),
+		channelGroupRepository: channel.NewChannelGroupRepository(ctx.Mysql),
 	}
 }
 

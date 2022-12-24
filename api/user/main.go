@@ -8,11 +8,12 @@ package main
 import (
 	"framework/app/server"
 	"medium/service"
+	"user/api/user"
 )
 
 // @title   Medium 公用接口文档
 // @version 1.0
-// @host    127.0.0.1:8080
+// @host    127.0.0.1:8081
 // @BasePath
 func main() {
 	var ctx *service.Context
@@ -31,16 +32,11 @@ func main() {
 
 	// 注册路由
 	svr.RouterGroup("/public", []server.RouterGroup{
-		//common.GetRouter(),
-		//log.NewController(ctx).GetRouter(),
+		user.NewController(ctx).GetRouter(),
 	})
 
-	// 端口
-	const port = 8080
-	ctx.Log.Service.Info("service start: http://127.0.0.1:%d", port)
-
 	// 启动服务
-	if err = svr.Run(port); err != nil {
+	if err = svr.Run(8081); err != nil {
 		panic(err.Error())
 	}
 }

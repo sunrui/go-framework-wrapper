@@ -22,7 +22,7 @@
     },
     "log": {
       "enable": true,
-      "directory": "log",
+      "directory": "logs",
       "level": "debug"
     },
     "token": {
@@ -55,7 +55,7 @@
     },
     "log": {
       "enable": true,
-      "directory": "log",
+      "directory": "logs",
       "level": "debug"
     },
     "token": {

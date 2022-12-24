@@ -8,11 +8,24 @@ package sms
 
 import (
 	"framework/app/server"
+	"medium/service"
 	"net/http"
 )
 
+// Controller 控制器
+type Controller struct {
+	ctx *service.Context // 上下文
+}
+
+// NewController 创建控制器
+func NewController(ctx *service.Context) Controller {
+	return Controller{
+		ctx: ctx,
+	}
+}
+
 // GetRouter 获取路由
-func GetRouter() server.RouterGroup {
+func (controller Controller) GetRouter() server.RouterGroup {
 	return server.RouterGroup{
 		GroupName:  "/sms",
 		Middleware: nil,
