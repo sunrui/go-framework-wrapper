@@ -62,18 +62,13 @@ func New(config Config, httpAccessLog *glog.GLog, httpErrorLog *glog.GLog, token
 
 	// 注册文档中间件
 	if config.EnableDoc {
-		// 注册 body 中间件
-		engine.Use(middleware.Body)
-
 		engine.GET("/doc/*any", middleware.Swagger)
 	}
 
-	return &Server{
-		engine:        engine,
-		httpAccessLog: httpAccessLog,
-		httpErrorLog:  httpErrorLog,
-		token:         token,
-	}
+	// 注册 body 中间件
+	engine.Use(middleware.Body)
+
+	return server
 }
 
 // Middleware 中间件

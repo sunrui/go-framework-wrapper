@@ -7,7 +7,16 @@
 swag="$PWD/swag"
 
 # shellcheck disable=SC2164
-cd ../../medium/api/public
-
+cd ../../../api/admin
 $swag fmt
-$swag init --parseDependency
+$swag init --parseDependency --parseInternal
+
+# shellcheck disable=SC2164
+cd ../public
+$swag fmt
+$swag init --parseDependency --parseInternal
+
+# shellcheck disable=SC2164
+cd ../user
+$swag fmt
+$swag init --parseDependency --parseInternal

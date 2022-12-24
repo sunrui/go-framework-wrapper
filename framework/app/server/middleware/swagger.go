@@ -7,6 +7,7 @@
 package middleware
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"os"
@@ -49,7 +50,9 @@ func redoc(suffix string) []byte {
 		return data
 	}
 
-	return []byte(`
+	json := "swagger/doc.json" // "https://petstore.swagger.io/v2/swagger.json"
+
+	return []byte(fmt.Sprintf(`
 			<!DOCTYPE html>
 			<html>
 			  <head>
@@ -63,10 +66,9 @@ func redoc(suffix string) []byte {
 				</style>
 			  </head>
 			  <body>
-				<!--<redoc spec-url='https://petstore.swagger.io/v2/swagger.json'></redoc>-->
-				<redoc spec-url='swagger/doc.json'></redoc>
+				<redoc spec-url='%s'></redoc>
 				<script src="/doc/redoc.js"> </script>
 			  </body>
 			</html>
-		`)
+		`, json))
 }
