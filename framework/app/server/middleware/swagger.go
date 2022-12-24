@@ -52,23 +52,21 @@ func redoc(suffix string) []byte {
 
 	json := "swagger/doc.json" // "https://petstore.swagger.io/v2/swagger.json"
 
-	return []byte(fmt.Sprintf(`
-			<!DOCTYPE html>
-			<html>
-			  <head>
-				<meta charset="utf-8"/>
-				<meta name="viewport" content="width=device-width, initial-scale=1">
-				<style>
-				  body {
-					margin: 0;
-					padding: 0;
-				  }
-				</style>
-			  </head>
-			  <body>
-				<redoc spec-url='%s'></redoc>
-				<script src="/doc/redoc.js"> </script>
-			  </body>
-			</html>
-		`, json))
+	return []byte(fmt.Sprintf(`<!DOCTYPE html>
+<html>
+  <head>
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+	  body {
+		margin: 0;
+		padding: 0;
+	  }
+	</style>
+  </head>
+  <body>
+	<redoc spec-url='%s'></redoc>
+	<script src="/doc/redoc.js"> </script>
+  </body>
+</html>`, json))
 }
