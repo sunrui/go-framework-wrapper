@@ -39,10 +39,12 @@ func (server Server) response(ctx *gin.Context, r *result.Result) {
 		server.httpErrorLog.PrintHttp(glog.ErrorLevel, h)
 	}
 
-	// 返回客户端的时候不返回  request
-	dump := ctx.DefaultQuery("request", "")
-	if !build.IsDev() || dump == "false" || dump == "0" {
+	request := ctx.DefaultQuery("request", "0")
+	if !build.IsDev() || request == "false" || request == "0" {
 		r.Request = nil
+	}
+	if request == "true" || request == "1" {
+		r.Request = &req
 	}
 
 	// 返回客户端
