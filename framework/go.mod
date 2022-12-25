@@ -6,13 +6,13 @@ require (
 	github.com/gin-gonic/gin v1.8.1
 	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/google/uuid v1.3.0
-	github.com/juju/ratelimit v1.0.2
 	github.com/matoous/go-nanoid/v2 v2.0.0
 	gorm.io/driver/mysql v1.3.3
 	gorm.io/gorm v1.23.4
 )
 
 require (
+	github.com/didip/tollbooth/v7 v7.0.1
 	github.com/go-playground/validator/v10 v10.10.0
 	github.com/gomodule/redigo v1.8.9
 	github.com/lestrrat-go/file-rotatelogs v2.4.0+incompatible
@@ -22,6 +22,7 @@ require (
 
 require (
 	github.com/gin-contrib/sse v0.1.0 // indirect
+	github.com/go-pkgz/expirable-cache v0.1.0 // indirect
 	github.com/go-playground/locales v0.14.0 // indirect
 	github.com/go-playground/universal-translator v0.18.0 // indirect
 	github.com/go-sql-driver/mysql v1.6.0 // indirect

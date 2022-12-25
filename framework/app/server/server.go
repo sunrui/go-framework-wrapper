@@ -16,9 +16,8 @@ import (
 
 // Config 配置
 type Config struct {
-	RateLimitCapacity int64 `json:"rateLimitCapacity"` // 令牌桶容量
-	RateLimitQuantum  int64 `json:"rateLimitQuantum"`  // 每隔多少秒
-	EnableDoc         bool  `json:"enableDoc"`         // 启用文档
+	RateLimitCapacity float64 `json:"rateLimitCapacity"` // 令牌桶容量
+	EnableDoc         bool    `json:"enableDoc"`         // 启用文档
 }
 
 // Server 服务
@@ -58,7 +57,7 @@ func New(config Config, httpAccessLog *glog.GLog, httpErrorLog *glog.GLog, token
 	engine.NoMethod(middleware.MethodNotAllowed)
 
 	// // 注册限流中间件
-	rateLimit := middleware.NewRateLimit(config.RateLimitCapacity, config.RateLimitQuantum)
+	rateLimit := middleware.NewRateLimit(config.RateLimitCapacity)
 	engine.Use(rateLimit.Take)
 
 	// 注册令牌中间件
