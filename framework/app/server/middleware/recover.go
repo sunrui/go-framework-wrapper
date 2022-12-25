@@ -21,8 +21,8 @@ func Recover(ctx *gin.Context) (r *result.Result) {
 				r = &ret
 			} else {
 				ret = result.InternalError.WithData(result.M{
-					"stack": util.Stack(10),
 					"error": fmt.Sprintf("%s", err),
+					"file":  util.StackFile(0, 10),
 				})
 
 				r = &ret

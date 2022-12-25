@@ -13,13 +13,13 @@ import (
 	"strings"
 )
 
-// Stack 获取推栈层级
-func Stack(level int) []string {
+// StackFile 获取推栈层级
+func StackFile(skip int, level int) []string {
 	stacks := make([]string, 0)
 
 	// 最大函数层级
 	pc := make([]uintptr, level)
-	runtime.Callers(3, pc)
+	runtime.Callers(skip, pc)
 	frames := runtime.CallersFrames(pc)
 
 	// 当前项目目录
