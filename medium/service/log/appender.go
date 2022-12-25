@@ -46,7 +46,7 @@ func (appender Appender) PrintHttp(level glog.Level, http glog.Http) {
 			return nil
 		}(),
 		Response: func() *string {
-			response := util.TirmString(http.Result.String())
+			response := util.ToJson(http.Result, false)
 			return &response
 		}(),
 		UserId:  http.UserId,

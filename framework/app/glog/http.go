@@ -45,7 +45,7 @@ func (http Http) LineString() string {
 	buffer += "\n"
 
 	// 结果
-	buffer += util.TirmString(http.Result.String()) + "\n"
+	buffer += util.ToJson(http.Result, false) + "\n"
 
 	// 空一行
 	buffer += "\n"

@@ -7,7 +7,6 @@
 package result
 
 import (
-	"framework/app/util"
 	"net/http"
 )
 
@@ -39,17 +38,12 @@ type Pagination struct {
 
 // Result 结果
 type Result struct {
-	Code       string      `json:"code" example:"Ok"`    // 代码
+	Code       string      `json:"code" example:"Ok"`      // 代码
 	Message    string      `json:"message" example:"成功"` // 消息
-	Data       any         `json:"data,omitempty"`       // 数据
-	Elapsed    int64       `json:"elapsed"`              // 耗时
-	Pagination *Pagination `json:"pagination,omitempty"` // 分页
-	Request    *Request    `json:"request,omitempty"`    // 请求
-}
-
-// String 数据
-func (result Result) String() string {
-	return util.ToJson(result, true)
+	Data       any         `json:"data,omitempty"`         // 数据
+	Elapsed    int64       `json:"elapsed"`                // 耗时
+	Pagination *Pagination `json:"pagination,omitempty"`   // 分页
+	Request    *Request    `json:"request,omitempty"`      // 请求
 }
 
 // WithMessage 设置消息
