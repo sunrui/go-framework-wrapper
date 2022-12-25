@@ -31,7 +31,7 @@ type postSendRes struct {
 // @Tags            认证
 // @Accept          json
 // @Produce         json
-// @Param           "req"  body  postSendReq  true  "req"
+// @Param           "req"  body  postSendReq  true  " "
 // @ApprovalSuccess 200    {object}  postSendRes
 // @Failure         400 {object} result.Result
 // @Router          /auth/sms/send [post]

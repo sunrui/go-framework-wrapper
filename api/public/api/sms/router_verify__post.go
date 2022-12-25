@@ -31,7 +31,7 @@ type postVerifyRes struct {
 // @Tags            认证
 // @Accept          json
 // @Produce         json
-// @Param           "req"  body  postVerifyReq  true  "req"
+// @Param           "req"  body  postVerifyReq  true  " "
 // @ApprovalSuccess 200    {object}  postVerifyRes
 // @Failure         400 {object} result.Result
 // @Router          /auth/sms/verify [post]

@@ -16,7 +16,7 @@
       "database": 0
     },
     "server": {
-      "rateLimitCapacity": 2,
+      "rateLimitCapacity": 1,
       "enableDoc": true
     },
     "log": {
