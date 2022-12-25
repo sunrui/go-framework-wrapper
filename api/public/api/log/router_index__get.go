@@ -28,7 +28,7 @@ type getIndexRes struct {
 // @Produce json
 // @Success 200 {object} result.Result{data=log.LogHttp}
 // @Router  /public/log [get]
-func (controller Controller) getIndex(ctx *gin.Context) *result.Result {
+func (controller Controller) getIndex(ctx *gin.Context) result.Result {
 	var req getIndexReq
 
 	server.ValidateParameter(ctx, &req)

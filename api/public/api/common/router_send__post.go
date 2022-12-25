@@ -33,12 +33,12 @@ type postSendRes struct {
 // @Success 200   {object} result.Result
 // @Param   email body     string true "message/rfc822" SchemaExample(Subject: Testmail\r\n\r\nBody Message\r\n)
 // @Router  /public/common/send [get]
-func postSend(ctx *gin.Context) *result.Result {
+func postSend(ctx *gin.Context) result.Result {
 	var r postSendReq
 
 	// 较验参数
 	server.ValidateParameter(ctx, &r)
 
 	// 返回结果
-	return nil
+	return result.Ok
 }

@@ -35,12 +35,12 @@ type postSendRes struct {
 // @ApprovalSuccess 200    {object}  postSendRes
 // @Failure         400 {object} result.Result
 // @Router          /auth/sms/send [post]
-func postSend(ctx *gin.Context) *result.Result {
+func postSend(ctx *gin.Context) result.Result {
 	var r postSendReq
 
 	// 较验参数
 	server.ValidateParameter(ctx, &r)
 
 	// 返回结果
-	return nil
+	return result.Ok
 }

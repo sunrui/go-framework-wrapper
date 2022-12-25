@@ -16,7 +16,7 @@ import (
 )
 
 // response 返回
-func (server Server) response(ctx *gin.Context, r *result.Result) {
+func (server Server) response(ctx *gin.Context, r result.Result) {
 	// 结果导出请求
 	req := server.GetRequest(ctx)
 	r.Request = &req

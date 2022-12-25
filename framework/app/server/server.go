@@ -44,18 +44,22 @@ func New(config Config, httpAccessLog *glog.GLog, httpErrorLog *glog.GLog, token
 	engine.Use(middleware.Elapsed)
 
 	// 注册异常中间件
-	engine.Use(server.routerFunc(middleware.Recover))
+	engine.Use(func(ctx *gin.Context) {
+		if r := middleware.Recover(ctx); r != nil {
+			server.response(ctx, *r)
+		}
+	})
 
 	// 注册 404 回调
-	engine.NoRoute(server.routerFunc(middleware.NotFound))
+	engine.NoRoute(middleware.NotFound)
 
 	// 注册 405 回调
 	engine.HandleMethodNotAllowed = true
-	engine.NoMethod(server.routerFunc(middleware.MethodNotAllowed))
+	engine.NoMethod(middleware.MethodNotAllowed)
 
-	// 注册限流中间件
+	// // 注册限流中间件
 	rateLimit := middleware.NewRateLimit(config.RateLimitCapacity, config.RateLimitQuantum)
-	engine.Use(server.routerFunc(rateLimit.Take))
+	engine.Use(rateLimit.Take)
 
 	// 注册令牌中间件
 	engine.Use(middleware.Token)

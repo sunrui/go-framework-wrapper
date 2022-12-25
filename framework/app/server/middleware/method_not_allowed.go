@@ -12,11 +12,11 @@ import (
 )
 
 // MethodNotAllowed 异常 405 中间件
-func MethodNotAllowed(ctx *gin.Context) *result.Result {
+func MethodNotAllowed(ctx *gin.Context) {
 	ctx.Abort()
 
-	return result.MethodNotAllowed.WithData(result.M{
+	panic(result.MethodNotAllowed.WithData(result.M{
 		"uri":    ctx.Request.URL.RequestURI(),
 		"method": ctx.Request.Method,
-	})
+	}))
 }

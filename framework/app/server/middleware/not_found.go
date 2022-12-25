@@ -12,10 +12,10 @@ import (
 )
 
 // NotFound 异常 404 中间件
-func NotFound(ctx *gin.Context) *result.Result {
+func NotFound(ctx *gin.Context) {
 	ctx.Abort()
 
-	return result.NotFound.WithData(result.M{
+	panic(result.NotFound.WithData(result.M{
 		"uri": ctx.Request.URL.RequestURI(),
-	})
+	}))
 }

@@ -48,30 +48,30 @@ type Result struct {
 }
 
 // String 数据
-func (result *Result) String() string {
+func (result Result) String() string {
 	return util.ToJson(result, true)
 }
 
 // WithMessage 设置消息
-func (result *Result) WithMessage(message string) *Result {
+func (result Result) WithMessage(message string) Result {
 	result.Message = message
 	return result
 }
 
 // WithRequest 设置请求
-func (result *Result) WithRequest(request Request) *Result {
+func (result Result) WithRequest(request Request) Result {
 	result.Request = &request
 	return result
 }
 
 // WithData 设置 data
-func (result *Result) WithData(data any) *Result {
+func (result Result) WithData(data any) Result {
 	result.Data = data
 	return result
 }
 
 // WithDataAndPagination 设置 data 和 pagination
-func (result *Result) WithDataAndPagination(data any, pagination *Pagination) *Result {
+func (result Result) WithDataAndPagination(data any, pagination *Pagination) Result {
 	result.Data = data
 	result.Pagination = pagination
 	return result

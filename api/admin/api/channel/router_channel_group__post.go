@@ -19,9 +19,9 @@ type postChannelGroupReq struct {
 }
 
 // 获取当前用户
-func (controller Controller) postChannelGroup(ctx *gin.Context) *result.Result {
+func (controller Controller) postChannelGroup(ctx *gin.Context) result.Result {
 	id := ctx.Param("id")
 	fmt.Println(id)
 
-	return &result.Ok
+	return result.Ok
 }

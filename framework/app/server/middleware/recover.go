@@ -17,14 +17,15 @@ import (
 func Recover(ctx *gin.Context) (r *result.Result) {
 	defer func() {
 		if err := recover(); err != nil {
-			var ok bool
-
-			// 判断是否抛出了 Result
-			if r, ok = err.(*result.Result); !ok {
-				r = result.InternalError.WithData(result.M{
+			if ret, ok := err.(result.Result); ok {
+				r = &ret
+			} else {
+				ret = result.InternalError.WithData(result.M{
 					"stack": util.Stack(10),
 					"error": fmt.Sprintf("%s", err),
 				})
+
+				r = &ret
 			}
 		}
 	}()

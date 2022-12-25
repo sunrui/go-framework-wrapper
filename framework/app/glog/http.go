@@ -13,9 +13,9 @@ import (
 
 // Http 协议
 type Http struct {
-	Result  *result.Result // 结果
-	UserId  *string        // 用户 id
-	Elapsed int64          // 耗时
+	Result  result.Result // 结果
+	UserId  *string       // 用户 id
+	Elapsed int64         // 耗时
 }
 
 // LineString 行数据
@@ -45,11 +45,7 @@ func (http Http) LineString() string {
 	buffer += "\n"
 
 	// 结果
-	if http.Result != nil {
-		buffer += util.TirmString(http.Result.String()) + "\n"
-	} else {
-		buffer += "<null>\n"
-	}
+	buffer += util.TirmString(http.Result.String()) + "\n"
 
 	// 空一行
 	buffer += "\n"

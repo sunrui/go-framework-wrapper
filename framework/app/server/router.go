@@ -13,7 +13,7 @@ import (
 )
 
 // RouterFunc 路由回调
-type RouterFunc func(ctx *gin.Context) *result.Result
+type RouterFunc func(ctx *gin.Context) result.Result
 
 // Router 路由路径
 type Router struct {
@@ -32,9 +32,7 @@ type RouterGroup struct {
 // 路由回调
 func (server Server) routerFunc(routerFunc RouterFunc) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		if r := routerFunc(ctx); r != nil {
-			server.response(ctx, r)
-		}
+		server.response(ctx, routerFunc(ctx))
 	}
 }
 

@@ -35,12 +35,12 @@ type postVerifyRes struct {
 // @ApprovalSuccess 200    {object}  postVerifyRes
 // @Failure         400 {object} result.Result
 // @Router          /auth/sms/verify [post]
-func postVerify(ctx *gin.Context) *result.Result {
+func postVerify(ctx *gin.Context) result.Result {
 	var r postVerifyReq
 
 	// 较验参数
 	server.ValidateParameter(ctx, &r)
 
 	// 返回结果
-	return nil
+	return result.Ok
 }

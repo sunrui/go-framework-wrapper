@@ -25,6 +25,6 @@ import (
 // @Param   extensions query    []string false "string collection" extensions(x-example=test,x-nullable)
 // @Success 200        {object} result.Result{data=result.Result}
 // @Router  /public/common/ [get]
-func getError(_ *gin.Context) *result.Result {
+func getError(_ *gin.Context) result.Result {
 	panic("error - " + build.Format("2006-01-02 15:04:05"))
 }

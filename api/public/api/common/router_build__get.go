@@ -19,6 +19,6 @@ var build = time.Now()
 // @Produce json
 // @Success 200 {object} result.Result
 // @Router  /public/common/build [get]
-func getBuild(_ *gin.Context) *result.Result {
+func getBuild(_ *gin.Context) result.Result {
 	return result.Ok.WithData(build.Format("2006-01-02 15:04:05"))
 }

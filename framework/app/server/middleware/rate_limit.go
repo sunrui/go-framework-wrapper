@@ -29,15 +29,14 @@ func NewRateLimit(capacity int64, quantum int64) RateLimit {
 }
 
 // Take 监测限流
-func (bucket RateLimit) Take(ctx *gin.Context) *result.Result {
+func (bucket RateLimit) Take(ctx *gin.Context) {
 	if bucket.TakeAvailable(1) < 1 {
 		ctx.Abort()
 
-		return result.RateLimit.WithData(result.M{
+		panic(result.RateLimit.WithData(result.M{
 			"uri": ctx.Request.URL.RequestURI(),
-		})
+		}))
 	}
 
 	ctx.Next()
-	return nil
 }
