@@ -1,12 +1,13 @@
 /*
- * Copyright (c) 2022 honeysense.com All rights reserved.
+ * Copyright (c) 2023 honeysense.com All rights reserved.
  * Author: sunrui
- * Date: 2022-11-16 21:44:52
+ * Date: 2023-01-30 10:49:02
  */
 
-package log
+package glog
 
 import (
+	"bytes"
 	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
 	"github.com/rifflock/lfshook"
 	"github.com/sirupsen/logrus"
@@ -27,13 +28,31 @@ type Config struct {
 	Level     logrus.Level `json:"level"`     // 等级
 }
 
-// Log 日志
-type Log struct {
+// RotateLog 日志
+type RotateLog struct {
 	*logrus.Logger // log
 }
 
+// 自定义格式化
+type rotateLogFormatter struct {
+}
+
+// Format 格式化
+func (m *rotateLogFormatter) Format(entry *logrus.Entry) ([]byte, error) {
+	var b *bytes.Buffer
+	if entry.Buffer != nil {
+		b = entry.Buffer
+	} else {
+		b = &bytes.Buffer{}
+	}
+
+	b.WriteString(entry.Message)
+
+	return b.Bytes(), nil
+}
+
 // New 创建
-func New(config Config, directory string, filePrefix string) (*Log, error) {
+func New(config Config, directory string, filePrefix string) (*RotateLog, error) {
 	// 路径
 	filePath := config.Directory + "/" + directory
 	// 文件
@@ -81,10 +100,10 @@ func New(config Config, directory string, filePrefix string) (*Log, error) {
 		logrus.PanicLevel: logWriter,
 	}
 
-	log.AddHook(lfshook.NewHook(writerMap, &myFormatter{}))
-	log.SetFormatter(&myFormatter{})
+	log.AddHook(lfshook.NewHook(writerMap, &rotateLogFormatter{}))
+	log.SetFormatter(&rotateLogFormatter{})
 
-	return &Log{
+	return &RotateLog{
 		log,
 	}, nil
 }

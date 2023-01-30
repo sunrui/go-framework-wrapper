@@ -9,7 +9,7 @@ package config
 import (
 	"encoding/json"
 	"framework/app/build"
-	"framework/app/glog/log"
+	"framework/app/glog"
 	"framework/app/mysql"
 	"framework/app/redis"
 	"framework/app/server"
@@ -22,7 +22,7 @@ type Config struct {
 	Mysql  mysql.Config  `json:"mysql"`  // Mysql
 	Redis  redis.Config  `json:"redis"`  // Redis
 	Server server.Config `json:"server"` // Server
-	Log    log.Config    `json:"log"`    // Log
+	Log    glog.Config   `json:"log"`    // Log
 	Token  token.Config  `json:"token"`  // Token
 }
 

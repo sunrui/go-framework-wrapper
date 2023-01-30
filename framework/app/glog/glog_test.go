@@ -7,16 +7,15 @@
 package glog
 
 import (
-	"framework/app/glog/log"
 	"github.com/sirupsen/logrus"
 	"testing"
 )
 
 func TestGLog(t *testing.T) {
-	var testFileLog *log.Log
+	var testFileLog *RotateLog
 	var err error
 
-	if testFileLog, err = log.New(log.Config{
+	if testFileLog, err = New(Config{
 		Directory: "logs",
 		Level:     logrus.DebugLevel,
 	}, "test", "test"); err != nil {

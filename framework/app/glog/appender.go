@@ -8,7 +8,6 @@ package glog
 
 import (
 	"fmt"
-	"framework/app/glog/log"
 )
 
 // Appender 附加器
@@ -46,10 +45,10 @@ func (consoleAppender ConsoleAppender) PrintHttp(level Level, http Http) {
 
 // FileAppender 文件附加器
 type FileAppender struct {
-	Debug *log.Log // 调试
-	Info  *log.Log // 信息
-	Warn  *log.Log // 警告
-	Error *log.Log // 错误
+	Debug *RotateLog // 调试
+	Info  *RotateLog // 信息
+	Warn  *RotateLog // 警告
+	Error *RotateLog // 错误
 }
 
 // Print 打印

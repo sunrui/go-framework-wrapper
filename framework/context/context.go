@@ -10,7 +10,6 @@ import (
 	"framework/app/build"
 	"framework/app/config"
 	"framework/app/glog"
-	"framework/app/glog/log"
 	"framework/app/mysql"
 	"framework/app/redis"
 	"framework/app/token"
@@ -92,8 +91,8 @@ func (ctx *Context) initLogHttpAccess() (err error) {
 	}
 
 	if ctx.Config.Log.Enable {
-		var httpDebugFileLog *log.Log
-		if httpDebugFileLog, err = log.New(ctx.Config.Log, "http", "debug"); err != nil {
+		var httpDebugFileLog *glog.RotateLog
+		if httpDebugFileLog, err = glog.New(ctx.Config.Log, "http", "debug"); err != nil {
 			return err
 		}
 
@@ -114,8 +113,8 @@ func (ctx *Context) initLogHttpError() (err error) {
 	}
 
 	if ctx.Config.Log.Enable {
-		var httpErrorFileLog *log.Log
-		if httpErrorFileLog, err = log.New(ctx.Config.Log, "http", "error"); err != nil {
+		var httpErrorFileLog *glog.RotateLog
+		if httpErrorFileLog, err = glog.New(ctx.Config.Log, "http", "error"); err != nil {
 			return err
 		}
 
@@ -136,8 +135,8 @@ func (ctx *Context) initLogMysql() (err error) {
 	}
 
 	if ctx.Config.Log.Enable {
-		var mysqlFileLog *log.Log
-		if mysqlFileLog, err = log.New(ctx.Config.Log, "mysql", "mysql"); err != nil {
+		var mysqlFileLog *glog.RotateLog
+		if mysqlFileLog, err = glog.New(ctx.Config.Log, "mysql", "mysql"); err != nil {
 			return err
 		}
 
@@ -158,8 +157,8 @@ func (ctx *Context) initService() (err error) {
 	}
 
 	if ctx.Config.Log.Enable {
-		var serviceFileLog *log.Log
-		if serviceFileLog, err = log.New(ctx.Config.Log, "service", "service"); err != nil {
+		var serviceFileLog *glog.RotateLog
+		if serviceFileLog, err = glog.New(ctx.Config.Log, "service", "service"); err != nil {
 			return err
 		}
 
@@ -236,8 +235,8 @@ func (ctx *Context) initGinDefaultLog() (err error) {
 	}
 
 	if ctx.Config.Log.Enable {
-		var ginDefaultFileLog *log.Log
-		if ginDefaultFileLog, err = log.New(ctx.Config.Log, "gin", "default"); err != nil {
+		var ginDefaultFileLog *glog.RotateLog
+		if ginDefaultFileLog, err = glog.New(ctx.Config.Log, "gin", "default"); err != nil {
 			return err
 		}
 
@@ -260,8 +259,8 @@ func (ctx *Context) initGinErrorLog() (err error) {
 	}
 
 	if ctx.Config.Log.Enable {
-		var ginErrorFileLog *log.Log
-		if ginErrorFileLog, err = log.New(ctx.Config.Log, "gin", "error"); err != nil {
+		var ginErrorFileLog *glog.RotateLog
+		if ginErrorFileLog, err = glog.New(ctx.Config.Log, "gin", "error"); err != nil {
 			return err
 		}
 
